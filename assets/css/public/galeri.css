@@ -1,0 +1,220 @@
+.page-gallery > ul {
+    margin-bottom: 0;
+}
+.page-gallery > ul > li {
+    float: left;
+    margin-bottom: 15px;
+    /* margin-right: 20px; */
+    /* width: 200px; */
+}
+.page-gallery > ul > li a {
+    border: 4px solid #293a63;
+    border-radius: 5px 5px 0 0;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    height: 160px;
+    width: 100%;
+}
+.page-gallery > ul > li a > img {
+    -webkit-transition: -webkit-transform 0.15s ease 0s;
+    -moz-transition: -moz-transform 0.15s ease 0s;
+    -o-transition: -o-transform 0.15s ease 0s;
+    transition: transform 0.15s ease 0s;
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+    height: 100%;
+    width: 100%;
+}
+.page-gallery > ul > li a:hover > img {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+}
+.page-gallery > ul > li a:hover .page-gallery-poster > img {
+    opacity: 1;
+}
+.page-gallery > ul > li a .page-gallery-poster {
+    background-color: rgba(0, 0, 0, 0.1);
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    -webkit-transition: background-color 0.15s ease 0s;
+    -o-transition: background-color 0.15s ease 0s;
+    transition: background-color 0.15s ease 0s;
+}
+.page-gallery > ul > li a .page-gallery-poster > img {
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    -webkit-transition: opacity 0.3s ease 0s;
+    -o-transition: opacity 0.3s ease 0s;
+    transition: opacity 0.3s ease 0s;
+}
+.page-gallery > ul > li a:hover .page-gallery-poster {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.page-gallery .justified-gallery > a > img {
+    -webkit-transition: -webkit-transform 0.15s ease 0s;
+    -moz-transition: -moz-transform 0.15s ease 0s;
+    -o-transition: -o-transform 0.15s ease 0s;
+    transition: transform 0.15s ease 0s;
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+    height: 100%;
+    width: 100%;
+}
+.page-gallery .justified-gallery > a:hover > img {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+}
+.page-gallery .justified-gallery > a:hover .page-gallery-poster > img {
+    opacity: 1;
+}
+.page-gallery .justified-gallery > a .page-gallery-poster {
+    background-color: rgba(0, 0, 0, 0.1);
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    -webkit-transition: background-color 0.15s ease 0s;
+    -o-transition: background-color 0.15s ease 0s;
+    transition: background-color 0.15s ease 0s;
+}
+.page-gallery .justified-gallery > a .page-gallery-poster > img {
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    -webkit-transition: opacity 0.3s ease 0s;
+    -o-transition: opacity 0.3s ease 0s;
+    transition: opacity 0.3s ease 0s;
+}
+.page-gallery .justified-gallery > a:hover .page-gallery-poster {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.page-gallery .video .page-gallery-poster img {
+    height: 48px;
+    margin-left: -24px;
+    margin-top: -24px;
+    opacity: 0.8;
+    width: 48px;
+}
+.page-gallery.dark > ul > li a {
+    border: 3px solid #04070a;
+}
+.home .page-gallery {
+    padding-bottom: 80px;
+}
+.page-gallery .card,
+.video-gallery .card {
+    border-radius: 5px;
+}
+.page-gallery .card-body,
+.video-gallery .card-body {
+    padding: 0;
+}
+    .page-gallery .card-body .card-desc,
+    .video-gallery .card-body .card-desc {
+        position: relative;
+        padding: 5px 7px;
+        float: left;
+    }
+        .page-gallery .card-body .card-desc label,
+        .video-gallery .card-body .card-desc label {
+            font-family: "Poppins-Regular";
+            display: block;
+            width: 100%;
+            height: 42px;
+        }
+        .page-gallery .card-body .card-desc p,
+        .video-gallery .card-body .card-desc p {
+            font-size: 12px;
+            text-align: justify;
+            margin: 0;
+            height: 54px;
+            overflow: hidden;
+        }
+.lg-backdrop.in {
+    opacity: 0.9 !important;
+}
+
+.video-gallery {
+    width: 100%;
+    padding: 0;
+    margin-left: -7.5px;
+    margin-right: -7.5px;
+}
+    .video-gallery-item {
+        float: left;
+        margin-bottom: 15px;
+    }
+    .video-gallery-item-desc {
+        border: 4px solid #293a63;
+        border-radius: 5px 5px 0 0;
+        display: block;
+        overflow: hidden;
+        position: relative;
+        float: left;
+        width: 100%;
+        height: 160px;
+    }
+        .video-gallery-item-desc img.video-img {
+            -webkit-transition: -webkit-transform 0.15s ease 0s;
+            -moz-transition: -moz-transform 0.15s ease 0s;
+            -o-transition: -o-transform 0.15s ease 0s;
+            transition: transform 0.15s ease 0s;
+            -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+            height: 100%;
+            width: 100%;
+        }
+        a.video-gallery-item:hover .video-gallery-item-desc img.video-img {
+            -webkit-transform: scale3d(1.1, 1.1, 1.1);
+            transform: scale3d(1.1, 1.1, 1.1);
+        }
+        .video-gallery a:hover .video-gallery-poster img {
+            opacity: 1;
+        }
+        .video-gallery a .video-gallery-poster {
+            background-color: rgba(0, 0, 0, 0.1);
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            -webkit-transition: background-color 0.15s ease 0s;
+            -o-transition: background-color 0.15s ease 0s;
+            transition: background-color 0.15s ease 0s;
+        }
+        .video-gallery a .video-gallery-poster img {
+            left: 50%;
+            opacity: 0;
+            width: 50px;
+            position: absolute;
+            top: 50%;
+            -webkit-transition: opacity 0.3s ease 0s;
+            -o-transition: opacity 0.3s ease 0s;
+            transition: opacity 0.3s ease 0s;
+            transform: translate(-50%, -50%);
+        }
+        .video-gallery a:hover .video-gallery-poster {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+@media (min-width: 1600px) {
+    .video-gallery-item-desc {
+        height: 220px;
+    }
+    .page-gallery > ul > li a {
+        height: 220px;
+    }
+}

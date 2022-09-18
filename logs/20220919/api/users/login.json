@@ -1,0 +1,232 @@
+2022-09-19 00:37:07
+========= OUTPUT =========
+null
+
+2022-09-19 00:37:07
+========= OUTPUT =========
+{"result":201,"message":"Success","data":null}
+
+2022-09-19 00:38:42
+========= OUTPUT =========
+null
+
+2022-09-19 00:38:42
+========= OUTPUT =========
+{"result":422,"message":"Data tidak lengkap. Silahkan cek kembali data anda!"}
+
+2022-09-19 00:38:49
+========= OUTPUT =========
+null
+
+2022-09-19 00:38:49
+========= OUTPUT =========
+{"result":422,"message":"Data tidak lengkap. Silahkan cek kembali data anda!"}
+
+2022-09-19 00:38:51
+========= OUTPUT =========
+null
+
+2022-09-19 00:38:51
+========= OUTPUT =========
+{"result":201,"message":"Success","data":null}
+
+2022-09-19 00:39:20
+========= OUTPUT =========
+null
+
+2022-09-19 00:39:20
+========= OUTPUT =========
+{"result":201,"message":"Success","data":null}
+
+2022-09-19 00:39:28
+========= OUTPUT =========
+null
+
+2022-09-19 00:39:28
+========= OUTPUT =========
+{"result":201,"message":"Success","data":null}
+
+2022-09-19 00:39:50
+========= OUTPUT =========
+null
+
+2022-09-19 00:39:50
+========= OUTPUT =========
+{"result":201,"message":"Success","data":null}
+
+2022-09-19 00:40:12
+========= OUTPUT =========
+null
+
+2022-09-19 00:40:12
+========= OUTPUT =========
+{"result":422,"message":"Data tidak lengkap. Silahkan cek kembali data anda!"}
+
+2022-09-19 00:42:45
+========= OUTPUT =========
+null
+
+2022-09-19 00:42:45
+========= OUTPUT =========
+{"result":422,"message":"Data tidak lengkap. Silahkan cek kembali data anda!"}
+
+2022-09-19 00:42:46
+========= OUTPUT =========
+null
+
+2022-09-19 00:42:46
+========= OUTPUT =========
+{"result":422,"message":"Data tidak lengkap. Silahkan cek kembali data anda!"}
+
+2022-09-19 00:42:51
+========= OUTPUT =========
+null
+
+2022-09-19 00:42:51
+========= OUTPUT =========
+{"result":201,"message":"Success","data":null}
+
+2022-09-19 00:44:48
+========= OUTPUT =========
+null
+
+2022-09-19 00:44:48
+========= OUTPUT =========
+{"result":201,"message":"Success","data":null}
+
+2022-09-19 00:44:50
+========= OUTPUT =========
+null
+
+2022-09-19 00:44:50
+========= OUTPUT =========
+{"result":401,"message":"Email tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-19 00:46:56
+========= OUTPUT =========
+null
+
+2022-09-19 00:46:56
+========= OUTPUT =========
+{"result":201,"message":"Success","data":null}
+
+2022-09-19 00:47:32
+========= OUTPUT =========
+null
+
+2022-09-19 00:47:32
+========= OUTPUT =========
+{"result":201,"message":"Success","data":null}
+
+2022-09-19 00:48:15
+========= OUTPUT =========
+null
+
+2022-09-19 00:48:15
+========= OUTPUT =========
+{"result":401,"message":"Password tidak sama. Silahkan coba kembali!"}
+
+2022-09-19 00:48:25
+========= OUTPUT =========
+null
+
+2022-09-19 00:48:25
+========= OUTPUT =========
+{"result":201,"message":"Success","data":null}
+
+2022-09-19 00:48:28
+========= OUTPUT =========
+null
+
+2022-09-19 00:48:28
+========= OUTPUT =========
+{"result":401,"message":"Password tidak sama. Silahkan coba kembali!"}
+
+2022-09-19 00:51:06
+========= OUTPUT =========
+null
+
+2022-09-19 00:51:06
+========= OUTPUT =========
+{"result":401,"message":"Password tidak sama. Silahkan coba kembali!"}
+
+2022-09-19 00:51:09
+========= OUTPUT =========
+null
+
+2022-09-19 00:51:09
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"id":"4","email":"yahdin.faridhi@tsel.com","password":"$2y$08$ql\/ZgG09cE.Px\/3aNA0HPezf.OzgeZcQhUJMlbUd957DyOU1xLogu","last_login":"2022-09-18 23:35:47","type":"6","created":"2022-09-18 23:35:39"}}}
+
+2022-09-19 00:52:57
+========= OUTPUT =========
+null
+
+2022-09-19 00:52:57
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"id":"4","email":"yahdin.faridhi@tsel.com","last_login":"2022-09-19 00:51:09","type":"","created":"2022-09-18 23:35:39"}}}
+
+2022-09-19 00:53:07
+========= OUTPUT =========
+null
+
+2022-09-19 00:53:07
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"id":"4","email":"yahdin.faridhi@tsel.com","last_login":"2022-09-19 00:52:57","type":"Administrator","created":"2022-09-18 23:35:39"}}}
+
+2022-09-19 00:53:21
+========= OUTPUT =========
+null
+
+2022-09-19 00:53:21
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"email":"yahdin.faridhi@tsel.com","last_login":"2022-09-19 00:53:07","type":"Administrator","created":"2022-09-18 23:35:39"}}}
+
+2022-09-19 00:54:06
+========= OUTPUT =========
+null
+
+2022-09-19 00:54:06
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"6","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"1663518939LBatF.png","created":"2022-09-18 23:35:39","updated":"2022-09-18 23:35:39","type":""}}}
+
+2022-09-19 00:54:29
+========= OUTPUT =========
+null
+
+2022-09-19 00:54:29
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"6","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"1663518939LBatF.png","created":"2022-09-18 23:35:39","updated":"2022-09-18 23:35:39","type":"Administrator"}}}
+
+2022-09-19 00:54:38
+========= OUTPUT =========
+null
+
+2022-09-19 00:54:38
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"1663518939LBatF.png","created":"2022-09-18 23:35:39","updated":"2022-09-18 23:35:39"}}}
+
+2022-09-19 00:55:27
+========= OUTPUT =========
+null
+
+2022-09-19 00:55:27
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"1663518939LBatF.png","created":"2022-09-18 23:35:39","updated":"2022-09-18 23:35:39","last_login":"2022-09-19 00:55:27"}}}
+
+2022-09-19 00:55:34
+========= OUTPUT =========
+null
+
+2022-09-19 00:55:34
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-19 00:55:34"}}}
+
+2022-09-19 00:56:09
+========= OUTPUT =========
+null
+
+2022-09-19 00:56:09
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/localhost\/coffee\/smile\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-19 00:56:09"}}}
+

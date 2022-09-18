@@ -1,0 +1,53 @@
+body {
+    width: 100%;
+    background-color: #fff !important;
+    margin: 0;
+    font-family: "Montserrat-Regular" !important;
+}
+
+.form-control {
+    background-color: #f5f6fa !important;
+    font-size: 12px !important;
+    height: calc(3rem + 2px) !important;
+    padding: 10px 14px !important;
+}
+.content {
+    min-height: 300px;
+}
+    .content .login-page {
+        background-color: #fff;
+        border: 1px solid black;
+        width: 100%;
+    }
+        .content .login-page .login-body {
+            width: 90%;
+            height: 500px;
+            border: 1px solid red;
+        }
+            .login-body .login-body-left {
+                background-color: #f5f6fa;
+                border-radius: 10px;
+                border: 1px solid #f5f6fa;
+            }
+            .login-body .login-body-right {
+                padding: 4rem;
+            }
+                .login-body .login-body-right .input-group:not(.has-validation)>.form-control:not(:last-child) {
+                    border-right: 0;
+                }
+                .login-body .login-body-right .input-group-text {
+                    background-color: #f5f6fa;
+                }
+                .login-body .login-body-right .fas {
+                    cursor: pointer;
+                }
+                .login-body .login-body-right .fa-eye {
+                    display: none;
+                }
+                .login-body .login-body-right .btn {
+                    padding: 0.6rem 0.75rem;
+                }
+                .login-body .login-body-right .btn-danger:disabled {
+                    background-color: #e6e6e6;
+                    border-color: #e6e6e6;
+                }
