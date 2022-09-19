@@ -3,24 +3,23 @@
 
 <head>
     <?php include(APPPATH . "views/layout/html_head.php"); ?>
-    <?php include(APPPATH . "views/layout/body_script.php"); ?>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var em = $("#email_login").val();
-            $("#email_login").prop("autocomplete", "off");
-        });
-    </script>
 </head>
 
 <body>
+    <div class="overlay-loading" style="display: none">
+        <div class="overlay-loading-spinner">
+            <i class="fa fa-spinner fa-spin animated" style="font-size: 38px; margin: 12px;"></i>
+            <p>Processing...</p>
+        </div>
+    </div>
     <div class="content">
         <div class="login-page">
             <div class="login-body row">
-                <div class="col-6 login-body-left"></div>
-                <div class="col-6 login-body-right">
+                <div class="col-6 login-body-frame"></div>
+                <div class="col-6 login-body-form">
                     <h1>Login</h1>
                     <h4>Selamat datang di aplikasi Telkomsel Project Monitoring</h4>
-                    <form id="login-form" method="post" action="">
+                    <form name="login-form" id="login-form" novalidate="novalidate">
                         <div class="form-group">
                             <label for="email">E-Mail</label>
                             <div class="input-group mb-3">
@@ -40,7 +39,7 @@
                             </div>
                         </div>
                         <div class="form-group mt-4">
-                            <button type="submit" class="btn btn-danger col-12" disabled="disabled">Login</button>
+                            <button type="submit" class="btn btn-danger col-12" id="submit_login" disabled="disabled">Login</button>
                         </div>
                     </form>
 
@@ -49,32 +48,97 @@
         </div>
     </div>
 
+    <?php include(APPPATH . "views/layout/footer_script.php"); ?>
+    <script src="<?php echo base_url("assets/plugins/jquery-validation/jquery.validate.min.js"); ?>"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            var em = $("#email_login").val();
-            $("form").attr("autocomplete", "off");
-            console.log($("#email_login").val());
-            console.log($("#email_login").attr("value"));
-            console.log(em);
-        });
-
         $(".fa-eye-slash").click(
             function() {
                 $(".fa-eye").show();
                 $(".fa-eye-slash").hide();
-                $("#password").prop("type", "text");
+                $("#password_login").prop("type", "text");
             }
         );
         $(".fa-eye").click(
             function() {
                 $(".fa-eye").hide();
                 $(".fa-eye-slash").show();
-                $("#password").prop("type", "password");
+                $("#password_login").prop("type", "password");
             }
         );
+        $("#email_login").keyup(function() {
+            var password_login = $("#password_login").val();
+            var email_login = $("#email_login").val();
 
-        $("#login-form").submit(function(e) {
-            alert("asdasda");
+            if (email_login != "" && password_login != "") {
+                $("#submit_login").removeAttr("disabled");
+            }
+        });
+
+        $("#password_login").keyup(function() {
+            var password_login = $("#password_login").val();
+            var email_login = $("#email_login").val();
+
+            if (email_login != "" && password_login != "") {
+                $("#submit_login").removeAttr("disabled");
+            }
+        });
+
+        $(function() {
+            $.validator.setDefaults({
+                ignore: ":hidden, [contenteditable='true']:not([name])",
+                submitHandler: function(form) {
+                    $('.overlay-loading').show();
+                    $.ajax({
+                        url: '<?php echo base_url("users/dologin"); ?>',
+                        type: "POST",
+                        data: $("#login-form").serializeArray(),
+                        dataType: "JSON",
+                        success: function(response) {
+                            console.log(response);
+                            if (response.result == 200) {
+                                $('.overlay-loading').hide();
+                                window.location.href = "<?php echo base_url("main"); ?>";
+                            } else {
+                                $('.overlay-loading').hide();
+                                show_notif("error", response.message)
+                            }
+                        },
+                        error: function(error) {
+                            $('.overlay-loading').hide();
+                            show_notif("error", "Gagal login! Ulangi beberapa saat lagi")
+                        }
+                    });
+                }
+            });
+            $('#login-form').validate({
+                rules: {
+                    useradmin: {
+                        required: true
+                    },
+                    password: {
+                        required: true
+                    }
+                },
+                messages: {
+                    useradmin: {
+                        required: "Silahkan masukkan Username"
+                    },
+                    password: {
+                        required: "Silahkan masukkan Password"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
         });
     </script>
 </body>

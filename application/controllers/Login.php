@@ -26,7 +26,11 @@ class Login extends web_base
 
     public function index()
     {
-        $this->load->view("public/login");
+        $session_smile = $this->session->userdata("smile.pm");
+        if (!is_null($session_smile) && $session_smile["status"] == "VALID") {
+            redirect(base_url('main'));
+        } else {
+            $this->load->view("public/login");
+        }
     }
-
 }

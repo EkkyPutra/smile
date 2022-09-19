@@ -15778,6 +15778,12 @@ body.text-sm .control-sidebar {
   padding: 0;
 }
 
+.dropdown-menu-md {
+  max-width: 250px;
+  min-width: 230px;
+  padding: 0;
+}
+
 .dropdown-menu-lg .dropdown-divider {
   margin: 0;
 }

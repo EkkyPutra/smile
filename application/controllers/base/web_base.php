@@ -6,6 +6,13 @@ class web_base extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $session_userdata = $this->session->userdata("smile.pm");
+        $contr = strtolower($this->uri->segment(1));
+        $module = strtolower($this->uri->segment(2));
+
+        if ($contr != "login" && ($contr != "users" && ($module != "dologin" && $module != "dologout")) && is_null($session_userdata)) {
+            redirect(BASE_URL . "login");
+        }
     }
 
     protected function build_api_url($url)

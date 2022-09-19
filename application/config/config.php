@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $base = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) : 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 $config['base_url']    = $base;
-// $config['base_url'] = 'http://localhost/coffee/btools/';
+// $config['base_url'] = 'http://smile.pm/';
 
 /*
 |--------------------------------------------------------------------------

@@ -4,50 +4,216 @@ body {
     margin: 0;
     font-family: "Montserrat-Regular" !important;
 }
-
+    body.bg-grey {
+        background-color: #f5f6fa !important;
+    }
 .form-control {
     background-color: #f5f6fa !important;
     font-size: 12px !important;
     height: calc(3rem + 2px) !important;
     padding: 10px 14px !important;
 }
+.overlay-loading {
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 99999;
+}
+
+.overlay-loading-spinner {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    bottom: 0;
+    color: white;
+    left: 50%;
+    margin: -15px 0 -15px;
+}
 .content {
     min-height: 300px;
 }
     .content .login-page {
         background-color: #fff;
-        border: 1px solid black;
         width: 100%;
     }
         .content .login-page .login-body {
-            width: 90%;
+            width: 80%;
             height: 500px;
-            border: 1px solid red;
         }
-            .login-body .login-body-left {
+            .login-body .login-body-frame {
+                background: url("../../images/frame-login.png") 80% 80%;
                 background-color: #f5f6fa;
-                border-radius: 10px;
+                border-radius: 20px;
                 border: 1px solid #f5f6fa;
             }
-            .login-body .login-body-right {
+            .login-body .login-body-form {
                 padding: 4rem;
             }
-                .login-body .login-body-right .input-group:not(.has-validation)>.form-control:not(:last-child) {
+                .login-body .login-body-form h1 {
+                    color: #f86f54;
+                    font-weight: bold;
+                }
+                .login-body .login-body-form .input-group:not(.has-validation)>.form-control:not(:last-child) {
                     border-right: 0;
                 }
-                .login-body .login-body-right .input-group-text {
+                .login-body .login-body-form .input-group-text {
                     background-color: #f5f6fa;
                 }
-                .login-body .login-body-right .fas {
+                .login-body .login-body-form .fas {
                     cursor: pointer;
                 }
-                .login-body .login-body-right .fa-eye {
+                .login-body .login-body-form .fa-eye {
                     display: none;
                 }
-                .login-body .login-body-right .btn {
+                .login-body .login-body-form .btn {
                     padding: 0.6rem 0.75rem;
                 }
-                .login-body .login-body-right .btn-danger:disabled {
+                .login-body .login-body-form .btn-danger:disabled {
                     background-color: #e6e6e6;
                     border-color: #e6e6e6;
+                }
+
+.header {
+    background-color: #fff;
+    width: 100%;
+}
+    .header .navbar {
+        width: 80%;
+        margin: 0 auto;
+    }
+        .header .navbar .logo {
+
+        }
+            .header .navbar .logo .logo-icon {
+                width: 40px;
+                height: 40px;
+                float: left;
+            }
+            .header .navbar .logo .logo-smile {
+                width: 120px;
+                float: left;
+                padding: 5px;
+            }
+            .header .navbar .logo::after {
+                clear: both;
+            }
+        .header .navbar .menu {
+            text-align: center;
+            padding: 10px;
+        }
+            .header .navbar .menu .navbar-menu {
+                margin: 0;
+            }
+                .header .navbar .menu .navbar-menu .nav-item {
+                    padding: 3px 10px;
+                    margin: 0 10px;
+                }
+                    .header .navbar .menu .navbar-menu .nav-item a {
+                        color: #969696;
+                    }
+                        .header .navbar .menu .navbar-menu .nav-item a:hover {
+                            color: #f86f54;
+                        }
+                        .header .navbar .menu .navbar-menu .nav-item a.active {
+                            color: #f86f54;
+                            font-weight: bold;
+                        }
+        .header .navbar .user-nav {
+            text-align: right;
+        }
+            .header .navbar .user-nav .user-char {
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                background-color: #f86f54;
+                color: #fff;
+                text-align: center;
+                font-size: 20px;
+                padding: 2px 0;
+                margin-right: 10px;
+                float: left;
+            }
+            .header .navbar .user-nav a:hover {
+                color: inherit;
+            }
+            .header .navbar .user-nav .user-profile {
+                text-align: left;
+                float: left;
+            }
+            .header .navbar .user-nav .nav-item .nav-user {
+                margin: 0;
+                float: right;
+                cursor: pointer;
+            }
+                .header .navbar .user-nav .user-profile label {
+                    cursor: pointer;
+                    font-weight: bold;
+                    color: #000;
+                    display: block;
+                    margin-bottom: 0;
+                }
+                .header .navbar .user-nav .user-profile span {
+                    color: #969696;
+                    display: block;
+                    font-size: 12px;
+                }
+            .header .navbar .user-dropdown {
+                top: 40px;
+                right: -15px !important;
+            }
+    
+    .main-page {
+        width: 80%;
+        margin: 0 auto;
+    }
+        .main-page .main-frame {
+            margin: 10px 0;
+        }
+            .main-page .main-frame .main-left {
+                padding: 80px 0;
+            }
+                .main-page .main-frame .main-left h1 {
+                    color: #f86f54;
+                    font-weight: bold;
+                }
+                .main-page .main-frame .main-left h5 {
+                    margin-top: 30px;
+                }
+                .main-page .main-frame .main-left .main-left-seg {
+                    margin-top: 30px;
+                }
+                    .main-page .main-frame .main-left .main-left-seg .main-left-seg-item {
+                        margin-bottom: 30px;
+                    }
+                        .main-frame .main-left .main-left-seg-item span{
+                            color: #808891;
+                            display: block;
+                            margin-bottom: 10px;
+                        }
+                        .main-frame .main-left .main-left-seg-item label.mls-num {
+                            display: block;
+                            font-weight: bold;
+                            font-size: 36px;
+                        }
+            .main-page .main-frame .main-right {
+                padding-left: 70px;
+                padding-right: 0;
+            }
+                .main-page .main-frame .main-right-red {
+                    border: 3px solid #f86f54;
+                    border-radius: 20px;
+                    margin-bottom: 20px;
+                    padding: 10px;
+                }
+                .main-page .main-frame .main-right-blue {
+                    border: 3px solid #be2dcd;
+                    border-radius: 20px;
+                    padding: 10px;
+                }
+                .main-page .main-frame .main-right img {
+                    width: 100%;
                 }

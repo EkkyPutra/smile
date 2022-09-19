@@ -23,7 +23,6 @@ class Somplakapi
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
 
         $result = curl_exec($ch);
-        // printf($result);die;
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         $response = json_decode($result);

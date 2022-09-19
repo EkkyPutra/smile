@@ -32,7 +32,7 @@ class Users extends API_Controller
 
     public function create()
     {
-        $this->writeLogOutput();
+        $this->writeLogInput();
 
         try {
             $create = new Create();
@@ -47,7 +47,7 @@ class Users extends API_Controller
 
     public function login()
     {
-        $this->writeLogOutput();
+        $this->writeLogInput();
 
         try {
             $login = new Login();
