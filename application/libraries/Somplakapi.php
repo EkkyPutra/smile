@@ -33,9 +33,11 @@ class Somplakapi
 
         if ($response != null && isset($response->result)) {
             if ($response->result == 200) {
+                $data = json_decode($result);
                 return json_encode(array(
                     "result" => $httpcode,
-                    "data" => json_decode($result)
+                    "message" => $data->message,
+                    "data" => $data->data
                 ));
             } else {
                 return json_encode([

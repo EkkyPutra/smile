@@ -45,3 +45,42 @@
 .nav-sidebar .nav-treeview .nav-icon {
 	margin-left: 10px !important;
 }
+
+.user-role {
+	border-radius: 10px;
+	display: inline-block;
+	text-align: center;
+	padding: 5px 20px;
+}
+	.user-role.first {
+		background-color: #E4EDFC;
+		color: #4885ED;
+	}
+	.user-role.second {
+		background-color: #E5FAFA;
+		color: #0FAEAD;
+	}
+	.user-role.third {
+		background-color: #FBECFD;
+		color: #BE2DCD;
+	}
+	.user-role.fourth {
+		background-color: #FFF3D9;
+		color: #FFB000;
+	}
+.dataTable th {
+	font-family: "Be-Vietnam-Bold";
+}
+	.dataTable thead tr th {
+		padding: 18px 0;
+	}
+	table.dataTable>thead .sorting:before,
+	table.dataTable>thead .sorting_asc:before,
+	table.dataTable>thead .sorting:after,
+	table.dataTable>thead .sorting_asc:after {
+		top: 18px;
+	}
+	table.dataTable>thead .sorting_disabled:before,
+	table.dataTable>thead .sorting_disabled:after {
+		display: none !important;
+	}

@@ -7,6 +7,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?php echo base_url("assets/plugins/fontawesome-5/css/all.min.css"); ?>">
     <link rel="stylesheet" href="<?php echo base_url("assets/css/public/main.css"); ?>">
+    <link rel="stylesheet" href="<?php echo base_url("assets/css/public/bajawa.css"); ?>">
     <link rel="stylesheet" href="<?php echo base_url("assets/css/public/fonts.css"); ?>">
     <!-- Toastr -->
     <link rel="stylesheet" href="<?php echo base_url("assets/plugins/toastr/toastr.min.css"); ?>">

@@ -2,7 +2,7 @@ body {
     width: 100%;
     background-color: #fff !important;
     margin: 0;
-    font-family: "Montserrat-Regular" !important;
+    font-family: "Be-Vietnam" !important;
 }
     body.bg-grey {
         background-color: #f5f6fa !important;
@@ -33,6 +33,38 @@ body {
     left: 50%;
     margin: -15px 0 -15px;
 }
+
+.input-group:not(.has-validation)>.form-control:not(:last-child) {
+    border-right: 0;
+}
+.input-group-text {
+    background-color: #f5f6fa !important;
+}
+.card-header .seg-tools {
+    float: left;
+    font-size: 20px;
+    margin-right: 20px;
+    padding: 10px 0;
+}
+
+.card-header .seg-title {
+    color: #f86f54;
+    font-family: "Be-Vietnam-Bold";
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.card-header .seg-subtitle {
+    color: #808891;
+    font-size: 14px;
+}
+    .card-header.no-sub .seg-tools {
+        padding: 2px 0;
+    }
+    .card-header.no-sub .seg-title {
+        padding: 6px 0;
+        margin-bottom: 0;
+    }
 .content {
     min-height: 300px;
 }
@@ -217,3 +249,28 @@ body {
                 .main-page .main-frame .main-right img {
                     width: 100%;
                 }
+    .profile-page {
+        width: 80%;
+        margin: 30px auto;
+    }
+        .profile-page .card {
+            border-radius: 20px;
+        }
+            .profile-page .card-body {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+            .profile-page .profile-avatar {
+                width: 120px;
+                height: 120px;
+                overflow: hidden;
+                margin-right: 20px;
+                margin-bottom: 40px;
+            }
+            .profile-page .profile-name {
+                padding: 40px 0;
+            }
+            .profile-page .card-body .form-group label {
+                font-size: 12px;
+                margin-bottom: 0;
+            }

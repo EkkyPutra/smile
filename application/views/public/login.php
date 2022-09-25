@@ -21,9 +21,9 @@
                     <h4>Selamat datang di aplikasi Telkomsel Project Monitoring</h4>
                     <form name="login-form" id="login-form" novalidate="novalidate">
                         <div class="form-group">
-                            <label for="email">E-Mail</label>
+                            <label for="username_login">Login ID</label>
                             <div class="input-group mb-3">
-                                <input type="email" name="email_login" id="email_login" class="form-control" value="" placeholder="Masukkan Email" autocomplete="off" />
+                                <input type="text" name="username_login" id="username_login" class="form-control" value="" placeholder="Masukkan Login ID" autocomplete="off" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -65,20 +65,20 @@
                 $("#password_login").prop("type", "password");
             }
         );
-        $("#email_login").keyup(function() {
+        $("#username_login").keyup(function() {
             var password_login = $("#password_login").val();
-            var email_login = $("#email_login").val();
+            var username_login = $("#username_login").val();
 
-            if (email_login != "" && password_login != "") {
+            if (username_login != "" && password_login != "") {
                 $("#submit_login").removeAttr("disabled");
             }
         });
 
         $("#password_login").keyup(function() {
             var password_login = $("#password_login").val();
-            var email_login = $("#email_login").val();
+            var username_login = $("#username_login").val();
 
-            if (email_login != "" && password_login != "") {
+            if (username_login != "" && password_login != "") {
                 $("#submit_login").removeAttr("disabled");
             }
         });
@@ -112,18 +112,18 @@
             });
             $('#login-form').validate({
                 rules: {
-                    useradmin: {
+                    username_login: {
                         required: true
                     },
-                    password: {
+                    password_login: {
                         required: true
                     }
                 },
                 messages: {
-                    useradmin: {
-                        required: "Silahkan masukkan Username"
+                    username_login: {
+                        required: "Silahkan masukkan Login ID"
                     },
-                    password: {
+                    password_login: {
                         required: "Silahkan masukkan Password"
                     }
                 },

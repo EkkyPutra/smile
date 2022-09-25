@@ -21,18 +21,19 @@ class Login
     public function action(&$responseObj, &$jsonInputObj, &$responsecode, &$responseMessage)
     {
         $timeTs = date("Y-m-d H:i:s");
-        if ((!isset($jsonInputObj->email) || empty($jsonInputObj->email)) || (!isset($jsonInputObj->password) || empty($jsonInputObj->password)))
+        if ((!isset($jsonInputObj->username) || empty($jsonInputObj->username)) || (!isset($jsonInputObj->password) || empty($jsonInputObj->password)))
             throw new Exception("Data tidak lengkap. Silahkan cek kembali data anda!", 422);
 
-        $userAccessInfo = $this->CI->user->getUserAccessByEmail($jsonInputObj->email);
+        $userAccessInfo = $this->CI->user->getUserAccessByUsername(strtolower($jsonInputObj->username));
         if (is_null($userAccessInfo))
-            throw new Exception("Email tidak ditemukan. Silahkan coba kembali!", 401);
+            throw new Exception("Username tidak ditemukan. Silahkan coba kembali!", 401);
 
         if (!password_verify($jsonInputObj->password, $userAccessInfo->password))
             throw new Exception("Password tidak sama. Silahkan coba kembali!", 401);
 
+
         $dataUserAccess = [
-            "email" => $jsonInputObj->email,
+            "email" => $userAccessInfo->email,
             "last_login" => $timeTs
         ];
         $this->CI->user->updateUserAccess($dataUserAccess);

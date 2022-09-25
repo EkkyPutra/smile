@@ -49,6 +49,22 @@ class Master extends CI_Model
         return null;
     }
 
+    public function getMasterByIdType($id, $type)
+    {
+        $this->db->select("*");
+        $this->db->from("tbl_master");
+        $this->db->where("id", $id);
+        $this->db->where("type", $type);
+
+        $query = $this->db->get();
+
+        if (!is_null($query) && $query->num_rows() > 0) {
+            return $query->row();
+        }
+
+        return null;
+    }
+
     public function totalMasterByType($type)
     {
         $this->db->select("count(id) as total");
