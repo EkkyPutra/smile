@@ -47,7 +47,7 @@
 }
 
 .user-role {
-	border-radius: 10px;
+	border-radius: 5px;
 	display: inline-block;
 	text-align: center;
 	padding: 5px 20px;
@@ -84,3 +84,30 @@
 	table.dataTable>thead .sorting_disabled:after {
 		display: none !important;
 	}
+
+.dataTables_paginate .paginate_button {
+	padding: 0 10px;
+}
+	.dataTables_paginate a {
+		color: #000000;
+		cursor: pointer;
+		font-size: 13px;
+	}
+		.dataTables_paginate a:hover {
+			color: #3083AB;
+		}
+	.dataTables_paginate a.paginate_button.current {
+		color: #3083AB;
+	}
+	.dataTables_paginate .paginate_button .btn-default {
+		padding: 3px 12px;
+		font-size: 11px;
+	}
+div.dataTables_wrapper div.dataTables_info {
+	margin-top: 20px;
+	float: left;
+}
+div.dataTables_wrapper div.dataTables_paginate {
+	margin-top: 23px !important;
+	float: right;
+}

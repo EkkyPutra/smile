@@ -1,0 +1,16 @@
+2022-09-20 16:21:50
+========= INPUT JSON =========
+{"page":1,"limit":10}
+
+2022-09-20 16:21:50
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"Master Lists of User","item":[{"type":"Users Role","value":"Administrator"},{"type":"Users Role","value":"Reguler User"},{"type":"Users Role","value":"Senior Leader"},{"type":"Users Role","value":"User Project"}],"currPage":1,"totalPage":1,"limit":10}}
+
+2022-09-20 16:23:31
+========= INPUT JSON =========
+{"page":1,"limit":10}
+
+2022-09-20 16:23:31
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"Master Lists of User","item":[{"type":"Users Role","value":"Administrator"},{"type":"Users Role","value":"Reguler User"},{"type":"Users Role","value":"Senior Leader"},{"type":"Users Role","value":"SPV Proyek"},{"type":"Users Role","value":"User Project"}],"currPage":1,"totalPage":1,"limit":10}}
+

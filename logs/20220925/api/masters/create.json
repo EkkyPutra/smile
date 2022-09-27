@@ -1,0 +1,40 @@
+2022-09-25 03:44:47
+========= INPUT JSON =========
+{"type":"division","value":"GS East"}
+
+2022-09-25 03:44:47
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"Master Created","item":{"type":"Division","value":"GS East"}}}
+
+2022-09-25 03:45:09
+========= INPUT JSON =========
+{"type":"division","value":"GS West"}
+
+2022-09-25 03:45:09
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"Master Created","item":{"type":"Division","value":"GS West"}}}
+
+2022-09-25 03:45:17
+========= INPUT JSON =========
+{"type":"division","value":"Infra"}
+
+2022-09-25 03:45:17
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"Master Created","item":{"type":"Division","value":"Infra"}}}
+
+2022-09-25 03:45:20
+========= INPUT JSON =========
+{"type":"division","value":"CA"}
+
+2022-09-25 03:45:20
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"Master Created","item":{"type":"Division","value":"CA"}}}
+
+2022-09-25 03:46:22
+========= INPUT JSON =========
+{"type":"division","value":"CA"}
+
+2022-09-25 03:46:22
+========= OUTPUT =========
+{"result":422,"message":"Master data telah terdaftar"}
+

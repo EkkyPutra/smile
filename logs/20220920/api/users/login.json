@@ -1,0 +1,56 @@
+2022-09-20 01:29:42
+========= INPUT JSON =========
+{"email":"ysdfhasdlasjdl@asdf.com","password":"e5c5095696201117a0abbf37a1663e5e"}
+
+2022-09-20 01:29:42
+========= OUTPUT =========
+{"result":401,"message":"Email tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-20 01:29:45
+========= INPUT JSON =========
+{"email":"ysdfhasdlasjdl@asdf.com","password":"e5c5095696201117a0abbf37a1663e5e"}
+
+2022-09-20 01:29:45
+========= OUTPUT =========
+{"result":401,"message":"Email tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-20 01:29:53
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"e5c5095696201117a0abbf37a1663e5e"}
+
+2022-09-20 01:29:53
+========= OUTPUT =========
+{"result":401,"message":"Password tidak sama. Silahkan coba kembali!"}
+
+2022-09-20 16:20:54
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-20 16:20:54
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-20 16:20:54"}}}
+
+2022-09-20 16:23:45
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-20 16:23:45
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-20 16:23:45"}}}
+
+2022-09-20 16:23:48
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"7dc04f900d3aa93728d6ddbf942ee0dc"}
+
+2022-09-20 16:23:48
+========= OUTPUT =========
+{"result":401,"message":"Password tidak sama. Silahkan coba kembali!"}
+
+2022-09-20 16:27:26
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-20 16:27:27
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-20 16:27:26"}}}
+

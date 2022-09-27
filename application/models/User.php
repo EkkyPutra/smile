@@ -72,6 +72,22 @@ class User extends CI_Model
         return null;
     }
 
+    public function getUserByEmailUsername($email, $username)
+    {
+        $this->db->select("*");
+        $this->db->from("tbl_users");
+        $this->db->where("email", $email);
+        $this->db->or_where("username", $username);
+
+        $query = $this->db->get();
+
+        if (!is_null($query) && $query->num_rows() > 0) {
+            return $query->row();
+        }
+
+        return null;
+    }
+
     public function getUserAccessByEmail($email)
     {
         $this->db->select('*');
@@ -126,7 +142,7 @@ class User extends CI_Model
         return 0;
     }
 
-    public function getUsers($role = -1, $offset = 0, $limit = 0)
+    public function getUsers($role = -1, $offset = 0, $limit = 0, $sort = "", $order = "")
     {
         $this->db->select("a.*, b.value as user_role, c.value as user_divisi");
         $this->db->from("tbl_users as a");
@@ -135,10 +151,13 @@ class User extends CI_Model
         if ($role > 0)
             $this->db->where("a.role", $role);
 
+        if (!empty($sort) && !empty($order))
+            $this->db->order_by($sort, $order);
+        else
+            $this->db->order_by("a.name", "asc");
+
         if ($limit > 0)
             $this->db->limit($limit, $offset);
-
-        $this->db->order_by("a.name", "asc");
 
         $query = $this->db->get();
 

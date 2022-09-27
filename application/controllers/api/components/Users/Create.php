@@ -37,7 +37,7 @@ class Create
 
         $checkEmailExist = $this->CI->user->getUserByEmailUsername($jsonInputObj->email, $jsonInputObj->username);
         if (!is_null($checkEmailExist))
-            throw new Exception("Email telah terdaftar", 422);
+            throw new Exception("Email / Domain ID telah terdaftar", 422);
 
         $checkUserRole = $this->CI->master->getMasterById($jsonInputObj->role);
         if (is_null($checkUserRole)) 

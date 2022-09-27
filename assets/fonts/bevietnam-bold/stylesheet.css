@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Be Vietnam';
+    src: url('BeVietnam-Bold.woff2') format('woff2'),
+        url('BeVietnam-Bold.woff') format('woff'),
+        url('BeVietnam-Bold.ttf') format('truetype'),
+        url('BeVietnam-Bold.svg#BeVietnam-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+

@@ -1,0 +1,240 @@
+2022-09-25 02:52:27
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 02:52:28
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 02:52:27"}}}
+
+2022-09-25 02:52:59
+========= INPUT JSON =========
+{"email":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 02:52:59
+========= OUTPUT =========
+{"result":401,"message":"Email tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 02:54:01
+========= INPUT JSON =========
+{"email":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 02:55:32
+========= INPUT JSON =========
+{"email":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 02:55:42
+========= INPUT JSON =========
+{"email":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 02:55:54
+========= INPUT JSON =========
+{"email":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 02:57:24
+========= INPUT JSON =========
+{"email":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 02:57:24
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 02:57:24"}}}
+
+2022-09-25 02:57:34
+========= INPUT JSON =========
+{"email":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 02:57:34
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 02:59:40
+========= INPUT JSON =========
+{"email":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 02:59:40
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:00:01
+========= INPUT JSON =========
+{"email":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:00:01
+========= OUTPUT =========
+{"result":422,"message":"Data tidak lengkap. Silahkan cek kembali data anda!"}
+
+2022-09-25 03:00:06
+========= INPUT JSON =========
+{"username":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:00:06
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:00:20
+========= INPUT JSON =========
+{"username":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:00:20
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 03:00:20"}}}
+
+2022-09-25 03:00:50
+========= INPUT JSON =========
+{"username":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:00:50
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 03:00:50"}}}
+
+2022-09-25 03:01:07
+========= INPUT JSON =========
+{"username":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:01:07
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 03:01:07"}}}
+
+2022-09-25 03:05:30
+========= INPUT JSON =========
+{"username":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:05:30
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:05:59
+========= INPUT JSON =========
+{"username":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:05:59
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:06:27
+========= INPUT JSON =========
+{"username":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:06:27
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:06:38
+========= INPUT JSON =========
+{"username":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:06:38
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:07:18
+========= INPUT JSON =========
+{"username":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:07:18
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:07:38
+========= INPUT JSON =========
+{"username":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:07:38
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:07:51
+========= INPUT JSON =========
+{"username":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:07:51
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:08:09
+========= INPUT JSON =========
+{"username":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:08:09
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:08:20
+========= INPUT JSON =========
+{"username":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:08:20
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:08:32
+========= INPUT JSON =========
+{"username":"yahdinfars","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:08:32
+========= OUTPUT =========
+{"result":401,"message":"Username tidak ditemukan. Silahkan coba kembali!"}
+
+2022-09-25 03:08:40
+========= INPUT JSON =========
+{"username":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:08:40
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 03:08:40"}}}
+
+2022-09-25 03:08:51
+========= INPUT JSON =========
+{"username":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:08:51
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 03:08:51"}}}
+
+2022-09-25 03:09:40
+========= INPUT JSON =========
+{"username":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:09:40
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 03:09:40"}}}
+
+2022-09-25 03:09:58
+========= INPUT JSON =========
+{"username":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:09:58
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 03:09:58"}}}
+
+2022-09-25 03:10:23
+========= INPUT JSON =========
+{"username":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:10:23
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 03:10:23"}}}
+
+2022-09-25 03:11:08
+========= INPUT JSON =========
+{"username":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:11:08
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 03:11:08"}}}
+
+2022-09-25 03:11:30
+========= INPUT JSON =========
+{"username":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:11:30
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 03:11:30"}}}
+
+2022-09-25 03:11:37
+========= INPUT JSON =========
+{"username":"yahdinfar","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-25 03:11:37
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-25 03:11:37"}}}
+

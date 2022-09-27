@@ -1,0 +1,8 @@
+2022-09-20 16:23:28
+========= INPUT JSON =========
+{"type":"user","value":"SPV Proyek"}
+
+2022-09-20 16:23:28
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"Master Created","item":{"type":"User","value":"SPV Proyek"}}}
+

@@ -1,0 +1,48 @@
+2022-09-21 15:17:06
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-21 15:17:06
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-21 15:17:06"}}}
+
+2022-09-21 15:28:18
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-21 15:28:18
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-21 15:28:18"}}}
+
+2022-09-21 16:09:43
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-21 16:09:43
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-21 16:09:43"}}}
+
+2022-09-21 16:15:00
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-21 16:15:00
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-21 16:15:00"}}}
+
+2022-09-21 16:18:00
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-21 16:18:00
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-21 16:18:00"}}}
+
+2022-09-21 16:25:27
+========= INPUT JSON =========
+{"email":"yahdin.faridhi@tsel.com","password":"7dc04f900d3aa93728d6ddbf942ee0ec"}
+
+2022-09-21 16:25:27
+========= OUTPUT =========
+{"result":200,"message":"Success","data":{"name":"User Login","item":{"name":"Yahdin Faridhi","username":"YahdinFar","role":"Administrator","email":"yahdin.faridhi@tsel.com","handphone":"08989898989","avatar":"http:\/\/pm-smile.js\\\/files\/thumbs\/avatar\/1663518939LBatF.png","created":"2022-09-18 23:35:39","last_login":"2022-09-21 16:25:27"}}}
+
