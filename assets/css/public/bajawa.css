@@ -68,6 +68,10 @@
 		background-color: #FFF3D9;
 		color: #FFB000;
 	}
+	.user-role.fifth {
+		background-color: #FFB000;
+		color: #FFF3D9;
+	}
 .dataTable th {
 	font-family: "Be-Vietnam-Bold";
 }
@@ -111,3 +115,19 @@ div.dataTables_wrapper div.dataTables_paginate {
 	margin-top: 23px !important;
 	float: right;
 }
+#tableUsersLists_wrapper .btn.buttons-page-length {
+	background-color: transparent;
+	border-radius: 20px;
+	padding: 0;
+	color: #000;
+	overflow: hidden;
+}
+	#tableUsersLists_wrapper .btn.buttons-page-length i {
+	    background-color: #8C9AB1;
+	    padding: 11px;
+	    width: 98px;
+	    color: #fff;
+	}
+		#tableUsersLists_wrapper .btn.buttons-page-length i span {
+			font-family: "Be-Vietnam" !important;
+		}

@@ -6,6 +6,8 @@ include_once(APPPATH . "controllers/api/components/API_Controller.php");
 include_once(APPPATH . "controllers/api/components/Users/Create.php");
 include_once(APPPATH . "controllers/api/components/Users/Login.php");
 include_once(APPPATH . "controllers/api/components/Users/Get.php");
+include_once(APPPATH . "controllers/api/components/Users/Update.php");
+include_once(APPPATH . "controllers/api/components/Users/Remove.php");
 
 class Users extends API_Controller
 {
@@ -68,6 +70,36 @@ class Users extends API_Controller
         try {
             $get = new Get($command);
             $get->action($this->responseObj, $this->jsonInputObj, $this->res_code, $this->res_message);
+
+            $this->sendResponse($this->res_code, $this->res_message);
+        } catch (Exception $e) {
+            $this->sendResponseError($e);
+        }
+        $this->writeLogOutput();
+    }
+
+    public function update($command = "")
+    {
+        $this->writeLogInput();
+
+        try {
+            $update = new Update($command);
+            $update->action($this->responseObj, $this->jsonInputObj, $this->res_code, $this->res_message);
+
+            $this->sendResponse($this->res_code, $this->res_message);
+        } catch (Exception $e) {
+            $this->sendResponseError($e);
+        }
+        $this->writeLogOutput();
+    }
+
+    public function remove($command = "")
+    {
+        $this->writeLogInput();
+
+        try {
+            $remove = new Remove($command);
+            $remove->action($this->responseObj, $this->jsonInputObj, $this->res_code, $this->res_message);
 
             $this->sendResponse($this->res_code, $this->res_message);
         } catch (Exception $e) {

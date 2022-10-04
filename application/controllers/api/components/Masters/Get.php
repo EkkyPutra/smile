@@ -42,7 +42,7 @@ class Get
             $getMasterType = $this->CI->master->getMasterByType($masterType, $start, $limit);
             foreach ($getMasterType as $master) {
                 $masters[] = [
-                    "type" => Transformer::convertMasterTypeToString($master->type),
+                    "id" => intval($master->id),
                     "value" => ucwords($master->value)
                 ];
             }

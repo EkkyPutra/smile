@@ -34,6 +34,14 @@ class User extends CI_Model
         return (object) $result;
     }
 
+    public function updateUser($old_username, $dataUpdate)
+    {
+        $this->db->where("username", $old_username);
+        $this->db->update("tbl_users", $dataUpdate);
+
+        return $this->db->affected_rows();
+    }
+
     public function addUserAccess($data)
     {
         $result = null;
@@ -57,11 +65,13 @@ class User extends CI_Model
         return (object) $result;
     }
 
-    public function getUserByEmail($email)
+    public function getUserByUsername($username)
     {
-        $this->db->select("*");
-        $this->db->from("tbl_users");
-        $this->db->where("email", $email);
+        $this->db->select("a.*, b.value as user_role, c.value as user_divisi");
+        $this->db->from("tbl_users as a");
+        $this->db->where("a.username", $username);
+        $this->db->join("tbl_master as b", "b.id=a.role");
+        $this->db->join("tbl_master as c", "c.id=a.divisi");
 
         $query = $this->db->get();
 
@@ -69,36 +79,6 @@ class User extends CI_Model
             return $query->row();
         }
 
-        return null;
-    }
-
-    public function getUserByEmailUsername($email, $username)
-    {
-        $this->db->select("*");
-        $this->db->from("tbl_users");
-        $this->db->where("email", $email);
-        $this->db->or_where("username", $username);
-
-        $query = $this->db->get();
-
-        if (!is_null($query) && $query->num_rows() > 0) {
-            return $query->row();
-        }
-
-        return null;
-    }
-
-    public function getUserAccessByEmail($email)
-    {
-        $this->db->select('*');
-        $this->db->from('tbl_user_access');
-        $this->db->where("email", $email);
-
-        $query = $this->db->get();
-
-        if (!is_null($query) && $query->num_rows() > 0) {
-            return $query->row();
-        }
         return null;
     }
 
@@ -106,7 +86,7 @@ class User extends CI_Model
     {
         $this->db->select("a.password, b.*");
         $this->db->from("tbl_user_access as a");
-        $this->db->join("tbl_users as b", "b.email=a.email");
+        $this->db->join("tbl_users as b", "b.username=a.username");
         $this->db->where("LOWER(b.username)", $username);
 
         $query = $this->db->get();
@@ -118,9 +98,13 @@ class User extends CI_Model
     }
 
     // update row
-    public function updateUserAccess($data)
+    public function updateUserAccess($data, $old_username = "")
     {
-        $this->db->where('email', $data['email']);
+        if (!empty($old_username))
+            $this->db->where("username", $old_username);
+        else 
+            $this->db->where('username', $data['username']);
+
         $this->db->update('tbl_user_access', $data);
         return true;
     }
@@ -166,6 +150,19 @@ class User extends CI_Model
         }
 
         return null;
+    }
+
+    public function removeUser($username)
+    {
+        $this->db->delete('tbl_users', array(
+            "username" => $username
+        ));
+        
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

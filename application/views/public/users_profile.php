@@ -36,9 +36,9 @@
                         <div class="col-6">
                             <div class="row">
                                 <div class="form-group col-12">
-                                    <label for="email">Nama Lengkap</label>
+                                    <label for="user_name">Nama Lengkap</label>
                                     <div class="input-group mb-3">
-                                        <input type="email" name="email_login" id="email_login" class="form-control" value="<?php echo $profile["name"]; ?>" placeholder="Masukkan Email" autocomplete="off" />
+                                        <input type="user_name" name="user_name" id="user_name" class="form-control" value="<?php echo $profile["name"]; ?>" />
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-user"></span>
@@ -47,12 +47,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-12">
-                                    <label for="email">E-Mail</label>
+                                    <label for="user_divisi">Divisi</label>
                                     <div class="input-group mb-3">
-                                        <input type="email" name="email_login" id="email_login" class="form-control" value="<?php echo $profile["email"]; ?>" placeholder="Masukkan Email" autocomplete="off" />
+                                        <input type="user_divisi" name="user_divisi" id="user_divisi" class="form-control" value="<?php echo $profile["divisi"]; ?>" />
                                         <div class="input-group-append">
                                             <div class="input-group-text">
-                                                <span class="fas fa-envelope"></span>
+                                                <span class="fas fa-user-tag"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -63,9 +63,9 @@
                         <div class="col-6">
                             <div class="row">
                                 <div class="form-group col-6">
-                                    <label for="email">Login ID</label>
+                                    <label for="user_username">Login ID</label>
                                     <div class="input-group mb-3">
-                                        <input type="email" name="email_login" id="email_login" class="form-control" value="<?php echo $profile["username"]; ?>" placeholder="Masukkan Email" autocomplete="off" />
+                                        <input type="user_username" name="user_username" id="user_username" class="form-control" value="<?php echo $profile["username"]; ?>" />
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-unlock"></span>
@@ -74,9 +74,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
-                                    <label for="email">Role</label>
+                                    <label for="user_role">Role</label>
                                     <div class="input-group mb-3">
-                                        <input type="email" name="email_login" id="email_login" class="form-control" value="<?php echo $profile["role"]; ?>" placeholder="Masukkan Email" autocomplete="off" disabled="disabled" />
+                                        <input type="user_role" name="user_role" id="user_role" class="form-control" value="<?php echo $profile["role"]; ?>" />
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-user-shield"></span>
@@ -85,9 +85,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-12">
-                                    <label for="email">Nomor Telepon</label>
+                                    <label for="user_handphone">Nomor Telepon</label>
                                     <div class="input-group mb-3">
-                                        <input type="email" name="email_login" id="email_login" class="form-control" value="<?php echo $profile["handphone"]; ?>" placeholder="Masukkan Email" autocomplete="off" />
+                                        <input type="user_handphone" name="user_handphone" id="user_handphone" class="form-control" value="<?php echo $profile["handphone"]; ?>" />
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-phone-alt"></span>

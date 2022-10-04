@@ -66,6 +66,28 @@ class Get
         ];
     }
 
+    private function _detail($jsonInputObj)
+    {
+        if (!isset($jsonInputObj->username) || empty($jsonInputObj->username))
+            throw new Exception("Data tidak lengkap. Silahkan cek kembali data anda!", 422);
+
+        $userExist = $this->CI->user->getUserByUsername($jsonInputObj->username);
+
+        if (is_null($userExist))
+            throw new Exception("User tidak ditemukan. Silahkan cek kembali data anda!", 422);
+
+        $user = (object) [];
+        unset($userExist->id);
+        $user = $userExist;
+        $user->avatar_thumb = !empty($user->avatar) ? BASE_URL . "files/thumbs/avatar/" . $user->avatar : "";
+        $user->avatar = !empty($user->avatar) ? BASE_URL . "files/images/avatar/" . $user->avatar : "";
+
+        return [
+            "name" => "User Detail",
+            "item" => $user
+        ];
+    }
+
     public function action(&$responseObj, &$jsonInputObj, &$responsecode, &$responseMessage)
     {
         if (empty($this->command) || ($this->command != "lists" && $this->command != "detail"))
@@ -74,7 +96,7 @@ class Get
         if ($this->command == "lists") {
             $resObj = $this->_lists($jsonInputObj);
         } else if ($this->command == "detail") {
-            // $resPicked = $this->_detail();
+            $resObj = $this->_detail($jsonInputObj);
         }
 
         $responsecode = 200;

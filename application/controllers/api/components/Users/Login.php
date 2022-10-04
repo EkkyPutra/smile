@@ -33,15 +33,16 @@ class Login
 
 
         $dataUserAccess = [
-            "email" => $userAccessInfo->email,
+            "username" => $userAccessInfo->username,
             "last_login" => $timeTs
         ];
         $this->CI->user->updateUserAccess($dataUserAccess);
 
-        $userInfo = $this->CI->user->getUserByEmail($userAccessInfo->email);
+        $userInfo = $this->CI->user->getUserByUsername($userAccessInfo->username);
         unset($userInfo->id);
         unset($userInfo->updated);
         $userInfo->role = ucwords($this->CI->master->getMasterById($userInfo->role)->value);
+        $userInfo->divisi = ucwords($this->CI->master->getMasterById($userInfo->divisi)->value);
         $userInfo->last_login = $timeTs;
         $userInfo->avatar = BASE_URL("files/thumbs/avatar/" . $userInfo->avatar);
 

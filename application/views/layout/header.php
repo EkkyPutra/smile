@@ -17,13 +17,16 @@
         </div>
         <div class="user-nav col-3">
             <div class="nav-item dropdown">
+                <?php
+                $profile = $this->session->userdata("smile.pm");
+                ?>
                 <div class="nav-user row" data-toggle="dropdown" aria-expanded="false">
                     <div class="user-char">
-                        J
+                        <?php echo substr($profile["name"], 0, 1); ?>
                     </div>
                     <div class="user-profile">
-                        <label class="user-name">Yahdin Faridhi</label>
-                        <span>User GS EAST</span>
+                        <label class="user-name"><?php echo $profile["name"]; ?></label>
+                        <span>User <?php echo $profile["divisi"]; ?></span>
                     </div>
                     <div class="pt-3 pb-3 ml-3">
                         <i class="fas fa-chevron-down"></i>

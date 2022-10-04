@@ -20,7 +20,7 @@ class Create
 
     public function action(&$responseObj, &$jsonInputObj, &$responsecode, &$responseMessage)
     {
-        if (!isset($jsonInputObj->username) || !isset($jsonInputObj->name) || !isset($jsonInputObj->email) || !isset($jsonInputObj->role) || !isset($jsonInputObj->handphone))
+        if (!isset($jsonInputObj->username) || !isset($jsonInputObj->name) || !isset($jsonInputObj->role) || !isset($jsonInputObj->divisi) || !isset($jsonInputObj->handphone))
             throw new Exception("Data tidak lengkap. Silahkan cek kembali data anda!", 422);
 
         $password = "!Tsel123";
@@ -29,26 +29,24 @@ class Create
             throw new Exception("Password harus terdiri dari mininal 8 karakter, terdiri dari gabungan huruf kapital, huruf kecil, angka,dan simbol!", 422);
         }
 
-        $this->CI->form_validation->set_data((array) $jsonInputObj);
-        $this->CI->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
-        if ($this->CI->form_validation->run() == FALSE) {
-            throw new Exception("Format email anda salah.", 422);
-        }
-
-        $checkEmailExist = $this->CI->user->getUserByEmailUsername($jsonInputObj->email, $jsonInputObj->username);
-        if (!is_null($checkEmailExist))
-            throw new Exception("Email / Domain ID telah terdaftar", 422);
+        $checkUsernameExist = $this->CI->user->getUserByUsername($jsonInputObj->username);
+        if (!is_null($checkUsernameExist))
+            throw new Exception("Domain ID telah terdaftar", 422);
 
         $checkUserRole = $this->CI->master->getMasterById($jsonInputObj->role);
-        if (is_null($checkUserRole)) 
+        if (is_null($checkUserRole))
             throw new Exception("User Role tidak ditemukan. Cek Master Data anda", 422);
+
+        $checkUserDivisi = $this->CI->master->getMasterById($jsonInputObj->divisi);
+        if (is_null($checkUserDivisi))
+            throw new Exception("User Divisi tidak ditemukan. Cek Master Data anda", 422);
 
         $timeTs = date("Y-m-d H:i:s");
         $dataUser = [
             "name" => $jsonInputObj->name,
             "username" => $jsonInputObj->username,
             "role" => $jsonInputObj->role,
-            "email" => $jsonInputObj->email,
+            "divisi" => $jsonInputObj->divisi,
             "handphone" => $jsonInputObj->handphone,
             "created" => $timeTs,
             "updated" => $timeTs,
@@ -61,15 +59,17 @@ class Create
 
         $user = $this->CI->user->addUser($dataUser);
         if (!is_null($user) && $user->result > 0) {
-            $dateUserAccess = [
-                "email" => $jsonInputObj->email,
+            $dataUserAccess = [
+                "username" => $jsonInputObj->username,
                 "password" => $generatePassword,
                 "type" => $jsonInputObj->role,
-                "created" => $timeTs
+                "created" => $timeTs,
+                "updated" => $timeTs
             ];
-            $this->CI->user->addUserAccess($dateUserAccess);
+            $this->CI->user->addUserAccess($dataUserAccess);
             
-            $dataUser["role"] = ucwords($checkUserRole->value);
+            $dataUser["user_role"] = ucwords($checkUserRole->value);
+            $dataUser["user_divisi"] = ucwords($checkUserDivisi->value);
             $dataUser["avatar"] = BASE_URL("files/thumbs/avatar/" . $dataUser["avatar"]);
             $responsecode = 200;
             $responseObj  = [

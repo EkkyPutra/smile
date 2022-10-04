@@ -65,6 +65,175 @@ body {
         padding: 6px 0;
         margin-bottom: 0;
     }
+.form-group .btn-group #avatar-empty,
+.form-group .btn-group #avatar-not-empty {
+    background-color: transparent;
+    border: 1px dashed #D5D5D5;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #D5D5D5;
+    text-align: center;
+    padding: 55px 0;
+    width: 150px;
+    height: 150px;
+}
+    .form-group .fileinput {
+        display: none;
+    }
+    .form-group .btn-group #avatar-empty i {
+        font-size: 20px;
+    }
+    .form-group .btn-group #avatar-empty span {
+        display: block;
+    }
+    .form-group .btn-group #avatar-not-empty {
+        display: none;
+        padding: 0;
+    }
+        .form-group .btn-group #user-avatar-overlay {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 991;
+        }
+        .form-group .btn-group #avatar-not-empty i {
+            position: absolute;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%, -40%);
+            font-size: 20px;
+            z-index: 999;
+            color: #D5D5D5;
+        }
+        .form-group .btn-group #avatar-not-empty img {
+            width: 100%;
+        }
+        .form-group .btn-group #avatar-not-empty span#avatar-edit {
+            color: #D5D5D5;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            display: block;
+            transform: translate(-50%, -60%);
+            width: 100%;
+            z-index: 993;
+        }
+.pageInfo {
+    margin-top: 20px;
+}
+    .pageInfo .bInfo {
+        color: #202224;
+        font-size: 14px;
+    }
+    .pageInfo .bPagination ul {
+        margin: 0;
+    } 
+        .pageInfo .bPagination ul li {
+            cursor: pointer;
+            list-style: none;
+            display: inline-block;
+            padding: 0 5px;
+        }
+            .pageInfo .bPagination ul li.pCurrent {
+                color: #3083AB;
+                font-family: "Be-Vietnam-Bold";
+            }
+            .pageInfo .bPagination i {
+                border: 0.6px solid #D5D5D5;
+                color: #202224;
+                padding: 5px 10px;
+            }
+                .pageInfo .bPagination #bPaginationPrev i {
+                    border-radius: 5px 0 0 5px;
+                }
+                .pageInfo .bPagination #bPaginationNext i {
+                    border-radius: 0 5px 5px 0;
+                }
+                .pageInfo .bPagination .bDisabled i {
+                    color: rgba(32, 34, 36, 0.5);
+                    cursor: default;
+                }
+.toolHead {
+    margin-bottom: 15px;
+}
+    .toolHead span {
+        display: block;
+        padding: 10px 0;
+        font-size: 16px;
+        font-family: "Be-Vietnam-Bold";
+        margin: 0;
+    }
+    .toolHead .btn {
+        padding: 7px 20px;
+        border-radius: 6px;
+    }
+        .toolHead .btn.btn-export {
+            border: 1px solid #202224;
+        }
+        .toolHead .btn.btn-tambah {
+            background-color: #F86F54;
+            color: #FFF;
+            margin-left: 10px;
+        }
+.modal-footer .button-seg {
+    margin: 0 auto;
+}
+    .modal-footer .button-seg .btn {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+        .modal-footer .button-seg .btn.btn-danger {
+            background-color: #F86F54;
+            border-color: #F86F54;
+        }
+.modal-dialog .modal-lg {
+    max-width: 900px;
+}
+#toolbar {
+    margin-bottom: 20px;
+}
+    #toolbar .toolbar-select {
+        border: 0.5px solid #D5D5D5;
+        border-radius: 20px;
+        display: inline-block;
+        color: #fff;
+        padding: 0;
+        overflow: hidden;
+        margin-right: 20px;
+    }
+        #toolbar .toolbar-select span {
+            background-color: #8C9AB1;
+            padding: 8px 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+            #toolbar .toolbar-select span#resetFilter {
+                cursor: pointer;
+                color: #E5131D;
+                background-color: transparent;
+                border-left: 0.5px solid #D5D5D5;
+            }
+        #toolbar .toolbar-select select {
+            padding: 4px;
+            border: 0;
+            margin-right: 5px;
+        }
+    #toolbar .toolbar-search .form-control {
+        background-color: transparent !important;
+        border-radius: 0 20px 20px 0;
+        border-left: 0;
+        height: 36px !important;
+    }
+    #toolbar .toolbar-search .input-group-text {
+        border-radius: 20px 0 0 20px !important;
+        border-right: 0;
+        background-color: transparent !important;
+        padding: 7px 0 4px 14px;
+    }
+        #toolbar .toolbar-search .input-group-text i {
+            color: #202224;
+        }
 .content {
     min-height: 300px;
 }
@@ -267,6 +436,9 @@ body {
                 margin-right: 20px;
                 margin-bottom: 40px;
             }
+                .profile-page .profile-avatar img {
+                    width: 100%;
+                }
             .profile-page .profile-name {
                 padding: 40px 0;
             }
