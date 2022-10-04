@@ -40,6 +40,9 @@ body {
 .input-group-text {
     background-color: #f5f6fa !important;
 }
+textarea.form-control {
+    height: auto !important;
+}
 .card-header .seg-tools {
     float: left;
     font-size: 20px;
@@ -62,7 +65,7 @@ body {
         padding: 2px 0;
     }
     .card-header.no-sub .seg-title {
-        padding: 6px 0;
+        padding: 1px 0;
         margin-bottom: 0;
     }
 .form-group .btn-group #avatar-empty,
@@ -446,3 +449,7 @@ body {
                 font-size: 12px;
                 margin-bottom: 0;
             }
+    .proyek-page {
+        margin: 0 auto;
+        width: 80%;
+    }

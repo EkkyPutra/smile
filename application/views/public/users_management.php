@@ -203,7 +203,6 @@
     </div>
     <!-- /.modal -->
 
-
     <?php include(APPPATH . "views/layout/footer_script.php"); ?>
     <!-- Bootstrap Table -->
     <script src="<?php echo base_url("assets/plugins/datatables/jquery.dataTables.min.js"); ?>"></script>

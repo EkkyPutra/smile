@@ -82,6 +82,21 @@ class User extends CI_Model
         return null;
     }
 
+    public function getUserById($id)
+    {
+        $this->db->select("*");
+        $this->db->from("tbl_users");
+        $this->db->where("id", $id);
+
+        $query = $this->db->get();
+
+        if (!is_null($query) && $query->num_rows() > 0) {
+            return $query->row();
+        }
+
+        return null;
+    }
+
     public function getUserAccessByUsername($username)
     {
         $this->db->select("a.password, b.*");

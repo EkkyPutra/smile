@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Be Vietnam';
+    src: url('BeVietnam-SemiBold.eot');
+    src: url('BeVietnam-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('BeVietnam-SemiBold.woff2') format('woff2'),
+        url('BeVietnam-SemiBold.woff') format('woff'),
+        url('BeVietnam-SemiBold.ttf') format('truetype'),
+        url('BeVietnam-SemiBold.svg#BeVietnam-SemiBold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+

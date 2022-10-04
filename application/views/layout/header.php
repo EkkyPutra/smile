@@ -10,7 +10,7 @@
         </div>
         <div class="menu col-6">
             <ul class="navbar-menu">
-                <li class="nav-item d-none d-sm-inline-block"><a href="" class="active">Daftar Proyek</a></li>
+                <li class="nav-item d-none d-sm-inline-block"><a href="<?php echo BASE_URL . "projects/management"; ?>" class="active">Daftar Proyek</a></li>
                 <li class="nav-item d-none d-sm-inline-block"><a href="">Performa Member</a></li>
                 <li class="nav-item d-none d-sm-inline-block"><a href="<?php echo BASE_URL . "users/management"; ?>">User Management</a></li>
             </ul>

@@ -25,6 +25,32 @@
 }
 
 @font-face {
+    font-family: 'Be-Vietnam-SemiBold';
+    src: url('../../fonts/bevietnam-semibold/BeVietnam-SemiBold.eot');
+    src: url('../../fonts/bevietnam-semibold/BeVietnam-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('../../fonts/bevietnam-semibold/BeVietnam-SemiBold.woff2') format('woff2'),
+        url('../../fonts/bevietnam-semibold/BeVietnam-SemiBold.woff') format('woff'),
+        url('../../fonts/bevietnam-semibold/BeVietnam-SemiBold.ttf') format('truetype'),
+        url('../../fonts/bevietnam-semibold/BeVietnam-SemiBold.svg#BeVietnam-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Telkomsel-Batik-Sans';
+    src: url('../../fonts/telkomsel-batik/TelkomselBatikSans-Regular.eot');
+    src: url('../../fonts/telkomsel-batik/TelkomselBatikSans-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../../fonts/telkomsel-batik/TelkomselBatikSans-Regular.woff2') format('woff2'),
+        url('../../fonts/telkomsel-batik/TelkomselBatikSans-Regular.woff') format('woff'),
+        url('../../fonts/telkomsel-batik/TelkomselBatikSans-Regular.ttf') format('truetype'),
+        url('../../fonts/telkomsel-batik/TelkomselBatikSans-Regular.svg#TelkomselBatikSans-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
     font-family: 'Poppins-Regular';
     src: url('../../fonts/Poppins/Poppins-Regular.woff2') format('woff2'),
         url('../../fonts/Poppins/Poppins-Regular.woff') format('woff'),

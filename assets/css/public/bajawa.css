@@ -45,30 +45,46 @@
 .nav-sidebar .nav-treeview .nav-icon {
 	margin-left: 10px !important;
 }
-
-.user-role {
+.table tr>td .progress {
+	border-radius: 20px;
+	height: 20px;;
+}
+.progress-bar {
+	padding: 0 5px;
+}
+.top-priority {
+	color: #E5131D;
+	font-family: "Be-Vietnam-Bold";
+}
+.user-role,
+.table-seg-box {
 	border-radius: 5px;
 	display: inline-block;
 	text-align: center;
 	padding: 5px 20px;
 }
-	.user-role.first {
+	.user-role.first,
+	.project-divisi.first {
 		background-color: #E4EDFC;
 		color: #4885ED;
 	}
-	.user-role.second {
+	.user-role.second,
+	.project-divisi.second {
 		background-color: #E5FAFA;
 		color: #0FAEAD;
 	}
-	.user-role.third {
+	.user-role.third,
+	.project-divisi.third {
 		background-color: #FBECFD;
 		color: #BE2DCD;
 	}
-	.user-role.fourth {
+	.user-role.fourth,
+	.project-divisi.fourth {
 		background-color: #FFF3D9;
 		color: #FFB000;
 	}
-	.user-role.fifth {
+	.user-role.fifth,
+	.project-divisi.fifth {
 		background-color: #FFB000;
 		color: #FFF3D9;
 	}
@@ -131,3 +147,146 @@ div.dataTables_wrapper div.dataTables_paginate {
 		#tableUsersLists_wrapper .btn.buttons-page-length i span {
 			font-family: "Be-Vietnam" !important;
 		}
+.toolbar-card {
+	border-bottom: 2px solid rgba(151, 151, 150, 0.3);
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+}
+.toolbar-card-item {
+	border-radius: 10px;
+	color: #FFFFFF;
+	padding: 0 10px !important;
+}
+	.tootbar-card-item i {
+		color: #fb9c90;
+	}
+	.toolbar-card-item .tci {
+		border-radius: 10px;
+		margin: 0;
+		padding: 15px;
+	}
+	.toolbar-card-item .tci-blue {
+		background: linear-gradient(73.75deg, #4880FF 4.37%, #4C61CC 91.96%);
+	}
+	.toolbar-card-item .tci-red {
+		background: linear-gradient(74.25deg, #FB4824 1.2%, #E90C17 94.93%);
+	}
+	.toolbar-card-item .tci-green {
+		background: linear-gradient(73.05deg, #60D669 1.92%, #1FAF38 93.35%);
+	}
+	.toolbar-card-item .tci-orange {
+		background: linear-gradient(72.66deg, #F86D52 1.17%, #FB4F2A 94.3%);
+	}
+		.toolbar-card-item .tci-info {
+			text-align: right;
+		}
+			.toolbar-card-item .tci i {
+				color: #A7E5AD;
+				padding: 20px 0 0;
+				font-size: 60px;
+			}
+			.toolbar-card-item .tci-info span {
+				display: block;
+				font-size: 16px;
+				margin-bottom: 20px;
+			}
+			.toolbar-card-item .tci-info h1 {
+				font-size: 48px;
+				font-family: 'Telkomsel-Batik-Sans';
+			}
+.general-info {
+	display: none;
+	background-color: #F1F4F9;
+	border-radius: 10px;
+	padding: 15px;
+	font-size: 14px;
+	margin-bottom: 20px;
+}
+	.general-info .title {
+		font-family: "Be-Vietnam-Bold";
+	}
+		.general-info .gis-left {
+			border-right: 1px solid #D5D5D5;
+		}
+		.general-info .gis-right .gis-pic {
+			height: 220px;
+			overflow-y: scroll;
+		}
+			.general-info .gis-right .gis-pic::-webkit-scrollbar {
+				display: none;
+			}
+			.general-info .gis-right label {
+				display: block;
+			}
+			.general-info .gis-right .gis-init  {
+				padding-top: 2px;
+			}
+				.general-info .gis-right .row {
+					margin-bottom: 10px;
+				}
+				.general-info .gis-right .gis-init span {
+					border-radius: 50px;
+					background-color: #4885ED;
+					text-align: center;
+					padding: 8px 0;
+					width: 40px;
+					height: 40px;
+					display: block;
+					color: #FFF;
+				}
+				.general-info .gis-right .gis-info label {
+					margin-bottom: 0;
+				}
+				.general-info .gis-right .gis-info span {
+					color: #A6A6A6;
+				}
+				.general-info .gis-left .progress {
+					border-radius: 10px;
+					display: inline-flex;
+					width: calc(100% - 100px);
+					height: 20px;
+				}
+.modal-overflow .modal-body {
+	height: 500px;
+	overflow-y: scroll;
+}
+		.modal-overflow .modal-body::-webkit-scrollbar {
+			display: none;
+		}
+	.modal-overflow .modal-body label {
+		font-family: 'Be-Vietnam-SemiBold';
+		font-size: 12px;
+	}
+	.modal-body .modal-info {
+		background-color: #E4EDFC;
+		border: 1px solid #4885ED;
+		border-radius: 8px;
+		display: block;
+		font-size: 12px;
+		width: 100%;
+		padding: 10px;
+		margin-bottom: 20px;
+	}
+		.modal-body .modal-info i {
+			color: #4885ED;
+			margin-right: 5px;
+		}
+	.modal-overflow .modal-body .add-pic {
+		cursor: pointer;
+		color: #F86F54;
+	}
+.modal-seg {
+	margin-left: -10px;
+	padding-left: 18px !important;
+	font-size: 13px !important;
+}
+	.modal-seg::before {
+		display: block;
+		float: left;
+		width: 4px;
+		content: "";
+		background: #F86F54;
+		border-radius: 0 20px 20px 0;
+		margin-left: -15px;
+		height: 26px;
+	}
