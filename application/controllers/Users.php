@@ -102,6 +102,7 @@ class Users extends web_base
 
         $data["sort"] = $orderField;
         $data["order"] = $orderSort;
+        $data["query"] = !is_null($this->input->post("query")) ? $this->input->post("query") : "";
 
         $response = $this->somplakapi->run_curl_api($url, $data);
         $resApi = json_decode($response);
@@ -173,7 +174,35 @@ class Users extends web_base
 
         echo json_encode($result);
     }
-    
+
+    public function listsAjax()
+    {
+        header('Content-Type: application/json');
+        $url = parent::build_api_url('users/get/lists');
+
+        $data = [
+            "query" => !is_null($this->input->get("term")) ? $this->input->get("term", true) : "",
+            "page" => 1,
+            "limit" => 100
+        ];
+
+        $response = $this->somplakapi->run_curl_api($url, $data);
+        $resApi = json_decode($response);
+
+        $result = [];
+        if ($resApi->result == 200) {
+            $resData = $resApi->data->items;
+            if (!is_null($resData)) {
+                foreach ($resData as $key => $data) {
+                    $result[] = $data;
+                }
+            }
+        }
+
+        echo json_encode($result);
+    }
+
+
     public function doCreate()
     {
         header('Content-Type: application/json');

@@ -38,13 +38,14 @@ class Get
 
         $sort = (isset($jsonInputObj->sort) && !empty($jsonInputObj->sort)) ? $jsonInputObj->sort : "";
         $order = (isset($jsonInputObj->order) && !empty($jsonInputObj->order)) ? $jsonInputObj->order : "";
+        $query = (isset($jsonInputObj->query) && !empty($jsonInputObj->query)) ? $jsonInputObj->query : null;
         $role = !is_null($getRole) ? $getRole->id : 0;
         $totalUsers = $this->CI->user->totalUsers($role);
         $rowsPerPage = 0;
 
         if ($totalUsers > 0) {
             $totalPage = ceil($totalUsers / $limit);
-            $getUsers = $this->CI->user->getUsers($role, $start, $limit, $sort, $order);
+            $getUsers = $this->CI->user->getUsers($role, $start, $limit, $sort, $query);
             if (!is_null($getUsers)) {
                 $rowsPerPage = count($getUsers);
                 foreach ($getUsers as $user) {

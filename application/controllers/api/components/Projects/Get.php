@@ -64,6 +64,39 @@ class Get
         ];
     }
 
+    private function _detail(&$responseObj, &$jsonInputObj, &$responsecode)
+    {
+        if (!isset($jsonInputObj->id) || empty($jsonInputObj->id))
+            throw new Exception("Data tidak lengkap. Silahkan cek kembali data anda!", 422);
+
+        $project = $this->CI->project->getProjectById($jsonInputObj->id);
+        if (is_null($project))
+            throw new Exception("Project tidak ditemukan. Silahkan cek kembali data anda.", 422);
+
+        $projectMembers = $this->CI->project->getProjectMembers($project->id);
+        $members = null;
+        if (!is_null($projectMembers)) {
+            foreach ($projectMembers as $pMember) {
+                $pMember->avatar_thumb = !empty($pMember->avatar) ? BASE_URL . "files/thumbs/avatar/" . $pMember->avatar : "";
+                $pMember->avatar = !empty($pMember->avatar) ? BASE_URL . "files/images/avatar/" . $pMember->avatar : "";
+
+                if ($pMember->pic_type == "pic_leader")
+                    $members["leader"][] = $pMember;
+                else 
+                    $members["members"][] = $pMember;
+            }
+        }
+        $project->pic = $members;
+
+        $project->deadline = date("d F Y", strtotime($project->deadline));
+        $project = $project;
+        $responsecode = 200;
+        $responseObj = [
+            "name" => "Project Detail",
+            "item" => $project
+        ];
+    }
+
     public function action(&$responseObj, &$jsonInputObj, &$responsecode, &$responseMessage)
     {
         if (empty($this->command) || ($this->command != "lists" && $this->command != "detail"))
@@ -72,7 +105,7 @@ class Get
         if ($this->command == "lists") {
             $this->_lists($responseObj, $jsonInputObj, $responsecode);
         } else if ($this->command == "detail") {
-            // $this->_detail($jsonInputObj);
+            $this->_detail($responseObj, $jsonInputObj, $responsecode);
         }
     }
 

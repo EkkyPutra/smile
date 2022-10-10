@@ -35,29 +35,29 @@ class Projects extends web_base
         $response = $this->somplakapi->run_curl_api($url, ["page" => 1, "limit" => 10]);
         $resApi = json_decode($response);
 
-        // $urlRole = parent::build_api_url("masters/get/user");
-        // $responseRole = $this->somplakapi->run_curl_api($urlRole, []);
-        // $resApiRole = json_decode($responseRole);
+        $urlProjectType = parent::build_api_url("masters/get/project");
+        $responseProejctType = $this->somplakapi->run_curl_api($urlProjectType, []);
+        $resApiProejctType = json_decode($responseProejctType);
 
-        // $urlDivisi = parent::build_api_url("masters/get/division");
-        // $responseDivisi = $this->somplakapi->run_curl_api($urlDivisi, []);
-        // $resApiDivisi = json_decode($responseDivisi);
+        $urlDivisi = parent::build_api_url("masters/get/division");
+        $responseDivisi = $this->somplakapi->run_curl_api($urlDivisi, []);
+        $resApiDivisi = json_decode($responseDivisi);
 
-        // $usersRole = null;
-        // if ($resApiRole->result == 200)
-        //     $usersRole = $resApiRole->data->item;
+        $projectType = null;
+        if ($resApiProejctType->result == 200)
+            $projectType = $resApiProejctType->data->item;
 
-        // $usersDivisi = null;
-        // if ($resApiDivisi->result == 200)
-        //     $usersDivisi = $resApiDivisi->data->item;
+        $usersDivisi = null;
+        if ($resApiDivisi->result == 200)
+            $usersDivisi = $resApiDivisi->data->item;
 
         $totalPage = 0;
         if ($resApi->result == 200) {
             $totalPage = $resApi->data->totalPage;
         }
 
-        // $data["usersRole"] = $usersRole;
-        // $data["usersDivisi"] = $usersDivisi;
+        $data["projectType"] = $projectType;
+        $data["usersDivisi"] = $usersDivisi;
         $data["totalPage"] = $totalPage;
 
         $this->load->view("public/project_management", $data);
@@ -101,6 +101,7 @@ class Projects extends web_base
 
                     $userHandphone = !is_null($data->pic) ? $data->pic[0]->pic_handphone : "";
                     $userHandphone = (!empty($userHandphone) && substr($userHandphone, 0,1 ) == 0) ? "62" . substr($userHandphone, 1) : "";
+                    $dataId = $data->id;
                     $data->id = ($key + 1);
                     $data->deadline = date("d/m/Y", strtotime($data->deadline));
                     $data->project_divisi = '<div class="table-seg-box" style="background-color: #' . $data->project_divisi_bg . '; color: #' . $data->project_divisi_color . '">' . ucwords($data->project_divisi) . '</div>';
@@ -108,11 +109,11 @@ class Projects extends web_base
                                         <div class="progress-bar ' . $bgProgressBar . ' progress-bar-striped" role="progressbar" style="width: ' . $data->progress . '%;" aria-valuenow="' . $data->progress . '" aria-valuemin="0" aria-valuemax="100">' . $data->progress . '%</div>
                                        </div>';
                     $data->priority = ($data->priority == "Yes") ? "<span class='top-priority'><i class='fas fa-angle-double-up'></i> TOP</span>" : "";
-                    $data->action = "<button type='button' class='btn btn-outline-success mr-1' data-toggle='modal' data-target='#modal-lg''><i class='far fa-eye'></i></button>
+                    $data->action = "<button type='button' class='btn btn-outline-success mr-1' onclick='viewActivity(\"" . $dataId . "\");'><i class='far fa-eye'></i></button>
                                      <a class='btn btn-outline-warning mr-1' href='https://wa.me/" . $userHandphone . "' target='_blank'><i class='fab fa-whatsapp'></i></a>
-                                     <button type='button' class='btn btn-outline-primary mr-1'><i class='fas fa-link'></i></button>
+                                     <a class='btn btn-outline-primary mr-1' href='" . $data->link . "' target='_blank'><i class='fas fa-link'></i></a>
                                      <button type='button' class='btn btn-outline-info mr-1'><i class='far fa-comment'></i></button>
-                                     <button type='button' class='btn btn-outline-danger'><i class='far fa-trash-alt'></i></button>";
+                                     <button type='button' class='btn btn-outline-danger' onclick='removeProject(\"" . $dataId . "\");'><i class='far fa-trash-alt'></i></button>";
                     $res[] = $data;
                 }
             }
@@ -127,5 +128,50 @@ class Projects extends web_base
         ];
 
         echo json_encode($result);
+    }
+
+    public function getDetail()
+    {
+        header('Content-Type: application/json');
+        $url = parent::build_api_url('projects/get/detail');
+        $response = $this->somplakapi->run_curl_api($url, ["id" => $this->input->post('id')]);
+        $resApi = json_decode($response);
+
+        echo json_encode($resApi);
+    }
+
+    public function doCreate()
+    {
+        header('Content-Type: application/json');
+        $url = parent::build_api_url('projects/create');
+        $data["name"] = !is_null($this->input->post("project_name")) ? $this->input->post("project_name") : "";
+        $data["divisi"] = !is_null($this->input->post("project_divisi")) ? $this->input->post("project_divisi") : "";
+        $data["priority"] = !is_null($this->input->post("project_priority")) ? $this->input->post("project_priority") : "";
+        $data["type"] = !is_null($this->input->post("project_type")) ? $this->input->post("project_type") : "";
+        $data["deadline"] = !is_null($this->input->post("project_deadline")) ? date("Y-m-d", strtotime($this->input->post("project_deadline"))) : "";
+        $data["progress"] = !is_null($this->input->post("project_progress")) ? intval($this->input->post("project_progress")) : 0;
+        $data["link"] = !is_null($this->input->post("project_link")) ? intval($this->input->post("project_link")) : 0;
+        $data["description"] = !is_null($this->input->post("project_description")) ? $this->input->post("project_description") : "";
+        $data["pic_ids"][] = [
+            "id" => !is_null($this->input->post("pic_leader_id")) ? $this->input->post("pic_leader_id") : 0,
+            "type" => 1
+        ];
+
+        $response = $this->somplakapi->run_curl_api($url, $data);
+        $response = json_decode($response);
+
+        echo json_encode($response);
+    }
+
+    public function doRemove()
+    {
+        header('Content-Type: application/json');
+        $url = parent::build_api_url('projects/remove');
+        $data["id"] = !is_null($this->input->post("id")) ? $this->input->post("id") : "";
+
+        $response = $this->somplakapi->run_curl_api($url, $data);
+        $response = json_decode($response);
+
+        echo json_encode($response);
     }
 }

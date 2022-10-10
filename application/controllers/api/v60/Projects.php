@@ -5,6 +5,7 @@ include_once(APPPATH . "controllers/base/constant.php");
 include_once(APPPATH . "controllers/api/components/API_Controller.php");
 include_once(APPPATH . "controllers/api/components/Projects/Create.php");
 include_once(APPPATH . "controllers/api/components/Projects/Get.php");
+include_once(APPPATH . "controllers/api/components/Projects/Remove.php");
 
 class Projects extends API_Controller
 {
@@ -61,4 +62,18 @@ class Projects extends API_Controller
         $this->writeLogOutput();
     }
 
+    public function remove($command = "")
+    {
+        $this->writeLogInput();
+
+        try {
+            $remove = new Remove($command);
+            $remove->action($this->responseObj, $this->jsonInputObj, $this->res_code, $this->res_message);
+
+            $this->sendResponse($this->res_code, $this->res_message);
+        } catch (Exception $e) {
+            $this->sendResponseError($e);
+        }
+        $this->writeLogOutput();
+    }
 }

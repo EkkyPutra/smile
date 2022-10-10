@@ -450,6 +450,16 @@ textarea.form-control {
                 margin-bottom: 0;
             }
     .proyek-page {
-        margin: 0 auto;
+        margin: 30px auto;
         width: 80%;
+    }
+/* #autocomplete-pic-leader {
+    border: 1px solid red;
+    background-color: #fff;
+    border-radius: 5px;
+    min-height: 40px;
+}*/
+    #autocomplete-pic-leader ul li a {
+        display: block;
+        padding: 5px 10px;
     }

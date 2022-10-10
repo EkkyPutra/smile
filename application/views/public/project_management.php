@@ -6,6 +6,7 @@
     <!-- Bootstrap Table -->
     <link href="<?php echo base_url("assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"); ?>" rel="stylesheet">
     <link href="<?php echo base_url("assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css"); ?>" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo base_url("assets/plugins/jquery-ui/jquery-ui.min.css"); ?>" type="text/css">
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="<?php echo base_url("assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css"); ?>">
     <!-- Tags Input -->
@@ -24,7 +25,7 @@
     <div class="content">
         <div class="proyek-page">
             <!-- SELECT2 EXAMPLE -->
-            <div class="card card-default">
+            <div class="card card-default" id="project-activity">
                 <!-- .card-header -->
                 <div class="card-header no-sub">
                     <div class="seg-tools">
@@ -42,7 +43,7 @@
                 <!-- .card-body -->
                 <div class="card-body">
                     <div id="toolbar">
-                        <div class="toolbar-card row">
+                        <div class="toolbar-card row" id="toolbar-card">
                             <div class="toolbar-card-item col-3">
                                 <div class="tci tci-blue row">
                                     <span class="col-4"><i class="fas fa-hourglass-half"></i></span>
@@ -80,31 +81,36 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="general-info">
+                        <div class="general-info" id="general-info" style="display: none;">
+                            <div id="general-info-overlay">
+                                <div class="overlay-loading-spinner">
+                                    <i class="fa fa-spinner fa-spin animated" style="font-size: 38px; margin: 12px;"></i>
+                                </div>
+                            </div>
                             <div class="general-info-seg row">
                                 <div class="gis-left col-6">
                                     <label class="title">General Information</label>
                                     <div class="form-group mb-0 row">
                                         <label for="inputEmail3" class="col-4 col-form-label">Nama Proyek</label>
-                                        <div class="col-8">
-                                            <label>: Pengembangan Aplikasi VMS</label>
+                                        <div class="col-8">:&nbsp;
+                                            <label id="label-project-name"></label>
                                         </div>
                                     </div>
                                     <div class="form-group mb-0 row">
                                         <label for="inputEmail3" class="col-4 col-form-label">Deskripsi Proyek</label>
-                                        <div class="col-8">
-                                            <label>: Pengembangan Aplikasi VMS untuk kebutuhan manajemen kunjungan karyawan telkomsel</label>
+                                        <div class="col-8">:&nbsp;
+                                            <label id="label-project-desc"></label>
                                         </div>
                                     </div>
                                     <div class="form-group mb-0 row">
                                         <label for="inputEmail3" class="col-4 col-form-label">Tipe</label>
-                                        <div class="col-8">
-                                            <label>: <span class='top-priority'><i class='fas fa-angle-double-up'></i> TOP</span></label>
+                                        <div class="col-8">:&nbsp;
+                                            <label id="label-project-tipe"><span class='top-priority'><i class='fas fa-angle-double-up'></i> TOP</span></label>
                                         </div>
                                     </div>
                                     <div class="form-group mb-0 row">
                                         <label for="inputEmail3" class="col-4 col-form-label">Progress</label>
-                                        <div class="col-8 pt-10">:
+                                        <div class="col-8 pt-10">:&nbsp;
                                             <div class="progress">
                                                 <div class="progress-bar bg-primary progress-bar-striped" role="progressbar" style="width: 45%;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">45%</div>
                                             </div>
@@ -112,14 +118,14 @@
                                     </div>
                                     <div class="form-group mb-0 row">
                                         <label for="inputEmail3" class="col-4 col-form-label">Batas Waktu</label>
-                                        <div class="col-8">
-                                            <label>: 26 Januari 2022</label>
+                                        <div class="col-8">:&nbsp;
+                                            <label id="label-project-deadline"></label>
                                         </div>
                                     </div>
                                     <div class="form-group mb-0 row">
                                         <label for="inputEmail3" class="col-4 col-form-label">Link Proyek</label>
-                                        <div class="col-8">
-                                            <label>: <a href="">smile.com/evidence.pdf</a></label>
+                                        <div class="col-8">:&nbsp;
+                                            <label id="label-project-link"></label>
                                         </div>
                                     </div>
                                 </div>
@@ -127,60 +133,10 @@
                                     <label class="title">PIC Information</label>
                                     <div class="gis-pic">
                                         <label>PIC Leader</label>
-                                        <div class="row">
-                                            <div class="gis-init col-1">
-                                                <span>YS</span>
-                                            </div>
-                                            <div class="gis-info col-11">
-                                                <label>Yandan Setiawan</label>
-                                                <span>+62 82221111908</span>
-                                            </div>
+                                        <div class="gis-pic-leader row">
                                         </div>
                                         <label>PIC Member</label>
-                                        <div class="row">
-                                            <div class="gis-init col-1">
-                                                <span>YS</span>
-                                            </div>
-                                            <div class="gis-info col-11">
-                                                <label>Yandan Setiawan</label>
-                                                <span>+62 82221111908</span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="gis-init col-1">
-                                                <span>YS</span>
-                                            </div>
-                                            <div class="gis-info col-11">
-                                                <label>Yandan Setiawan</label>
-                                                <span>+62 82221111908</span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="gis-init col-1">
-                                                <span>YS</span>
-                                            </div>
-                                            <div class="gis-info col-11">
-                                                <label>Yandan Setiawan</label>
-                                                <span>+62 82221111908</span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="gis-init col-1">
-                                                <span>YS</span>
-                                            </div>
-                                            <div class="gis-info col-11">
-                                                <label>Yandan Setiawan</label>
-                                                <span>+62 82221111908</span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="gis-init col-1">
-                                                <span>YS</span>
-                                            </div>
-                                            <div class="gis-info col-11">
-                                                <label>Yandan Setiawan</label>
-                                                <span>+62 82221111908</span>
-                                            </div>
+                                        <div class="gis-pic-members">
                                         </div>
                                     </div>
                                 </div>
@@ -245,7 +201,7 @@
     </div>
 
     <div class="modal fade modal-overflow" id="modal-proyek">
-        <form name="usersForm" id="usersForm" enctype="multipart/form-data" novalidate="novalidate">
+        <form name="projectForm" id="projectForm" enctype="multipart/form-data" novalidate="novalidate">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -259,27 +215,32 @@
                         <div class="col-6">
                             <div class="row">
                                 <div class="form-group col-12">
-                                    <label for="proyek_name">Nama Proyek</label>
+                                    <label for="project_name">Nama Proyek</label>
                                     <div class="input-group">
-                                        <input type="text" name="proyek_name" id="proyek_name" class="form-control" placeholder="Contoh: Proyek website SMILE" autocomplete="off" required="required" />
+                                        <input type="text" name="project_name" id="project_name" class="form-control" placeholder="Contoh: Proyek website SMILE" autocomplete="off" required="required" />
                                     </div>
                                 </div>
                                 <div class="form-group col-12">
-                                    <label for="user_divisi">Link Proyek</label>
+                                    <label for="project_link">Link Proyek</label>
                                     <div class="input-group">
-                                        <input type="text" name="proyek_name" id="proyek_name" class="form-control" placeholder="Contoh: http://www.telkomsel.com" autocomplete="off" required="required" />
+                                        <input type="text" name="project_link" id="project_link" class="form-control" placeholder="Contoh: http://www.telkomsel.com" autocomplete="off" />
                                     </div>
                                 </div>
                                 <div class="form-group col-12">
-                                    <label for="user_divisi">Progress</label>
+                                    <label for="project_progress">Progress</label>
                                     <div class="input-group">
-                                        <input type="text" name="proyek_name" id="proyek_name" class="form-control" placeholder="Contoh: http://www.telkomsel.com" autocomplete="off" required="required" />
+                                        <input type="number" name="project_progress" id="project_progress" min="0" max="100" class="form-control form-no-line" placeholder="0" autocomplete="off" required="required" />
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span>%</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-12">
-                                    <label for="user_divisi">Due Date</label>
+                                    <label for="project_deadline">Due Date</label>
                                     <div class="input-group">
-                                        <input type="text" name="proyek_name" id="proyek_name" class="form-control" placeholder="Contoh: http://www.telkomsel.com" autocomplete="off" required="required" />
+                                        <input type="text" name="project_deadline" id="project_deadline" class="form-control datetimepicker-input" data-toggle="datetimepicker" placeholder="0" autocomplete="off" required="required" />
                                     </div>
                                 </div>
                             </div>
@@ -287,31 +248,38 @@
                         <div class="col-6">
                             <div class="row">
                                 <div class="form-group col-6">
-                                    <label for="username">Tipe</label>
+                                    <label for="project_type">Tipe</label>
                                     <div class="input-group">
-                                        <select name="user_role" id="user_role" class="form-control" required="required">
+                                        <select name="project_type" id="project_type" class="form-control" required="required">
                                             <option value="">-- Pilih Tipe --</option>
+                                            <?php
+                                            if (!is_null($projectType)) {
+                                                foreach ($projectType as $pType) {
+                                                    echo '<option value="' . $pType->id . '">' . $pType->value . '</option>';
+                                                }
+                                            }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group col-6">
-                                    <label for="username">Pengaturan Prioritas</label>
+                                    <label for="project_priority">Pengaturan Prioritas</label>
                                     <div class="input-group">
                                         <div class="icheck-primary d-inline">
-                                            <input type="checkbox" id="checkboxPrimary1">
-                                            <label for="checkboxPrimary1">Atur sebagai TOP</label>
+                                            <input type="checkbox" id="project_priority" name="project_priority">
+                                            <label for="project_priority">Atur sebagai TOP</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-12">
-                                    <label for="user_role">Divisi</label>
+                                    <label for="project_divisi">Divisi</label>
                                     <div class="input-group">
-                                        <select name="user_role" id="user_role" class="form-control" required="required">
+                                        <select name="project_divisi" id="project_divisi" class="form-control" required="required">
                                             <option value="">-- Pilih Divisi --</option>
                                             <?php
-                                            if (!is_null($usersRole)) {
-                                                foreach ($usersRole as $role) {
-                                                    echo '<option value="' . $role->id . '">' . $role->value . '</option>';
+                                            if (!is_null($usersDivisi)) {
+                                                foreach ($usersDivisi as $divisi) {
+                                                    echo '<option value="' . $divisi->id . '">' . $divisi->value . '</option>';
                                                 }
                                             }
                                             ?>
@@ -319,8 +287,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-12">
-                                    <label for="handphone">Deskripsi Proyek</label>
-                                    <textarea name="handphone" id="handphone" class="form-control" placeholder="Contoh: 0811111999999" rows="6"></textarea>
+                                    <label for="project_description">Deskripsi Proyek</label>
+                                    <textarea name="project_description" id="project_description" class="form-control" placeholder="Contoh: Proyek prioritas tahun ini" rows="6"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -335,9 +303,12 @@
                             <div class="col-6">
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <label for="proyek_name">Nama Proyek</label>
+                                        <label for="pic_leader_name">Nama PIC Leader</label>
                                         <div class="input-group">
-                                            <input type="text" name="proyek_name" id="proyek_name" class="form-control" placeholder="Contoh: Proyek website SMILE" autocomplete="off" required="required" />
+                                            <input type="text" name="pic_leader_name" id="pic_leader_name" class="form-control" placeholder="Contoh: Dwi Setiawan" autocomplete="off" required="required" />
+                                            <input type="hidden" name="pic_leader_id" id="pic_leader_id" />
+                                        </div>
+                                        <div id="autocomplete-pic-leader">
                                         </div>
                                     </div>
                                 </div>
@@ -345,9 +316,9 @@
                             <div class="col-6">
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <label for="proyek_name">Nomor Telepon PIC Leader</label>
+                                        <label for="pic_leader_handphone">Nomor Telepon PIC Leader</label>
                                         <div class="input-group">
-                                            <input type="text" name="proyek_name" id="proyek_name" class="form-control" placeholder="Contoh: Proyek website SMILE" autocomplete="off" required="required" />
+                                            <input type="text" name="pic_leader_handphone" id="pic_leader_handphone" class="form-control" placeholder="Contoh: Proyek website SMILE" autocomplete="off" required="required" />
                                         </div>
                                     </div>
                                 </div>
@@ -380,6 +351,10 @@
     <script src="<?php echo base_url("assets/plugins/datatables-buttons/js/buttons.print.min.js"); ?>"></script>
     <!-- BootBox -->
     <script src="<?php echo base_url("assets/js/bootstarp-bootbox.min.js"); ?>"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="<?php echo base_url("assets/plugins/moment/moment.min.js"); ?>"></script>
+    <script src="<?php echo base_url("assets/plugins/moment/moment-with-locales.min.js"); ?>"></script>
+    <script src="<?php echo base_url("assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"); ?>"></script>
     <!-- bs-custom-file-input -->
     <script src="<?php echo base_url("assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js"); ?>"></script>
     <script src="<?php echo base_url("assets/plugins/jquery-validation/jquery.validate.min.js"); ?>"></script>
@@ -468,6 +443,7 @@
                             {
                                 data: "action",
                                 width: "20%",
+                                orderable: false,
                                 className: "pr-0 pt-3"
                             }
                         ],
@@ -531,6 +507,230 @@
             fetchTable($("#user_role").val(), 1, $("#pageLength").find(":selected").val(), true);
             // generatePagination(1);
         })
+
+        $(function() {
+            var projects = "<?php echo base_url("users/listsAjax"); ?>";
+            //Date picker
+            $('#project_deadline').datetimepicker({
+                locale: 'id',
+                format: 'DD-MM-YYYY'
+            });
+
+            $('#pic_leader_name').autocomplete({
+                minLength: 0,
+                appendTo: "#autocomplete-pic-leader",
+                classes: {
+                    "ui-autocomplete": "highlight"
+                },
+                source: projects,
+                focus: function(event, ui) {
+                    $("#pic_leader_name").val(ui.item.name);
+                    $("#pic_leader_handphone").val(ui.item.handphone);
+                    return false;
+                },
+                select: function(event, ui) {
+                    $("#pic_leader_name").val(ui.item.name);
+                    $("#pic_leader_handphone").val(ui.item.handphone);
+                    $("#pic_leader_id").val(ui.item.id);
+                    return false;
+                }
+            }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                return $("<li>")
+                    .append("<a>" + item.name + "</a>")
+                    .appendTo(ul);
+            };
+
+        });
+
+        $("#modal-proyek").on("hidden.bs.modal", function(e) {
+            $("#projectForm").trigger("reset");
+            $("#todo").val("");
+        });
+
+        $(function() {
+            $.validator.setDefaults({
+                ignore: ":hidden, [contenteditable='true']:not([name])",
+                submitHandler: function(form) {
+                    $('.overlay-loading').show();
+                    todo = $("#todo").val();
+                    if (todo == "update") {
+                        urlAjax = "<?php echo base_url("users/doUpdate") ?>";
+                    } else {
+                        urlAjax = "<?php echo base_url("projects/doCreate") ?>";
+                    }
+
+                    $.ajax({
+                        url: urlAjax,
+                        type: "POST",
+                        data: new FormData(form),
+                        async: true,
+                        dataType: "JSON",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            if (response.result == 200) {
+                                $(".overlay-loading").hide();
+                                $("#modal-close").click();
+                                show_notif('success', response.data.name);
+                                $("#tableProjectsLists").DataTable().destroy();
+                                fetchTable($("#user_role").val(), 1, $("#pageLength").find(":selected").val(), true);
+                            } else {
+                                $('.overlay-loading').hide();
+                                show_notif("error", response.message)
+                            }
+                        },
+                        error: function(error) {
+                            $('.overlay-loading').hide();
+                            show_notif("error", "Gagal login! Ulangi beberapa saat lagi")
+                        }
+                    });
+                }
+            });
+            $('#projectForm').validate({
+                messages: {
+                    project_name: {
+                        required: "Silahkan masukkan nama proyek"
+                    },
+                    project_deadline: {
+                        required: "Silahkan masukkan due date proyek"
+                    },
+                    project_divisi: {
+                        required: "Silahkan pilih divisi proyek"
+                    },
+                    project_type: {
+                        required: "Silahkan pilih tipe proyek"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+
+        function removeProject(id) {
+            bootbox.confirm({
+                title: "Hapus Proyek",
+                message: "Apakah kamu yakin untuk menghapus proyek ini? Aksi ini tidak bisa di kembalikan",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Batal'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Setuju'
+                    }
+                },
+                callback: function(result) {
+                    if (result) {
+                        $('.overlay-loading').show();
+                        $.ajax({
+                            url: '<?php echo base_url("projects/doRemove"); ?>',
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                id: id
+                            },
+                            success: function(response) {
+                                $('.overlay-loading').hide();
+                                if (response.result == 200) {
+                                    $("#tableProjectsLists").DataTable().destroy();
+                                    fetchTable($("#user_role").val(), 1, $("#pageLength").find(":selected").val(), true);
+                                    show_notif('success', response.data.name);
+                                }
+                            }
+                        });
+                    } else {
+                        show_notif('info', 'Proyek batal dihapus');
+                    }
+                }
+            });
+        }
+
+        function getGeneralInfo(id) {
+            $.ajax({
+                url: '<?php echo base_url("projects/getDetail"); ?>',
+                type: "post",
+                dataType: "json",
+                data: {
+                    id: id
+                },
+                success: function(response) {
+                    if (response.result == 200) {
+                        $("#general-info-overlay").hide();
+
+                        project = response.data.item;
+                        pic = project.pic;
+                        $("#label-project-name").html(project.name);
+                        $("#label-project-desc").html(project.description);
+                        $("#label-project-deadline").html(project.deadline);
+                        $("#label-project-link").html('<a href="' + project.link + '">' + project.link + '</a>');
+
+                        var projectTipe = '<div class="table-seg-box" style="background-color: #' + project.project_divisi_bg + '; color: #' + project.project_divisi_color + '">' + project.project_divisi + '</div>';
+
+                        if (project.priority == "1") {
+                            projectTipe += '<span class="top-priority"><i class="fas fa-angle-double-up"></i> TOP</span>';
+                        }
+                        $("#label-project-tipe").html(projectTipe);
+                        $(".gis-pic-leader").html("");
+                        $(".gis-pic-members").html("");
+
+                        if (pic !== null) {
+                            $(".gis-pic-leader").html('' +
+                                '<div class="gis-init col-1">' +
+                                '   <span id="label-pic-leader-initial">YS</span>' +
+                                '</div>' +
+                                '<div class="gis-info col-11">' +
+                                '   <label id="label-pic-leader-name">' + pic.leader[0].pic_name + '</label>' +
+                                '   <span id="label-pic-leader-handphone">' + pic.leader[0].pic_handphone + '</span>' +
+                                '</div>');
+
+                            if (pic.members !== null) {
+                                members = pic.members;
+                                $.each(members, function(key, member) {
+                                    $(".gis-pic-members").append('' +
+                                        '<div class="row">' +
+                                        '   <div class="gis-init col-1">' +
+                                        '       <span id="label-pic-leader-initial">YS</span>' +
+                                        '   </div>' +
+                                        '   <div class="gis-info col-11">' +
+                                        '       <label id="label-pic-leader-name">' + member.pic_name + '</label>' +
+                                        '       <span id="label-pic-leader-handphone">' + member.pic_handphone + '</span>' +
+                                        '   </div>' +
+                                        '</div>');
+                                });
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function viewActivity(id) {
+            // if ($("#general-info").css("display") == "none") {
+            //     $("#toolbar-card").slideToggle();
+            // }
+            $("#general-info-overlay").show();
+
+            if ($("#general-info").css("display") == "none") {
+                getGeneralInfo(id);
+                $("#toolbar-card").slideToggle();
+                $("#general-info").slideToggle('slow');
+            } else {
+                $("#general-info").slideToggle('slow');
+                setTimeout(function() {
+                    $("#general-info").slideToggle('slow');
+                    getGeneralInfo(id);
+                }, 500);
+            }
+        }
     </script>
 
 </body>

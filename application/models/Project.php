@@ -48,6 +48,24 @@ class Project extends CI_Model
         return 0;
     }
 
+    public function getProjectById($id)
+    {
+        $this->db->select("a.*, b.value as project_divisi, b.background as project_divisi_bg, b.color as project_divisi_color, c.value as project_type");
+        $this->db->from("tbl_project as a");
+        $this->db->join("tbl_master as b", "b.id=a.divisi");
+        $this->db->join("tbl_master as c", "c.id=a.type");
+        $this->db->where("a.id", $id);
+        $this->db->limit(1);
+
+        $query = $this->db->get();
+
+        if (!is_null($query) && $query->num_rows() > 0) {
+            return $query->row();
+        }
+
+        return null;
+    }
+
     public function getProjects($params, $offset = 0, $limit = 0)
     {
         $this->db->select("a.*, b.value as project_divisi, b.background as project_divisi_bg, b.color as project_divisi_color, c.value as project_type");
@@ -86,5 +104,18 @@ class Project extends CI_Model
         }
 
         return null;
+    }
+
+    public function removeProject($id)
+    {
+        $this->db->delete('tbl_project', array(
+            "id" => $id
+        ));
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

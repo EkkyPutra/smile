@@ -141,7 +141,7 @@ class User extends CI_Model
         return 0;
     }
 
-    public function getUsers($role = -1, $offset = 0, $limit = 0, $sort = "", $order = "")
+    public function getUsers($role = -1, $offset = 0, $limit = 0, $sort = "", $query = null)
     {
         $this->db->select("a.*, b.value as user_role, c.value as user_divisi");
         $this->db->from("tbl_users as a");
@@ -149,6 +149,9 @@ class User extends CI_Model
         $this->db->join("tbl_master as c", "c.id=a.divisi");
         if ($role > 0)
             $this->db->where("a.role", $role);
+
+        if (!is_null($query))
+            $this->db->like("a.name", $query);
 
         if (!empty($sort) && !empty($order))
             $this->db->order_by($sort, $order);

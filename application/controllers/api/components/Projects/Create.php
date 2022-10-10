@@ -51,7 +51,7 @@ class Create
         $dataProject = [
             "name" => $jsonInputObj->name,
             "divisi" => $checkDivisi->id,
-            "priority" => (isset($jsonInputObj->priority) && $jsonInputObj->priority) ? 1 : 0,
+            "priority" => (isset($jsonInputObj->priority) && $jsonInputObj->priority == "on") ? 1 : 0,
             "type" => $checkType->id,
             "deadline" => $jsonInputObj->deadline,
             "progress" => isset($jsonInputObj->progress) ? $jsonInputObj->progress : 0,
@@ -79,7 +79,7 @@ class Create
 
             $responsecode = 200;
             $responseObj = [
-                "name" => "Add New Project",
+                "name" => "Add New Project Success",
                 "item" => $dataProject
             ];
         }
