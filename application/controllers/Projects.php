@@ -26,7 +26,7 @@ class Projects extends web_base
 
     public function index()
     {
-        var_dump("ASDSAD");
+        redirect(base_url("../projects/management"));
     }
 
     public function management()
@@ -56,9 +56,11 @@ class Projects extends web_base
             $totalPage = $resApi->data->totalPage;
         }
 
+        $data["is_performa"] = false;
         $data["projectType"] = $projectType;
         $data["usersDivisi"] = $usersDivisi;
         $data["totalPage"] = $totalPage;
+        $data["isMobile"] = $this->agent->is_mobile();
 
         $this->load->view("public/project_management", $data);
     }
@@ -82,6 +84,7 @@ class Projects extends web_base
         $rowsPerPage = 0;
         $totalRows = 0;
         $res = [];
+        $resMobile = [];
         if ($resApi->result == 200) {
             $resData = $resApi->data->items;
             $totalPage = $resApi->data->totalPage;
@@ -109,22 +112,43 @@ class Projects extends web_base
                                         <div class="progress-bar ' . $bgProgressBar . ' progress-bar-striped" role="progressbar" style="width: ' . $data->progress . '%;" aria-valuenow="' . $data->progress . '" aria-valuemin="0" aria-valuemax="100">' . $data->progress . '%</div>
                                        </div>';
                     $data->priority = ($data->priority == "Yes") ? "<span class='top-priority'><i class='fas fa-angle-double-up'></i> TOP</span>" : "";
-                    $data->action = "<button type='button' class='btn btn-outline-success mr-1' onclick='viewActivity(\"" . $dataId . "\");'><i class='far fa-eye'></i></button>
+                    $data->action = "<a class='btn btn-outline-success mr-1' href='" . base_url("../activities/lists/$data->slug"). "'><i class='far fa-eye'></i></button>
                                      <a class='btn btn-outline-warning mr-1' href='https://wa.me/" . $userHandphone . "' target='_blank'><i class='fab fa-whatsapp'></i></a>
                                      <a class='btn btn-outline-primary mr-1' href='" . $data->link . "' target='_blank'><i class='fas fa-link'></i></a>
-                                     <button type='button' class='btn btn-outline-info mr-1'><i class='far fa-comment'></i></button>
+                                     <button type='button' class='btn btn-outline-info mr-1' onclick='editProject(\"" . $dataId . "\");'><i class='fas fa-edit'></i></button>
                                      <button type='button' class='btn btn-outline-danger' onclick='removeProject(\"" . $dataId . "\");'><i class='far fa-trash-alt'></i></button>";
                     $res[] = $data;
+
+                    $dataMobile["data"] = ''.
+                        '<div class="datatable-project-mobile">'.
+                        '   <label class="title">' . $data->name . '</label>'.
+                        '   <label class="subs">Tipe : ' . $data->project_type . '</label>'.
+                        '   <label class="subs">Due Date : ' . $data->deadline . '</label>'.
+                        '   <div class="mobile-segs row">'.
+                            $data->project_divisi.
+                            $data->priority.
+                        '   </div>' .
+                            $data->progress.
+                        '   <div class="datatable-project-mobile-action">'.
+                                $data->action.
+                        '   </div>'.
+                        '</div>';
+                    '';
+
+                    $resMobile[] = $dataMobile;
                 }
             }
         }
+
+        $resData = ($this->agent->is_mobile() ? $resMobile : $res);
 
         $result = [
             "draw" => 1,
             "recordsTotal" => $totalPage,
             "recordsFiltered" => $rowsPerPage,
             "totalRows" => $totalRows,
-            "data" => !is_null($res) ? $res : []
+            "data" => !is_null($resData) && !empty($resData) ? $resData : [],
+            "isMobile" =>  $this->agent->is_mobile()
         ];
 
         echo json_encode($result);
@@ -150,12 +174,21 @@ class Projects extends web_base
         $data["type"] = !is_null($this->input->post("project_type")) ? $this->input->post("project_type") : "";
         $data["deadline"] = !is_null($this->input->post("project_deadline")) ? date("Y-m-d", strtotime($this->input->post("project_deadline"))) : "";
         $data["progress"] = !is_null($this->input->post("project_progress")) ? intval($this->input->post("project_progress")) : 0;
-        $data["link"] = !is_null($this->input->post("project_link")) ? intval($this->input->post("project_link")) : 0;
+        $data["link"] = !is_null($this->input->post("project_link")) ? $this->input->post("project_link") : "";
         $data["description"] = !is_null($this->input->post("project_description")) ? $this->input->post("project_description") : "";
         $data["pic_ids"][] = [
             "id" => !is_null($this->input->post("pic_leader_id")) ? $this->input->post("pic_leader_id") : 0,
             "type" => 1
         ];
+
+        if (!is_null($this->input->post("pic_member_id"))) {
+            foreach ($this->input->post("pic_member_id") as $picMember) {
+                $data["pic_ids"][] = [
+                    "id" => $picMember,
+                    "type" => 0
+                ];
+            }
+        }
 
         $response = $this->somplakapi->run_curl_api($url, $data);
         $response = json_decode($response);

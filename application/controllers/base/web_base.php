@@ -7,6 +7,7 @@ class web_base extends CI_Controller
     {
         parent::__construct();
         $session_userdata = $this->session->userdata("smile.pm");
+        $this->smile_session = $session_userdata;
         $contr = strtolower($this->uri->segment(1));
         $module = strtolower($this->uri->segment(2));
 

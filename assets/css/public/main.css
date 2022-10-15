@@ -44,6 +44,7 @@ textarea.form-control {
     height: auto !important;
 }
 .card-header .seg-tools {
+    cursor: pointer;
     float: left;
     font-size: 20px;
     margin-right: 20px;
@@ -79,6 +80,7 @@ textarea.form-control {
     padding: 55px 0;
     width: 150px;
     height: 150px;
+    overflow: hidden;
 }
     .form-group .fileinput {
         display: none;
@@ -160,24 +162,37 @@ textarea.form-control {
 .toolHead {
     margin-bottom: 15px;
 }
-    .toolHead span {
-        display: block;
-        padding: 10px 0;
-        font-size: 16px;
+    .toolHead .seg-title {
         font-family: "Be-Vietnam-Bold";
-        margin: 0;
+        font-size: 16px;
+        padding-top: 8px;
     }
     .toolHead .btn {
         padding: 7px 20px;
         border-radius: 6px;
+        min-width: 40px;
     }
         .toolHead .btn.btn-export {
             border: 1px solid #202224;
+            padding-left: 10px;
+            padding-right: 10px;
         }
         .toolHead .btn.btn-tambah {
             background-color: #F86F54;
             color: #FFF;
             margin-left: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+            .toolHead .btn.btn-tambah i {
+                display: none;
+            }
+        .toolHead .btn i {
+            display: inline-block;
+        }
+        .toolHead .btn span {
+            display: inline-block;
+            padding: 0;
         }
 .modal-footer .button-seg {
     margin: 0 auto;
@@ -237,6 +252,11 @@ textarea.form-control {
         #toolbar .toolbar-search .input-group-text i {
             color: #202224;
         }
+    #toolbar::after {
+        display: block;
+        content: "";
+        clear: both;
+    }
 .content {
     min-height: 300px;
 }
@@ -290,7 +310,7 @@ textarea.form-control {
         margin: 0 auto;
     }
         .header .navbar .logo {
-
+            cursor: pointer;
         }
             .header .navbar .logo .logo-icon {
                 width: 40px;
@@ -378,13 +398,16 @@ textarea.form-control {
             margin: 10px 0;
         }
             .main-page .main-frame .main-left {
-                padding: 80px 0;
+                padding: 40px 0 0;
             }
                 .main-page .main-frame .main-left h1 {
                     color: #f86f54;
                     font-weight: bold;
+                    font-family: 'Telkomsel-Batik-Sans';
+                    font-size: 48px;
                 }
                 .main-page .main-frame .main-left h5 {
+                    font-size: 24px;
                     margin-top: 30px;
                 }
                 .main-page .main-frame .main-left .main-left-seg {
@@ -397,12 +420,26 @@ textarea.form-control {
                             color: #808891;
                             display: block;
                             margin-bottom: 10px;
+                            font-size: 24px;
                         }
                         .main-frame .main-left .main-left-seg-item label.mls-num {
                             display: block;
+                            font-family: 'Telkomsel-Batik-Sans';
                             font-weight: bold;
-                            font-size: 36px;
+                            font-size: 48px;
                         }
+                            .main-frame .main-left .main-left-seg-item label.mls-num.blue {
+                                color: #4885ED;
+                            }
+                            .main-frame .main-left .main-left-seg-item label.mls-num.red {
+                                color: #E5131D;
+                            }
+                            .main-frame .main-left .main-left-seg-item label.mls-num.green {
+                                color: #00AB41;
+                            }
+                            .main-frame .main-left .main-left-seg-item label.mls-num.orange {
+                                color: #F86F54;
+                            }
             .main-page .main-frame .main-right {
                 padding-left: 70px;
                 padding-right: 0;
@@ -438,13 +475,19 @@ textarea.form-control {
                 overflow: hidden;
                 margin-right: 20px;
                 margin-bottom: 40px;
+                padding-left: 7px;
             }
                 .profile-page .profile-avatar img {
                     width: 100%;
                 }
             .profile-page .profile-name {
-                padding: 40px 0;
+                padding: 25px 0;
             }
+                .profile-page .profile-name label {
+                    display: block;
+                    font-size: 24px;
+                    font-family: "Be-Vietnam-Bold";
+                }
             .profile-page .card-body .form-group label {
                 font-size: 12px;
                 margin-bottom: 0;
@@ -463,3 +506,73 @@ textarea.form-control {
         display: block;
         padding: 5px 10px;
     }
+
+@media (max-width: 576px) {
+    .main-page {
+        width: 100%;
+        padding: 0 15px;
+    }
+    .header .navbar {
+        width: 100%;
+    }
+    .header .navbar .logo {
+        width: 180px;
+        margin: 0 auto;
+    }
+    .header .navbar .menu { 
+        display: none;
+    }
+    .header .navbar .user-nav {
+        display: none;
+    }
+    .main-page .main-frame .main-left {
+        padding: 20px 0 10px;
+    }
+    .main-page .main-frame .main-right {
+        padding: 10px 20px 20px;
+    }
+        .main-page .main-frame .main-right-red,
+        .main-page .main-frame .main-right-blue {
+            padding: 0;
+            overflow: hidden;
+        }
+        .main-page .main-frame .main-left h1 {
+            font-size: 30px;
+        }
+        .main-page .main-frame .main-left h5 {
+            font-size: 14px;
+        }
+        .main-frame .main-left .main-left-seg-item span {
+            font-size: 14px;
+            line-height: 20px;
+        }
+        .main-frame .main-left .main-left-seg-item label.mls-num {
+            font-size: 34px;
+        }
+    .toolHead .btn span {
+        display: none;
+    }
+        .toolHead .btn.btn-tambah i {
+            display: inline-block;
+        }
+        .toolHead .seg-title {
+            font-size: 16px;
+        }
+    .proyek-page,
+    .profile-page {
+        width: 100%;
+        margin: 0;
+    }
+        .profile-page .card {
+            border: 0;
+            border-radius: 0;
+        }
+        .card-header .seg-title {
+            font-size: 20px;
+            padding-top: 5px !important;
+        }
+        .profile-page .card-body {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+}

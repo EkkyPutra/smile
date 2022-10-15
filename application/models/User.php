@@ -67,7 +67,7 @@ class User extends CI_Model
 
     public function getUserByUsername($username)
     {
-        $this->db->select("a.*, b.value as user_role, c.value as user_divisi");
+        $this->db->select("a.*, b.value as user_role, c.value as user_divisi, c.background as user_divisi_bg, c.color as user_divisi_color");
         $this->db->from("tbl_users as a");
         $this->db->where("a.username", $username);
         $this->db->join("tbl_master as b", "b.id=a.role");
@@ -124,12 +124,15 @@ class User extends CI_Model
         return true;
     }
 
-    public function totalUsers($role = -1)
+    public function totalUsers($role = -1, $divisi = -1)
     {
         $this->db->select("count(id) as total");
         $this->db->from("tbl_users");
         if ($role > 0)
             $this->db->where("role", $role);
+
+        if ($divisi > 0)
+            $this->db->where("divisi", $divisi);
 
         $query = $this->db->get();
 
@@ -141,14 +144,17 @@ class User extends CI_Model
         return 0;
     }
 
-    public function getUsers($role = -1, $offset = 0, $limit = 0, $sort = "", $query = null)
+    public function getUsers($role = -1, $offset = 0, $limit = 0, $sort = "", $query = null, $divisi = -1)
     {
-        $this->db->select("a.*, b.value as user_role, c.value as user_divisi");
+        $this->db->select("a.*, b.value as user_role, c.value as user_divisi, b.background as user_role_bg, b.color as user_role_color, c.background as user_divisi_bg, c.color as user_divisi_color");
         $this->db->from("tbl_users as a");
         $this->db->join("tbl_master as b", "b.id=a.role");
         $this->db->join("tbl_master as c", "c.id=a.divisi");
         if ($role > 0)
             $this->db->where("a.role", $role);
+
+        if ($divisi > 0)
+            $this->db->where("a.divisi", $divisi);
 
         if (!is_null($query))
             $this->db->like("a.name", $query);

@@ -66,14 +66,16 @@ class Get
 
     private function _detail(&$responseObj, &$jsonInputObj, &$responsecode)
     {
-        if (!isset($jsonInputObj->id) || empty($jsonInputObj->id))
+        if (!isset($jsonInputObj->slug) || empty($jsonInputObj->slug))
             throw new Exception("Data tidak lengkap. Silahkan cek kembali data anda!", 422);
 
-        $project = $this->CI->project->getProjectById($jsonInputObj->id);
+        $project = $this->CI->project->getProjectBySlug($jsonInputObj->slug);
         if (is_null($project))
             throw new Exception("Project tidak ditemukan. Silahkan cek kembali data anda.", 422);
 
         $projectMembers = $this->CI->project->getProjectMembers($project->id);
+
+        $lastProgress = $this->CI->project->getLastProgressActivity($project->id);
         $members = null;
         if (!is_null($projectMembers)) {
             foreach ($projectMembers as $pMember) {
@@ -87,7 +89,7 @@ class Get
             }
         }
         $project->pic = $members;
-
+        $project->last_progress = ($lastProgress != 0) ? $lastProgress : $project->progress;
         $project->deadline = date("d F Y", strtotime($project->deadline));
         $project = $project;
         $responsecode = 200;

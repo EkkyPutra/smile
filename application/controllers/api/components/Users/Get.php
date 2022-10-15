@@ -49,8 +49,8 @@ class Get
             if (!is_null($getUsers)) {
                 $rowsPerPage = count($getUsers);
                 foreach ($getUsers as $user) {
-                    $user->avatar_thumb = !empty($user->avatar) ? BASE_URL . "files/thumbs/avatar/" . $user->avatar : "";
-                    $user->avatar = !empty($user->avatar) ? BASE_URL . "files/images/avatar/" . $user->avatar : "";
+                    $user->avatar_thumb = !empty($user->avatar) ? "./files/thumbs/avatar/" . $user->avatar : "";
+                    $user->avatar = !empty($user->avatar) ? "./files/images/avatar/" . $user->avatar : "";
                     $users[] = $user;
                 }
             }
@@ -80,8 +80,8 @@ class Get
         $user = (object) [];
         unset($userExist->id);
         $user = $userExist;
-        $user->avatar_thumb = !empty($user->avatar) ? BASE_URL . "files/thumbs/avatar/" . $user->avatar : "";
-        $user->avatar = !empty($user->avatar) ? BASE_URL . "files/images/avatar/" . $user->avatar : "";
+        $user->avatar_thumb = !empty($user->avatar) ? "./files/thumbs/avatar/" . $user->avatar : "";
+        $user->avatar = !empty($user->avatar) ? "./files/images/avatar/" . $user->avatar : "";
 
         return [
             "name" => "User Detail",

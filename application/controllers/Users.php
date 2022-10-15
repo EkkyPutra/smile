@@ -26,7 +26,7 @@ class Users extends web_base
 
     public function index()
     {
-        var_dump("ASDSAD");
+        redirect(base_url("../users/management"));
     }
 
     public function doLogin()
@@ -40,7 +40,7 @@ class Users extends web_base
         $response = $this->somplakapi->run_curl_api($url, $data);
         $response = json_decode($response);
 
-        if ($response->result == 200 && $response->message == "Success") {
+        if ($response->result == 200) {
             $admin = $response->data->item;
             $this->session->set_userdata('smile.pm', [
                 "status" => "VALID",
@@ -78,30 +78,6 @@ class Users extends web_base
             "limit" => $limit
         ];
 
-        $order = $this->input->get("order");
-        $orderField = "";
-        $orderSort = "";
-        switch (intval($order[0]["column"])) {
-            case 2:
-                $orderField = "name";
-                $orderSort = $order[0]["dir"];
-                break;
-            case 3:
-                $orderField = "user_role";
-                $orderSort = $order[0]["dir"];
-                break;
-            case 4:
-                $orderField = "user_divisi";
-                $orderSort = $order[0]["dir"];
-                break;
-            case 3:
-                $orderField = "handphone";
-                $orderSort = $order[0]["dir"];
-                break;
-        }
-
-        $data["sort"] = $orderField;
-        $data["order"] = $orderSort;
         $data["query"] = !is_null($this->input->post("query")) ? $this->input->post("query") : "";
 
         $response = $this->somplakapi->run_curl_api($url, $data);
@@ -111,6 +87,8 @@ class Users extends web_base
         $rowsPerPage = 0;
         $totalRows = 0;
         $res = [];
+        $resMobile = [];
+
         if ($resApi->result == 200) {
             $resData = $resApi->data->items;
             $totalPage = $resApi->data->totalPage;
@@ -120,7 +98,7 @@ class Users extends web_base
                 foreach ($resData as $key => $data) {
                     if (!empty($data->avatar)) {
                         if (@file_get_contents($data->avatar_thumb)) {
-                            $resImage = $data->avatar_thumb;
+                            $resImage = str_replace("./", "/", $data->avatar_thumb);
                         } else {
                             $resImage = BASE_URL . IMAGE_DEFAULT_PATH . "no-avatar.png";
                         }
@@ -151,25 +129,34 @@ class Users extends web_base
                     $data->user_role = '<div class="user-role ' . $userColor . '">' . ucwords($data->user_role) . '</div>';
                     $data->action = "<button type='button' class='btn btn-outline-warning mr-2' data-toggle='modal' data-target='#modal-lg' onclick='editUser(\"" . $data->username . "\");'><i class='far fa-edit'></i></button><button type='button' class='btn btn-outline-danger' onclick='removeUser(\"" . $data->username . "\");'><i class='far fa-trash-alt'></i></button>";
                     $res[] = $data;
-                    // $res[] = [
-                    //     ($key + 1),
-                    //     "<img src='" . $resImage . "' height='50' width='50' class='img-bordered-md img-circle' />",
-                    //     ucwords($data->name),
-                    //     '<div class="user-role ' . $userColor . '">' . ucwords($data->user_role) . '</div>',
-                    //     ucwords($data->user_divisi),
-                    //     $data->handphone,
-                    //     "<button type='button' class='btn btn-outline-warning mr-2' onclick='editProduct(" . $data->id . ");'><i class='far fa-edit'></i></button><button type='button' class='btn btn-outline-danger' onclick='editProduct(" . $data->id . ");'><i class='far fa-trash-alt'></i></button>"
-                    // ];
+
+                    $dataMobile["data"] = '' .
+                        '<div class="datatable-activity-mobile">' .
+                            $data->avatar_thumb.
+                        '   <label class="title">' . $data->name . '</label>' .
+                        '   <div class="mobile-segs row">' .
+                                $data->user_role.
+                        '   </div>' .
+                        '   <label class="subs">' . $data->user_divisi . ' | ' . $data->handphone . '</label>' .
+                        '   <div class="datatable-activity-mobile-action">' .
+                                $data->action .
+                        '   </div>' .
+                        '</div>' .
+                        '';
+
+                    $resMobile[] = $dataMobile;
                 }
             }
         }
 
+        $resData = ($this->agent->is_mobile() ? $resMobile : $res);
         $result = [
             "draw" => 1,
             "recordsTotal" => $totalPage,
             "recordsFiltered" => $rowsPerPage,
             "totalRows" => $totalRows,
-            "data" => !is_null($res) ? $res : []
+            "data" => !is_null($resData) && !empty($resData) ? $resData : [],
+            "isMobile" =>  $this->agent->is_mobile()
         ];
 
         echo json_encode($result);
@@ -263,6 +250,7 @@ class Users extends web_base
         $data["usersRole"] = $usersRole;
         $data["usersDivisi"] = $usersDivisi;
         $data["totalPage"] = $totalPage;
+        $data["isMobile"] = $this->agent->is_mobile();
 
         $this->load->view("public/users_management", $data);
     }
@@ -273,6 +261,25 @@ class Users extends web_base
         $url = parent::build_api_url('users/get/detail');
         $response = $this->somplakapi->run_curl_api($url, ["username" => $username]);
         $resApi = json_decode($response);
+
+        if ($resApi->result == 200) {
+            $profile = $resApi->data->item;
+            $avatar = $profile->avatar;
+            $avatarImg = @file_get_contents($avatar);
+            if (!empty($profile->avatar)) {
+                if ($avatarImg) {
+                    $imageData = base64_encode($avatarImg);
+                } else {
+                    $avatar = IMAGE_DEFAULT_PATH . "no-avatar.png";
+                    $imageData = base64_encode(@file_get_contents($avatar));
+                }
+            } else {
+                $avatar = IMAGE_DEFAULT_PATH . "no-avatar.png";
+                $imageData = base64_encode(@file_get_contents($avatar));
+            }
+
+            $resApi->data->item->avatar = "data: " . mime_content_type($avatar) . ";base64," . $imageData;
+        }
 
         echo json_encode($resApi);
     }

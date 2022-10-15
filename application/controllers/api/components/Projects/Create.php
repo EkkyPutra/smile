@@ -58,7 +58,8 @@ class Create
             "link" => isset($jsonInputObj->link) ? $jsonInputObj->link : "",
             "description" => $jsonInputObj->description,
             "created" => $timeTs,
-            "updated" => $timeTs
+            "updated" => $timeTs,
+            "slug" => str_replace(" ", "-", strtolower($jsonInputObj->name))
         ];
 
         $projectId = $this->CI->project->addRow($dataProject);

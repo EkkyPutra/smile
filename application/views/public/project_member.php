@@ -32,107 +32,17 @@
                         <i class="fas fa-arrow-left"></i>
                     </div>
                     <div class="row">
-                        <h3 class="col-sm-6 col-8 seg-title"><?php echo ($is_performa) ? "Daftar Project PIC" : "Daftar Proyek"; ?></h3>
-                        <?php if (!$is_performa) { ?>
-                            <div class="toolHead col-sm-6 col-4 float-right text-right mb-1">
-                                <button class="btn btn-export"><i class="fas fa-upload"></i> <span>Export File</span></button>
-                                <button class="btn btn-tambah" data-toggle="modal" data-target="#modal-proyek"><i class="fas fa-plus"></i><span>Tambah Proyek</span></button>
-                            </div>
-                        <?php } ?>
+                        <h3 class="col-6 seg-title">Daftar Proyek</h3>
+                        <div class="toolHead col-6 float-right text-right mb-1">
+                            <button class="btn btn-export"><i class="fas fa-upload"></i> Export File</button>
+                            <button class="btn btn-tambah" data-toggle="modal" data-target="#modal-proyek">Tambah Proyek</button>
+                        </div>
                     </div>
                 </div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
                     <div id="toolbar">
-                        <?php if ($is_performa) { ?>
-                            <div class="general-info" id="general-info">
-                                <div class="general-info-seg row">
-                                    <div class="gis-left col-sm-6 col-12">
-                                        <label class="title">General Information</label>
-                                        <div class="form-group mb-0 row">
-                                            <label class="col-4 col-form-label">Nama PIC</label>
-                                            <label class="col-8 col-form-label"><?php echo $memberDetail->name; ?></label>
-                                        </div>
-                                        <div class="form-group mb-0 row">
-                                            <label class="col-4 col-form-label">Divisi</label>
-                                            <label class="col-8 col-form-label">:&nbsp;<?php echo $memberDetail->user_divisi; ?></label>
-                                        </div>
-                                        <div class="form-group mb-0 row">
-                                            <label class="col-4 col-form-label">Total Proyek</label>
-                                            <label class="col-8 col-form-label">:&nbsp;<?php echo $memberDetail->totalProject; ?></label>
-                                        </div>
-                                        <div class="form-group mb-0 row">
-                                            <label class="col-4 col-form-label">Total BAU</label>
-                                            <label class="col-8 col-form-label">:&nbsp;<?php echo $memberDetail->totalProjectBau; ?></label>
-                                        </div>
-                                    </div>
-                                    <div class="gis-right col-sm-6 col-12">
-                                        <label class="title">Summary Proyek</label>
-                                        <div class="form-group mb-0 row">
-                                            <label class="col-4 col-form-label">On Track</label>
-                                            <label class="col-8 col-form-label"><?php echo $memberDetail->projectOnTrack; ?></label>
-                                        </div>
-                                        <div class="form-group mb-0 row">
-                                            <label class="col-4 col-form-label">Terlambat</label>
-                                            <label class="col-8 col-form-label"><?php echo $memberDetail->projectComplete; ?></label>
-                                        </div>
-                                        <div class="form-group mb-0 row">
-                                            <label class="col-4 col-form-label">Selesai</label>
-                                            <label class="col-8 col-form-label"><?php echo $memberDetail->projectLate; ?></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="toolHead row">
-                                <h3 class="col-6 seg-title">Proyek PIC</h3>
-                                <div class="col-6 float-right text-right">
-                                    <button class="btn btn-export"><i class="fas fa-upload"></i> <span>Export File</span></button>
-                                    <button class="btn btn-tambah" data-toggle="modal" data-target="#modal-proyek"><i class="fas fa-plus"></i><span>Tambah Proyek</span></button>
-                                </div>
-                            </div>
-                        <?php } ?>
-
-                        <?php if (!$is_performa) { ?>
-                            <div class="toolbar-card row" id="toolbar-card">
-                                <div class="toolbar-card-item col-6 col-md-3">
-                                    <div class="tci tci-blue row">
-                                        <span class="col-3"><i class="fas fa-hourglass-half"></i></span>
-                                        <div class="tci-info col-12 col-md-9">
-                                            <span>Proyek On Track</span>
-                                            <h1>10</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toolbar-card-item col-6 col-md-3">
-                                    <div class="tci tci-red row">
-                                        <span class="col-3"><i class="fas fa-calendar-times"></i></span>
-                                        <div class="tci-info col-12 col-md-9">
-                                            <span>Proyek Terlambat</span>
-                                            <h1>3</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toolbar-card-item col-6 col-md-3">
-                                    <div class="tci tci-green row">
-                                        <span class="col-3"><i class="fas fa-calendar-check"></i></span>
-                                        <div class="tci-info col-12 col-md-9">
-                                            <span>Proyek Selesai</span>
-                                            <h1>8</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toolbar-card-item col-6 col-md-3">
-                                    <div class="tci tci-orange row">
-                                        <span class="col-3"><i class="fas fa-signal"></i></span>
-                                        <div class="tci-info col-12 col-md-9">
-                                            <span>Total Proyek</span>
-                                            <h1>13</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } ?>
                         <div class="general-info" id="general-info" style="display: none;">
                             <div id="general-info-overlay">
                                 <div class="overlay-loading-spinner">
@@ -225,24 +135,20 @@
                             </div>
                         </div> -->
                     </div>
-                    <?php if ($this->agent->is_mobile()) { ?>
-                        <table id="tableProjectsLists" class="table table-borderless"></table>
-                    <?php } else { ?>
-                        <table id="tableProjectsLists" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Proyek</th>
-                                    <th>Divisi</th>
-                                    <th>Priority</th>
-                                    <th>Tipe</th>
-                                    <th>Batas Waktu</th>
-                                    <th>Progress</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    <?php } ?>
+                    <table id="tableProjectsLists" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Proyek</th>
+                                <th>Divisi</th>
+                                <th>Priority</th>
+                                <th>Tipe</th>
+                                <th>Batas Waktu</th>
+                                <th>Progress</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                    </table>
                     <div class="pageInfo row">
                         <div class="bInfo col-6 float-left">Showing <span id="infoX">00</span>-<span id="infoY">00</span> of <span id="infoZ">00</span></div>
                         <div class="bPagination col-6 float-right text-right">
@@ -268,7 +174,7 @@
                     </div>
                     <div class="modal-body row">
                         <label class="modal-seg col-12">Informasi Proyek</label>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-6">
                             <div class="row">
                                 <div class="form-group col-12">
                                     <label for="project_name">Nama Proyek</label>
@@ -301,7 +207,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-6">
                             <div class="row">
                                 <div class="form-group col-6">
                                     <label for="project_type">Tipe</label>
@@ -356,7 +262,7 @@
                             </div>
                         </div>
                         <div class="col-12 row row-pic">
-                            <div class="col-12 col-sm-6">
+                            <div class="col-6">
                                 <div class="row">
                                     <div class="form-group col-12">
                                         <label for="pic_leader_name">Nama PIC Leader</label>
@@ -367,7 +273,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-6">
+                            <div class="col-6">
                                 <div class="row">
                                     <div class="form-group col-12">
                                         <label for="pic_leader_handphone">Nomor Telepon PIC Leader</label>
@@ -451,13 +357,15 @@
                         generatePagination(page);
                     }
 
-                    if (res.isMobile) {
-                        var tableColumns = [{
-                            data: "data",
-                            width: "100%"
-                        }];
-                    } else {
-                        var tableColumns = [{
+                    $("#tableProjectsLists").DataTable({
+                        processing: true,
+                        data: res.data,
+                        "createdRow": function(row, data, dataIndex) {
+                            if (data[2] == `someVal`) {
+                                $(row).addClass('redClass');
+                            }
+                        },
+                        columns: [{
                                 data: "id",
                                 width: "3%",
                                 orderable: false,
@@ -499,18 +407,7 @@
                                 orderable: false,
                                 className: "pr-0 pt-3"
                             }
-                        ];
-                    }
-
-                    $("#tableProjectsLists").DataTable({
-                        processing: true,
-                        data: res.data,
-                        "createdRow": function(row, data, dataIndex) {
-                            if (data[2] == `someVal`) {
-                                $(row).addClass('redClass');
-                            }
-                        },
-                        columns: tableColumns,
+                        ],
                         bPaginate: false,
                         bInfo: false,
                         searching: false
@@ -854,9 +751,9 @@
                 '<div class="col-12 row row-pic" id="row-pic-' + picX + '">' +
                 '    <div class="col-12 row">' +
                 '        <label class="modal-seg-pic col-6">PIC Member</label>' +
-                '        <label class="delete-pic col-6 align-right" data-pic-number="' + picX + '" onclick="removePicRow(\'' + picX + '\');">Delete</label>' +
+                '        <label class="delete-pic col-6 align-right" data-pic-number="' + picX + '" onclick="removePicRow(\'' + picX + '\');">Deletes</label>' +
                 '    </div>' +
-                '    <div class="col-12 col-sm-6">' +
+                '    <div class="col-6">' +
                 '        <div class="row">' +
                 '            <div class="form-group col-12">' +
                 '                <label for="pic_leader_name">Nama PIC</label>' +
@@ -867,7 +764,7 @@
                 '            </div>' +
                 '        </div>' +
                 '    </div>' +
-                '    <div class="col-12 col-sm-6">' +
+                '    <div class="col-6">' +
                 '        <div class="row">' +
                 '            <div class="form-group col-12">' +
                 '                <label for="pic_leader_handphone">Nomor Telepon PIC</label>' +

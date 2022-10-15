@@ -34,12 +34,10 @@
                 <!-- .card-body -->
                 <div class="card-body">
                     <div class="toolHead row">
-                        <div class="col-6">
-                            <span>Daftar User</span>
-                        </div>
+                        <h3 class="col-6 seg-title">Daftar User</h3>
                         <div class="col-6 float-right text-right">
-                            <button class="btn btn-export"><i class="fas fa-download"></i> Export File</button>
-                            <button class="btn btn-tambah" data-toggle="modal" data-target="#modal-lg">Tambah User</button>
+                            <button class="btn btn-export"><i class="fas fa-upload"></i> <span>Export File</span></button>
+                            <button class="btn btn-tambah" data-toggle="modal" data-target="#modal-lg"><i class="fas fa-plus"></i><span>Tambah User</span></button>
                         </div>
                     </div>
                     <div id="toolbar">
@@ -74,19 +72,23 @@
                             </div>
                         </div>
                     </div>
-                    <table id="tableUsersLists" class="table">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Foto</th>
-                                <th>Nama Lengkap</th>
-                                <th>Role</th>
-                                <th>Divisi</th>
-                                <th>Handphone</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    <?php if ($isMobile) { ?>
+                        <table id="tableUsersLists" class="table table-borderless"></table>
+                    <?php } else { ?>
+                        <table id="tableUsersLists" class="table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Foto</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Role</th>
+                                    <th>Divisi</th>
+                                    <th>Handphone</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    <?php } ?>
                     <div class="pageInfo row">
                         <div class="bInfo col-6 float-left">Showing <span id="infoX">00</span>-<span id="infoY">00</span> of <span id="infoZ">00</span></div>
                         <div class="bPagination col-6 float-right text-right">
@@ -105,13 +107,13 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Tambah User</h4>
+                        <h4 class="modal-title" id="title-modal-form">Tambah User</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body row">
-                        <div class="col-6">
+                        <div class="col-sm-6 col-12">
                             <div class="row">
                                 <div class="form-group col-12">
                                     <label for="user_name">Nama Lengkap</label>
@@ -134,37 +136,39 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-12">
-                                    <div class="btn-group">
-                                        <input type="file" name="user_avatar" id="user_avatar" class="form-control fileinput avatar" required="required" />
-                                        <div id="avatar-empty">
-                                            <span class="col fileinput-button" id="btn-avatar">
-                                                <i class="fas fa-camera-retro"></i>
-                                                <span>Ambil Gambar</span>
-                                            </span>
-                                        </div>
-                                        <div id="avatar-not-empty">
-                                            <div id="user-avatar-overlay"></div>
-                                            <img id="user-avatar" src="" />
-                                            <span id="btn-avatar-edit">
-                                                <i class="far fa-edit"></i>
-                                                <span id="avatar-edit">Ganti Gambar</span>
-                                            </span>
+                                <?php if (!$isMobile) { ?>
+                                    <div class="form-group col-12">
+                                        <div class="btn-group">
+                                            <input type="file" name="user_avatar" id="user_avatar" class="form-control fileinput avatar" required="required" onchange="loadFile(event)" />
+                                            <div id="avatar-empty">
+                                                <span class="col fileinput-button" id="btn-avatar">
+                                                    <i class="fas fa-camera-retro"></i>
+                                                    <span>Ambil Gambar</span>
+                                                </span>
+                                            </div>
+                                            <div id="avatar-not-empty">
+                                                <div id="user-avatar-overlay"></div>
+                                                <img id="user-avatar" src="" />
+                                                <span id="btn-avatar-edit">
+                                                    <i class="far fa-edit"></i>
+                                                    <span id="avatar-edit">Ganti Gambar</span>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                <?php } ?>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-sm-6 col-12">
                             <div class="row">
-                                <div class="form-group col-6">
+                                <div class="form-group col-sm-6 col-12">
                                     <label for="username">Login ID</label>
                                     <div class="input-group">
                                         <input type="hidden" name="old_username" id="old_username" value="" />
                                         <input type="text" name="username" id="username" class="form-control" placeholder="Contoh: johndoe" autocomplete="off" required="required" />
                                     </div>
                                 </div>
-                                <div class="form-group col-6">
+                                <div class="form-group col-sm-6 col-12">
                                     <label for="user_role">Role</label>
                                     <div class="input-group">
                                         <select name="user_role" id="user_role" class="form-control" required="required">
@@ -185,6 +189,27 @@
                                         <input type="text" name="handphone" id="handphone" class="form-control" placeholder="Contoh: 0811111999999" autocomplete="off" required="required" />
                                     </div>
                                 </div>
+                                <?php if ($isMobile) { ?>
+                                    <div class="form-group col-12">
+                                        <div class="btn-group">
+                                            <input type="file" name="user_avatar" id="user_avatar" class="form-control fileinput avatar" required="required" onchange="loadFile(event)" />
+                                            <div id="avatar-empty">
+                                                <span class="col fileinput-button" id="btn-avatar">
+                                                    <i class="fas fa-camera-retro"></i>
+                                                    <span>Ambil Gambar</span>
+                                                </span>
+                                            </div>
+                                            <div id="avatar-not-empty">
+                                                <div id="user-avatar-overlay"></div>
+                                                <img id="user-avatar" src="" />
+                                                <span id="btn-avatar-edit">
+                                                    <i class="far fa-edit"></i>
+                                                    <span id="avatar-edit">Ganti Gambar</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
@@ -252,10 +277,14 @@
                         generatePagination(page);
                     }
 
-                    $("#tableUsersLists").DataTable({
-                        processing: true,
-                        data: res.data,
-                        columns: [{
+                    var tableColumns;
+                    if (res.isMobile) {
+                        tableColumns = [{
+                            data: "data",
+                            width: "100%"
+                        }];
+                    } else {
+                        tableColumns = [{
                                 data: "id",
                                 width: "5%",
                                 orderable: false
@@ -290,7 +319,13 @@
                                 width: "10%",
                                 className: "pt-4"
                             }
-                        ],
+                        ]
+                    }
+
+                    $("#tableUsersLists").DataTable({
+                        processing: true,
+                        data: res.data,
+                        columns: tableColumns,
                         bPaginate: false,
                         bInfo: false,
                         searching: false
@@ -379,34 +414,51 @@
             var limit = $("#pageLength").find(":selected").val();
             var user_role = $("#user_role").val();
 
-            if (currPage != clickPage) {
-                $('#tableUsersLists').DataTable().destroy();
-                fetchTable(user_role, clickPage, limit, true);
-                // generatePagination(clickPage);
+            if (!$(this).hasClass("pCurrent")) {
+                $(".overlay-loading").show();
+                if (currPage != clickPage) {
+                    $('#tableUsersLists').DataTable().destroy();
+                    fetchTable(user_role, clickPage, limit, true);
+                    setTimeout(function() {
+                        $(".overlay-loading").hide();
+                    }, 200);
+                }
             }
         })
+
         $(document).on("click", "#bPaginationPrev", function() {
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = parseInt(currPage) - 1;
             var limit = $("#pageLength").find(":selected").val();
             var user_role = $("#user_role").val();
 
-            if (currPage != clickPage && $("#bPaginationPrev").attr("class") !== "bDisabled") {
-                $('#tableUsersLists').DataTable().destroy();
-                fetchTable(user_role, clickPage, limit, true);
-                // generatePagination(clickPage);
+            if (!$(this).hasClass("bDisabled")) {
+                $(".overlay-loading").show();
+                if (currPage != clickPage && $("#bPaginationPrev").attr("class") !== "bDisabled") {
+                    $('#tableUsersLists').DataTable().destroy();
+                    fetchTable(user_role, clickPage, limit, true);
+                    setTimeout(function() {
+                        $(".overlay-loading").hide();
+                    }, 200);
+                }
             }
         });
+
         $(document).on("click", "#bPaginationNext", function() {
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = parseInt(currPage) + 1;
             var limit = $("#pageLength").find(":selected").val();
             var user_role = $("#user_role").val();
 
-            if (currPage != clickPage && $("#bPaginationNext").attr("class") !== "bDisabled") {
-                $('#tableUsersLists').DataTable().destroy();
-                fetchTable(user_role, clickPage, limit, true);
-                // generatePagination(clickPage);
+            if (!$(this).hasClass("bDisabled")) {
+                $(".overlay-loading").show();
+                if (currPage != clickPage && $("#bPaginationNext").attr("class") !== "bDisabled") {
+                    $('#tableUsersLists').DataTable().destroy();
+                    fetchTable(user_role, clickPage, limit, true);
+                    setTimeout(function() {
+                        $(".overlay-loading").hide();
+                    }, 200);
+                }
             }
         });
 
@@ -429,6 +481,13 @@
             $("#user_avatar").click();
         });
 
+        var loadFile = function(event) {
+            var output = document.getElementById('user-avatar');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
         $(function() {
             $.validator.setDefaults({
                 ignore: ":hidden, [contenteditable='true']:not([name])",
@@ -509,6 +568,7 @@
         });
 
         function editUser(username) {
+            $("#title-modal-form").html("Edit User");
             $("#usersForm").each(function() {
                 elements = $(this).find(':input');
                 elements.each(function(key, element) {

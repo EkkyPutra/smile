@@ -15,8 +15,8 @@
     <div class="content">
         <div class="login-page">
             <div class="login-body row">
-                <div class="col-6 login-body-frame"></div>
-                <div class="col-6 login-body-form">
+                <div class="col-sm-6 login-body-frame"></div>
+                <div class="col-sm-6 login-body-form">
                     <h1>Login</h1>
                     <h4>Selamat datang di aplikasi Telkomsel Project Monitoring</h4>
                     <form name="login-form" id="login-form" novalidate="novalidate">

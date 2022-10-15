@@ -26,6 +26,8 @@ class Main extends web_base
 
     public function index()
     {
-        $this->load->view("public/main");
+        $data["isMobile"] = $this->agent->is_mobile();
+
+        $this->load->view("public/main", $data);
     }
 }

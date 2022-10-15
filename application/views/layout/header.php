@@ -1,6 +1,6 @@
 <div class="header">
     <nav class="navbar navbar-expand">
-        <div class="logo col-3">
+        <div class="logo col-sm-3" onclick="window.location.href='<?php echo base_url(); ?>'">
             <div class="logo-icon">
                 <img src="<?php echo BASE_URL . "assets/images/logo-icon-smile.png"; ?>" />
             </div>
@@ -10,9 +10,9 @@
         </div>
         <div class="menu col-6">
             <ul class="navbar-menu">
-                <li class="nav-item d-none d-sm-inline-block"><a href="<?php echo BASE_URL . "projects/management"; ?>" class="active">Daftar Proyek</a></li>
-                <li class="nav-item d-none d-sm-inline-block"><a href="">Performa Member</a></li>
-                <li class="nav-item d-none d-sm-inline-block"><a href="<?php echo BASE_URL . "users/management"; ?>">User Management</a></li>
+                <li class="nav-item d-none d-sm-inline-block"><a href="<?php echo BASE_URL . "projects/management"; ?>" <?php echo ($this->uri->segment(1) == "projects") ? 'class="active"' : ''; ?>>Daftar Proyek</a></li>
+                <li class="nav-item d-none d-sm-inline-block"><a href="<?php echo BASE_URL . "performances/management"; ?>" <?php echo ($this->uri->segment(1) == "performances") ? 'class="active"' : ''; ?>>Performa Member</a></li>
+                <li class="nav-item d-none d-sm-inline-block"><a href="<?php echo BASE_URL . "users/management"; ?>" <?php echo ($this->uri->segment(1) == "users") ? 'class="active"' : ''; ?>>User Management</a></li>
             </ul>
         </div>
         <div class="user-nav col-3">

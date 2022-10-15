@@ -11,38 +11,50 @@
     <div class="content bg-white">
         <div class="main-page">
             <div class="main-frame row">
-                <div class="main-left col-6">
+                <div class="main-left col-sm-12 col-md-6">
                     <h1>Project</h1>
                     <h1>Monitoring</h1>
                     <h5>Monitoring aktivitas proyek yang sedang berjaan dan performa setiap PIC</h5>
                     <div class="main-left-seg row">
                         <div class="main-left-seg-item col-6">
                             <span>Proyek On Progress</span>
-                            <label class="mls-num">10</label>
+                            <label class="mls-num blue">10</label>
                         </div>
                         <div class="main-left-seg-item col-6">
                             <span>Proyek Terlambat</span>
-                            <label class="mls-num">47</label>
+                            <label class="mls-num red">47</label>
                         </div>
                         <div class="main-left-seg-item col-6">
                             <span>Proyek Selesai</span>
-                            <label class="mls-num">46</label>
+                            <label class="mls-num green">46</label>
                         </div>
                         <div class="main-left-seg-item col-6">
                             <span>Total Proyek</span>
-                            <label class="mls-num">68</label>
+                            <label class="mls-num orange">68</label>
                         </div>
                     </div>
                 </div>
-                <div class="main-right col-6">
+                <div class="main-right col-sm-12 col-md-6">
                     <div class="main-right-red">
-                        <a href="javascript:void(0);">
-                            <img src="<?php echo BASE_URL . "assets/images/daftar-proyek.png"; ?>" />
+                        <a href="<?php echo base_url("../projects/management"); ?>">
+                            <?php 
+                                if ($isMobile) { 
+                                    echo '<img src="' . BASE_URL . "assets/images/daftar-proyek-mobile.png" . '" />';
+                                } else {
+                                    echo '<img src="' . BASE_URL . "assets/images/daftar-proyek.png" . '" />';
+                                } 
+                            ?>
                         </a>
                     </div>
                     <div class="main-right-blue">
-                        <a href="javascript:void(0);">
-                            <img src="<?php echo BASE_URL . "assets/images/performa-member.png"; ?>" />
+                        <a href="<?php echo base_url("../performances/management"); ?>">
+                            <?php 
+                                if ($isMobile) { 
+                                    echo '<img src="' . BASE_URL . "assets/images/performa-member-mobile.png" . '" />';
+                                } else {
+                                    echo '<img src="' . BASE_URL . "assets/images/performa-member.png" . '" />';
+                                }
+                            ?>
                         </a>
                     </div>
                 </div>

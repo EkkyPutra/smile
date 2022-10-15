@@ -100,6 +100,9 @@
 	.dataTable thead tr th {
 		padding: 18px 0;
 	}
+		.dataTable thead tr th.dt-head-center{
+			text-align: center;
+		}
 	table.dataTable>thead .sorting:before,
 	table.dataTable>thead .sorting_asc:before,
 	table.dataTable>thead .sorting:after,
@@ -154,7 +157,7 @@ div.dataTables_wrapper div.dataTables_paginate {
 			font-family: "Be-Vietnam" !important;
 		}
 .toolbar-card {
-	border-bottom: 2px solid rgba(151, 151, 150, 0.3);
+	border-bottom: 1px solid rgba(151, 151, 150, 0.3);
 	padding-bottom: 20px;
 	margin-bottom: 20px;
 }
@@ -194,14 +197,13 @@ div.dataTables_wrapper div.dataTables_paginate {
 			.toolbar-card-item .tci-info span {
 				display: block;
 				font-size: 16px;
-				margin-bottom: 20px;
+				margin-bottom: 5px;
 			}
 			.toolbar-card-item .tci-info h1 {
 				font-size: 48px;
 				font-family: 'Telkomsel-Batik-Sans';
 			}
 .general-info {
-	display: none;
 	background-color: #F1F4F9;
 	border-radius: 10px;
 	padding: 15px;
@@ -254,15 +256,6 @@ div.dataTables_wrapper div.dataTables_paginate {
 					width: calc(100% - 100px);
 					height: 20px;
 				}
-	#general-info-overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-		background-color: rgba(0, 0, 0, 0.5);
-		width: 100%;
-		height: 100%;
-		z-index: 91;
-	}
 .modal-overflow .modal-body {
 	height: 500px;
 	overflow-y: scroll;
@@ -297,7 +290,8 @@ div.dataTables_wrapper div.dataTables_paginate {
 	padding-left: 18px !important;
 	font-size: 13px !important;
 }
-	.modal-seg::before {
+	.modal-seg::before,
+	.modal-seg-pic::before {
 		display: block;
 		float: left;
 		width: 4px;
@@ -307,3 +301,247 @@ div.dataTables_wrapper div.dataTables_paginate {
 		margin-left: -15px;
 		height: 26px;
 	}
+.modal-seg-pic {
+	margin-left: 5px;
+	padding-left: 18px !important;
+	font-size: 13px !important;
+}
+	.modal-seg-pic::before {
+		background: #4885ED;
+	}
+.row-pic {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+	.delete-pic {
+		color: #4885ED;
+		cursor: pointer;
+		margin-right: -5px;
+		text-align: right;
+	}
+.project-activity {
+	padding-right: 20px !important;
+	border-right: 1px solid #D5D5D5;
+}
+	.project-activity .table.dataTable {
+		width: calc(100% - 10px);
+	}
+.activity-comment {
+	padding-left: 20px !important;
+}
+.comment-box {
+	background-color: #F1F4F9;
+	border-radius: 10px;
+	min-height: 300px;
+	padding: 15px 10px;
+}
+	.comment-box .comment-count {
+		font-family: "Be-Vietnam-Bold";
+		margin-bottom: 15px;
+	}
+		.comment-box .comment-count span {
+			margin-left: 10px;
+			line-height: 20px;
+		}
+	.comment-box .input-group-text {
+		background-color: #FFF !important;
+		color: #ED1846;
+		cursor: pointer;
+	}
+	.comment-box .form-group {
+		padding: 0;
+	}
+		.comment-box .form-group.form-comment-seg {
+			min-height: 150px;
+			max-height: 550px;
+			margin-top: 20px;
+			overflow-x: hidden;
+		}
+		.comment-box .form-group.form-group.form-comment-seg::-webkit-scrollbar {
+			display: none;
+		}
+	.comment-box .form-control {
+		background-color: #FFF !important;
+	}
+	.comment-box .comment-reply {
+		margin-top: 10px;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+		.comment-box .comment-reply .comment-reply-init {
+			width: 40px;
+			margin-right: 5px;
+			float: left;
+		}
+			.comment-box .comment-reply .comment-reply-init span {
+				border-radius: 50px;
+				background-color: #4885ED;
+				text-align: center;
+				padding: 8px 0;
+				width: 40px;
+				height: 40px;
+				display: block;
+				color: #FFF;
+			}
+		.comment-box .comment-reply .comment-reply-text {
+			width: calc(100% - 50px);
+			float: left;
+		}
+			.comment-box .comment-reply .comment-reply-text .comment-reply-text-box {
+				background-color: #FFF;
+				border-radius: 10px;
+				color: #4E5764;
+				padding: 10px;
+			}
+			.comment-box .comment-reply .comment-reply-text span.comment-name {
+				font-family: "Be-Vietnam-Bold";
+			}
+			.comment-box .comment-reply .comment-reply-text span.comment-role {
+				color: #A6A6A6;
+				display: block;
+				font-size: 12px;
+				margin-bottom: 7px;
+			}
+			.comment-box .comment-reply .comment-reply-text p {
+				margin-bottom: 0;
+			}
+		.comment-box .comment-reply .comment-reply-info {
+			margin: 7px 0 15px 0;
+		}
+			.comment-box .comment-reply .comment-reply-info .comment-info-date {
+				color: #A7ABB2;
+			}
+			.comment-box .comment-reply .comment-reply-info .comment-info-reply {
+				color: #4E5764;
+			}
+		.comment-box .comment-reply .comment-reply-input {
+			margin-bottom: 15px;
+		}
+			.comment-box .comment-reply .comment-reply-input .form-control {
+				padding: 7px 10px;
+			}
+		.comment-box .comment-reply .comment-btn-level {
+			cursor: pointer;
+			color: #4E5764;
+		}
+			.comment-box .comment-reply .comment-btn-level i {
+				transform: rotate(90deg);
+				margin-right: 5px;
+			}
+
+
+
+@media (max-width: 576px) {
+	.toolbar-card-item {
+		padding-top: 10px !important;
+		padding-bottom: 10px !important;
+	}
+	.toolbar-card-item .tci {
+		padding: 7px;
+	}
+		.toolbar-card-item .tci .col-3 {
+			display: none;
+		}
+		.toolbar-card-item .tci span {
+			min-height: 48px;
+		}
+
+	.toolbar-card-item .tci i {
+		display: none;
+	}
+	.dataTable {
+		width: 100% !important;
+	}
+	.dataTable thead {
+		display: none;
+	}
+		table.dataTable td {
+			padding: 10px 0;
+		}
+			.table.dataTable .datatable-project-mobile,
+			.table.dataTable .datatable-activity-mobile {
+				padding: 15px;
+				border-radius: 10px;
+				background-color: #E5FAE9;
+			}
+				.table.dataTable .datatable-project-mobile label,
+				.table.dataTable .datatable-activity-mobile label {
+					display: block;
+					margin-bottom: 2px;
+				}
+					.table.dataTable .datatable-project-mobile label.title,
+					.table.dataTable .datatable-activity-mobile label.title {
+						font-family: "Be-Vietnam-Bold";
+						font-size: 16px;
+						margin-bottom: 10px;
+					}
+					.table.dataTable .datatable-project-mobile label.subs,
+					.table.dataTable .datatable-activity-mobile label.subs {
+						font-size: 12px;
+					}
+						.table.dataTable .datatable-activity-mobile span.subs-right {
+							display: inline-block;
+							float: right;
+						}
+				.table.dataTable .datatable-project-mobile .mobile-segs,
+				.table.dataTable .datatable-activity-mobile .mobile-segs {
+					display: block;
+					margin: 0 0 10px;
+				}
+					.table.dataTable .datatable-project-mobile .mobile-segs:after,
+					.table.dataTable .datatable-activity-mobile .mobile-segs:after {
+						display: block;
+						content: "";
+						clear: both;
+					}
+				.table.dataTable .datatable-project-mobile .table-seg-box {
+					margin: 10px 0;
+					float: left;
+				}
+				.table.dataTable .datatable-project-mobile span.top-priority {
+					float: right;
+					margin: 10px 30px 10px 0;
+				}
+				.table.dataTable .datatable-project-mobile .datatable-project-mobile-action,
+				.table.dataTable .datatable-activity-mobile .datatable-activity-mobile-action {
+					margin-top: 20px;
+					padding-top: 20px;
+					border-top: 2px solid rgba(32, 34, 36, 0.1);
+				}
+					.table.dataTable .datatable-project-mobile .datatable-project-mobile-action .btn {
+						background-color: #fff;
+						width: calc(20% - 8px);
+					}
+			.datatable-activity-mobile {
+				background-color: #fff !important;
+				border: 1px solid #D5D5D5;
+			}
+				.table.dataTable .datatable-activity-mobile .progress {
+					margin: 15px 0;
+				}
+	.general-info .gis-left {
+		border-right: 0;
+		border-bottom: 1px solid #D5D5D5;
+		padding-bottom: 15px;
+		margin-bottom: 15px;
+	}
+		.general-info .gis-right .gis-pic {
+			height: 160px;
+		}
+		.general-info .gis-right .gis-init {
+			margin-right: 0;
+		}
+	#toolbar .toolbar-search {
+		width: 100%;
+	}
+	.activity-comment {
+		padding: 0 !important;
+		margin-top: 20px;
+	}
+		.comment-box .form-group {
+			margin-bottom: 5px;
+		}
+		.comment-box .form-group.form-comment-seg {
+			margin-top: 0;
+		}
+}
