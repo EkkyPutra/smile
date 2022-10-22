@@ -44,6 +44,7 @@ class Login
         $userInfo->role = ucwords($this->CI->master->getMasterById($userInfo->role)->value);
         $userInfo->divisi = ucwords($this->CI->master->getMasterById($userInfo->divisi)->value);
         $userInfo->last_login = $timeTs;
+        $userInfo->access_level = json_decode($userInfo->access_level);
         $userInfo->avatar = "./files/thumbs/avatar/" . $userInfo->avatar;
 
         $responsecode = 200;

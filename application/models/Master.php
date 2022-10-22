@@ -65,11 +65,14 @@ class Master extends CI_Model
         return null;
     }
 
-    public function totalMasterByType($type)
+    public function totalMasterByType($type, $all_divisi = false, $user_divisi = "")
     {
         $this->db->select("count(id) as total");
         $this->db->from("tbl_master");
         $this->db->where("type", $type);
+
+        if ($type == 3 && !$all_divisi && !empty($user_divisi))
+            $this->db->where("value", $user_divisi);
 
         $query = $this->db->get();
 
@@ -81,11 +84,14 @@ class Master extends CI_Model
         return 0;
     }
 
-    public function getMasterByType($type, $offset = 0, $limit = 0)
+    public function getMasterByType($type, $offset = 0, $limit = 0, $all_divisi = false, $user_divisi = "")
     {
         $this->db->select("*");
         $this->db->from("tbl_master");
         $this->db->where("type", $type);
+
+        if ($type == 3 && !$all_divisi && !empty($user_divisi))
+            $this->db->where("value", $user_divisi);
 
         if ($limit > 0)
             $this->db->limit($limit, $offset);

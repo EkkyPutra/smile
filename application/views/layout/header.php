@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="menu col-6">
-            <ul class="navbar-menu">
+            <ul class="navbar-menu col-12">
                 <li class="nav-item d-none d-sm-inline-block"><a href="<?php echo BASE_URL . "projects/management"; ?>" <?php echo ($this->uri->segment(1) == "projects") ? 'class="active"' : ''; ?>>Daftar Proyek</a></li>
                 <li class="nav-item d-none d-sm-inline-block"><a href="<?php echo BASE_URL . "performances/management"; ?>" <?php echo ($this->uri->segment(1) == "performances") ? 'class="active"' : ''; ?>>Performa Member</a></li>
                 <li class="nav-item d-none d-sm-inline-block"><a href="<?php echo BASE_URL . "users/management"; ?>" <?php echo ($this->uri->segment(1) == "users") ? 'class="active"' : ''; ?>>User Management</a></li>

@@ -35,11 +35,13 @@ class Get
         }
 
         $masterType = Transformer::convertMasterTypeToInt($this->type);
-        $totalMasterType = $this->CI->master->totalMasterByType($masterType);
+        $all_divisi = isset($jsonInputObj->all_divisi) ? $jsonInputObj->all_divisi : false;
+        $user_divisi = (!$all_divisi && isset($jsonInputObj->user_divisi) && !empty($jsonInputObj->user_divisi)) ? strtolower($jsonInputObj->user_divisi) : "";
+        $totalMasterType = $this->CI->master->totalMasterByType($masterType, $all_divisi, $user_divisi);
 
         if ($totalMasterType > 0) {
             $totalPage = ceil($totalMasterType / $limit);
-            $getMasterType = $this->CI->master->getMasterByType($masterType, $start, $limit);
+            $getMasterType = $this->CI->master->getMasterByType($masterType, $start, $limit, $all_divisi, $user_divisi);
             foreach ($getMasterType as $master) {
                 $masters[] = [
                     "id" => intval($master->id),

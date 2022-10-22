@@ -35,8 +35,24 @@ class Project extends CI_Model
     {
         $this->db->select("count(id) as total");
         $this->db->from("tbl_project");
-        if (!is_null($params))
-            $this->db->where($params);
+
+        if (isset($params["type"]))
+            $this->db->where("type", $params["type"]);
+
+        if (isset($params["divisi"]))
+            $this->db->where("divisi", $params["divisi"]);
+
+        if (isset($params["priority"]) && $params["priority"] > 0)
+            $this->db->where("priority", $params["priority"]);
+
+        if (isset($params["progress"]))
+            $this->db->where("(progress >= " . $params["progress"][0] . " AND progress <= " . $params["progress"][1] . ")");
+
+        if (isset($params["deadline"]))
+            $this->db->where("deadline BETWEEN " . $this->db->escape($params["deadline"][0]) . " AND " . $this->db->escape($params["deadline"][1]));
+
+        if (isset($params["query"]) && !is_null($params["query"]))
+            $this->db->like("name", $params["query"]);
 
         $query = $this->db->get();
 
@@ -81,18 +97,36 @@ class Project extends CI_Model
         return null;
     }
 
-    public function getProjects($params, $offset = 0, $limit = 0)
+    public function getProjects($params = [], $offset = 0, $limit = 0)
     {
         $this->db->select("a.*, b.value as project_divisi, b.background as project_divisi_bg, b.color as project_divisi_color, c.value as project_type");
         $this->db->from("tbl_project as a");
         $this->db->join("tbl_master as b", "b.id=a.divisi");
         $this->db->join("tbl_master as c", "c.id=a.type");
-        
-        if (!is_null($params))
-            $this->db->where($params);
+
+        if (isset($params["type"]))
+            $this->db->where("a.type", $params["type"]);
+
+        if (isset($params["divisi"]))
+            $this->db->where("a.divisi", $params["divisi"]);
+
+        if (isset($params["priority"]) && $params["priority"] > 0)
+            $this->db->where("a.priority", $params["priority"]);
+
+        if (isset($params["progress"]))
+            $this->db->where("(a.progress >= " . $params["progress"][0] . " AND a.progress <= " . $params["progress"][1] . ")");
+
+        if (isset($params["deadline"]))
+            $this->db->where("deadline BETWEEN " . $this->db->escape($params["deadline"][0]) . " AND " . $this->db->escape($params["deadline"][1]));
+
+        if (isset($params["query"]) && !is_null($params["query"]))
+            $this->db->like("name", $params["query"]);
 
         if ($limit > 0)
             $this->db->limit($limit, $offset);
+
+        $this->db->order_by("priority", "DESC");
+        $this->db->order_by("progress", "DESC");
 
         $query = $this->db->get();
 
@@ -144,11 +178,21 @@ class Project extends CI_Model
 
     public function getProjectActivities($params, $lastProgress = false, $offset = 0, $limit = 0)
     {
-        $this->db->select("a.*, b.name as project_name");
+        $this->db->select("a.*, b.name as project_name, c.value as project_divisi");
         $this->db->from("tbl_project_activities as a");
         $this->db->join("tbl_project as b", "b.id=a.project_id");
+        $this->db->join("tbl_master as c", "c.id=b.divisi");
         $this->db->where("a.project_id", $params["project_id"]);
         $this->db->order_by("a.progress", "DESC");
+
+        if (isset($params["progress"]))
+            $this->db->where("(a.progress >= " . $params["progress"][0] . " AND a.progress <= " . $params["progress"][1] . ")");
+
+        if (isset($params["lastupdate"]))
+            $this->db->where("a.updated BETWEEN " . $this->db->escape($params["lastupdate"][0] . ' 00:00:00') . " AND " . $this->db->escape($params["lastupdate"][1] . ' 23:59:59'));
+
+        if (isset($params["query"]) && !is_null($params["query"]))
+            $this->db->like("a.name", $params["query"]);
 
         if ($limit > 0)
             $this->db->limit($limit, $offset);
@@ -178,8 +222,15 @@ class Project extends CI_Model
     {
         $this->db->select("count(id) as total");
         $this->db->from("tbl_project_activities");
-        if (!is_null($params))
-            $this->db->where($params);
+
+        if (isset($params["progress"]))
+            $this->db->where("(progress >= " . $params["progress"][0] . " AND progress <= " . $params["progress"][1] . ")");
+
+        if (isset($params["lastupdate"]))
+            $this->db->where("updated BETWEEN " . $this->db->escape($params["lastupdate"][0] . ' 00:00:00') . " AND " . $this->db->escape($params["lastupdate"][1] . ' 23:59:59'));
+
+        if (isset($params["query"]) && !is_null($params["query"]))
+            $this->db->like("name", $params["query"]);
 
         $query = $this->db->get();
 
@@ -221,6 +272,22 @@ class Project extends CI_Model
         return null;
     }
 
+    public function getPreviousActivity($id)
+    {
+        $this->db->select("progress");
+        $this->db->from("tbl_project_activities");
+        $this->db->where("id < ", $id);
+        $this->db->order_by("id", "desc");
+        $this->db->limit(1);
+
+        $query = $this->db->get();
+
+        if (!is_null($query) && $query->num_rows() > 0)
+            return intval($query->row()->progress);
+
+        return 0;
+    }
+
     public function removeProjectActivity($id)
     {
         $this->db->delete('tbl_project_activities', array(
@@ -242,7 +309,7 @@ class Project extends CI_Model
         return $this->db->affected_rows();
     }
 
-    public function getCountProject($userId, $today, $type = "track", $isBau = false)
+    public function getCountProject($userId = "", $today, $type = "track", $isBau = false)
     {
         $this->db->select("count(b.id) as total");
         $this->db->from("tbl_project_pic as a");
@@ -250,7 +317,8 @@ class Project extends CI_Model
         if ($isBau)
             $this->db->join("tbl_master as c", "c.id=b.type");
 
-        $this->db->where("a.user_id", $userId);
+        if (!empty($userId))
+            $this->db->where("a.user_id", $userId);
 
         switch ($type) {
             case "track":
@@ -263,6 +331,35 @@ class Project extends CI_Model
             case "late":
                 $this->db->where("b.deadline <", $today);
                 $this->db->where("b.progress < 100");
+                break;
+            case "all":
+                break;
+        }
+
+        $query = $this->db->get();
+
+        if (!is_null($query) && $query->num_rows() > 0)
+            return $query->row()->total;
+
+        return 0;
+    }
+
+    public function getTotalProjectByStatus($today, $type = "", $isBau = false)
+    {
+        $this->db->select("count(id) as total");
+        $this->db->from("tbl_project");
+
+        switch ($type) {
+            case "track":
+                $this->db->where("deadline >", $today);
+                $this->db->where("progress < 100");
+                break;
+            case "complete":
+                $this->db->where("progress = 100");
+                break;
+            case "late":
+                $this->db->where("deadline <", $today);
+                $this->db->where("progress < 100");
                 break;
             case "all":
                 break;

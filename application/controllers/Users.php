@@ -50,6 +50,7 @@ class Users extends web_base
                 "divisi" => $admin->divisi,
                 "avatar" => $admin->avatar,
                 "handphone" => $admin->handphone,
+                "access_level" => $admin->access_level,
                 "last_login" => $admin->last_login
             ]);
         }
@@ -78,7 +79,8 @@ class Users extends web_base
             "limit" => $limit
         ];
 
-        $data["query"] = !is_null($this->input->post("query")) ? $this->input->post("query") : "";
+        $params = $this->input->post("params");
+        $data["query"] = !is_null($params) && isset($params["query"]) ? $params["query"] : "";
 
         $response = $this->somplakapi->run_curl_api($url, $data);
         $resApi = json_decode($response);

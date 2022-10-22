@@ -67,7 +67,7 @@ class User extends CI_Model
 
     public function getUserByUsername($username)
     {
-        $this->db->select("a.*, b.value as user_role, c.value as user_divisi, c.background as user_divisi_bg, c.color as user_divisi_color");
+        $this->db->select("a.*, b.value as user_role, b.access_level as access_level, c.value as user_divisi, c.background as user_divisi_bg, c.color as user_divisi_color");
         $this->db->from("tbl_users as a");
         $this->db->where("a.username", $username);
         $this->db->join("tbl_master as b", "b.id=a.role");

@@ -68,7 +68,8 @@ class Performances extends web_base
             "limit" => $limit
         ];
 
-        $data["query"] = !is_null($this->input->post("query")) ? $this->input->post("query") : "";
+        $params = $this->input->post("params");
+        $data["query"] = !is_null($params) && isset($params["query"]) ? $params["query"] : "";
 
         $response = $this->somplakapi->run_curl_api($url, $data);
         $resApi = json_decode($response);
@@ -164,6 +165,7 @@ class Performances extends web_base
         $data["memberDetail"] = $memberDetail;
         $data["usersDivisi"] = $usersDivisi;
         $data["totalPage"] = $totalPage;
+        $data["isMobile"] = $this->agent->is_mobile();
 
         $this->load->view("public/project_management", $data);
     }

@@ -8,10 +8,13 @@ class web_base extends CI_Controller
         parent::__construct();
         $session_userdata = $this->session->userdata("smile.pm");
         $this->smile_session = $session_userdata;
+        if (!is_null($this->smile_session))
+            $this->access_level = $session_userdata["access_level"];
+        
         $contr = strtolower($this->uri->segment(1));
         $module = strtolower($this->uri->segment(2));
 
-        if ($contr != "login" && ($contr != "users" && ($module != "dologin" && $module != "dologout")) && is_null($session_userdata)) {
+        if ($contr != "login" && ($module != "dologin" && $module != "dologout") && is_null($session_userdata)) {
             redirect(BASE_URL . "login");
         }
     }

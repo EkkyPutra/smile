@@ -43,6 +43,9 @@ body {
 textarea.form-control {
     height: auto !important;
 }
+.scrool {
+    display: none;
+}
 .card-header .seg-tools {
     cursor: pointer;
     float: left;
@@ -69,6 +72,36 @@ textarea.form-control {
         padding: 1px 0;
         margin-bottom: 0;
     }
+.bg-green {
+    background-color: #00FF00;
+}
+.bg-blue {
+    background-color: #0000FF;
+}
+.bg-yellow {
+    background-color: #FFFF00;
+}
+.bg-red {
+    background-color: #FF0000;
+}
+.btn-eye i {
+    color: #4885ED;
+}
+.btn-wa i {
+    color: #25D366;
+}
+.btn-link i {
+    color: #BE2DCD;
+}
+.btn-edit i {
+    color: #FFB000;
+}
+.btn-delete i {
+    color: #202224;
+}
+.btn-comment i {
+    color: #FC7A7F;
+}
 .form-group .btn-group #avatar-empty,
 .form-group .btn-group #avatar-not-empty {
     background-color: transparent;
@@ -208,6 +241,15 @@ textarea.form-control {
 .modal-dialog .modal-lg {
     max-width: 900px;
 }
+.btn-outline-green {
+    color: #008000 !important;
+    border-color: #008000 !important;
+}
+    .btn-outline-green:hover {
+        color: #fff !important;
+        background-color: #008000 !important;
+        border-color: #008000 !important;
+    }
 #toolbar {
     margin-bottom: 20px;
 }
@@ -225,17 +267,24 @@ textarea.form-control {
             padding: 8px 20px;
             font-size: 12px;
             display: inline-block;
+            float: left;
         }
             #toolbar .toolbar-select span#resetFilter {
                 cursor: pointer;
                 color: #E5131D;
                 background-color: transparent;
-                border-left: 0.5px solid #D5D5D5;
             }
+        #toolbar .toolbar-select input,
         #toolbar .toolbar-select select {
-            padding: 4px;
+            background-color: transparent !important;
+            padding: 4px !important;
             border: 0;
-            margin-right: 5px;
+            border-right: 0.5px solid #D5D5D5;
+            border-radius: 0;
+            float: left;
+            width: auto;
+            height: 34px !important;
+            margin-right: -1px;
         }
     #toolbar .toolbar-search .form-control {
         background-color: transparent !important;
@@ -265,11 +314,13 @@ textarea.form-control {
         width: 100%;
     }
         .content .login-page .login-body {
-            width: 80%;
+            width: 90%;
             height: 500px;
         }
             .login-body .login-body-frame {
-                background: url("../../images/frame-login.png") 80% 80%;
+                background: url(../../images/frame-login.png) no-repeat;
+                background-size: auto 100%;
+                background-position: center;
                 background-color: #f5f6fa;
                 border-radius: 20px;
                 border: 1px solid #f5f6fa;
@@ -277,9 +328,26 @@ textarea.form-control {
             .login-body .login-body-form {
                 padding: 4rem;
             }
+                .login-body .login-body-frame .logo {
+                    cursor: pointer;
+                    display: block;
+                    width: 170px;
+                    margin: 40px auto 0;
+                }
+                    .login-body .login-body-frame .logo .logo-icon {
+                        display: inline-block;
+                    }
+                    .login-body .login-body-frame .logo .logo-smile {
+                        display: inline-block;
+                    }
                 .login-body .login-body-form h1 {
                     color: #f86f54;
                     font-weight: bold;
+                    font-family: "Telkomsel-Batik-Sans";
+                    font-size: 48px;
+                }
+                .login-body .login-body-form h4 {
+                    margin-bottom: 20px;
                 }
                 .login-body .login-body-form .input-group:not(.has-validation)>.form-control:not(:last-child) {
                     border-right: 0;
@@ -306,7 +374,7 @@ textarea.form-control {
     width: 100%;
 }
     .header .navbar {
-        width: 80%;
+        width: 90%;
         margin: 0 auto;
     }
         .header .navbar .logo {
@@ -327,14 +395,16 @@ textarea.form-control {
             }
         .header .navbar .menu {
             text-align: center;
-            padding: 10px;
+            padding: 0;
         }
             .header .navbar .menu .navbar-menu {
                 margin: 0;
+                padding-left: 0;
+                padding-right: 0;
             }
                 .header .navbar .menu .navbar-menu .nav-item {
                     padding: 3px 10px;
-                    margin: 0 10px;
+                    margin: 0 6px;
                 }
                     .header .navbar .menu .navbar-menu .nav-item a {
                         color: #969696;
@@ -391,7 +461,7 @@ textarea.form-control {
             }
     
     .main-page {
-        width: 80%;
+        width: 90%;
         margin: 0 auto;
     }
         .main-page .main-frame {
@@ -459,7 +529,7 @@ textarea.form-control {
                     width: 100%;
                 }
     .profile-page {
-        width: 80%;
+        width: 90%;
         margin: 30px auto;
     }
         .profile-page .card {
@@ -494,7 +564,7 @@ textarea.form-control {
             }
     .proyek-page {
         margin: 30px auto;
-        width: 80%;
+        width: 90%;
     }
 /* #autocomplete-pic-leader {
     border: 1px solid red;
@@ -508,6 +578,19 @@ textarea.form-control {
     }
 
 @media (max-width: 576px) {
+    .content .login-page {
+        height: auto;
+    }
+    .login-body .login-body-form {
+        padding: 10px;
+    }
+        .login-body .login-body-frame {
+            background: unset;
+            border: 0;
+        }
+            .login-body .login-body-frame .logo {
+                margin: 20px auto 100px;
+            }
     .main-page {
         width: 100%;
         padding: 0 15px;
@@ -575,4 +658,29 @@ textarea.form-control {
             padding-left: 15px;
             padding-right: 15px;
         }
+    .main .scrool {
+        display: none;
+    }
+    .scrool {
+        display: block;
+        border-radius: 50%;
+        background-color: rgb(248, 111, 84, 0.8);
+        width: 48px;
+        height: 48px;
+        text-align: center;
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+    }
+        .scrool i {
+            font-size: 26px;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    #toolbar .toolbar-select {
+        margin-bottom: 5px;
+    }
 }

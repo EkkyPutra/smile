@@ -32,9 +32,24 @@ class Get
         }
 
         $params["project_id"] = isset($jsonInputObj->project_id) ? $jsonInputObj->project_id : 0;
+        $query = (isset($jsonInputObj->query) && !empty($jsonInputObj->query)) ? $jsonInputObj->query : null;
+
+        if (isset($jsonInputObj->progress) && !empty($jsonInputObj->progress))
+            $params["progress"] = $jsonInputObj->progress;
+
+        if (isset($jsonInputObj->lastupdate) && !empty($jsonInputObj->lastupdate)) {
+            $params["lastupdate"] = [
+                date("Y-m-d", strtotime($jsonInputObj->lastupdate[0])),
+                date("Y-m-d", strtotime($jsonInputObj->lastupdate[1]))
+            ];
+        }
+
+        if (!is_null($query))
+            $params["query"] = $query;
+
         $totalProjects = $this->CI->project->totalProjectActivities($params);
         $rowsPerPage = 0;
-        
+
         $activities = null;
         if ($totalProjects > 0) {
             $totalPage = ceil($totalProjects / $limit);

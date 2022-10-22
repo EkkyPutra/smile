@@ -32,6 +32,36 @@ class Get
         }
 
         $params = null;
+        if (isset($jsonInputObj->type) && !empty($jsonInputObj->type)) {
+            $type = $this->CI->master->getMasterByTypeValue(2, $jsonInputObj->type);
+            if (!is_null($type))
+                $params["type"] = $type->id;
+        }
+
+        if (isset($jsonInputObj->divisi) && !empty($jsonInputObj->divisi)) {
+            $divisi = $this->CI->master->getMasterByTypeValue(3, $jsonInputObj->divisi);
+            if (!is_null($divisi))
+                $params["divisi"] = $divisi->id;
+        }
+
+        $query = (isset($jsonInputObj->query) && !empty($jsonInputObj->query)) ? $jsonInputObj->query : null;
+
+        if (isset($jsonInputObj->priority))
+            $params["priority"] = $jsonInputObj->priority;
+
+        if (isset($jsonInputObj->progress) && !empty($jsonInputObj->progress))
+            $params["progress"] = $jsonInputObj->progress;
+
+        if (isset($jsonInputObj->deadline) && !empty($jsonInputObj->deadline)) {
+            $params["deadline"] = [
+                date("Y-m-d", strtotime($jsonInputObj->deadline[0])),
+                date("Y-m-d", strtotime($jsonInputObj->deadline[1]))
+            ];            
+        }
+            
+        if (!is_null($query))
+            $params["query"] = $query;
+
         $totalProjects = $this->CI->project->totalProjects($params);
         $rowsPerPage = 0;
         
@@ -41,14 +71,23 @@ class Get
             $getProjects = $this->CI->project->getProjects($params, $start, $limit);
             if (!is_null($getProjects)) {
                 $rowsPerPage = count($getProjects);
+                $projectsTop = [];
+                $projectsBottom = [];
                 foreach ($getProjects as $project) {
                     $projectMembers = $this->CI->project->getProjectMembers($project->id);
                     $project->priority = ($project->priority == 1) ? "Yes" : "No";
                     $project->project_type = strtoupper($project->project_type);
                     $project->pic = $projectMembers;
-                    $projects[] = $project;
+
+                    if ($project->progress < 100)
+                        $projectsTop[] = $project;
+                    else
+                        $projectsBottom[] = $project;
+
                 }
             }
+
+            $projects = array_merge($projectsTop, $projectsBottom);
 
             $responsecode = 200;
         }
@@ -99,15 +138,37 @@ class Get
         ];
     }
 
+    private function _count(&$responseObj, &$jsonInputObj, &$responsecode)
+    {
+        $today = date("Y-m-d H:i:s");
+        $projectOnTrack = $this->CI->project->getTotalProjectByStatus($today, "track");
+        $projectLate = $this->CI->project->getTotalProjectByStatus($today, "late");
+        $projectComplete = $this->CI->project->getTotalProjectByStatus($today, "complete");
+        $totalProject = $projectComplete + $projectLate + $projectOnTrack;
+
+        $responsecode = 200;
+        $responseObj = [
+            "name" => "Count of Project",
+            "item" => [
+                "complete" => intval($projectComplete),
+                "onTrack" => intval($projectOnTrack),
+                "late" => intval($projectLate),
+                "total" => $totalProject
+            ]
+        ];
+    }
+
     public function action(&$responseObj, &$jsonInputObj, &$responsecode, &$responseMessage)
     {
-        if (empty($this->command) || ($this->command != "lists" && $this->command != "detail"))
+        if (empty($this->command) || ($this->command != "lists" && $this->command != "detail" && $this->command != "count"))
         throw new Exception("Data tidak lengkap. Silahkan cek kembali data anda!", 422);
 
         if ($this->command == "lists") {
             $this->_lists($responseObj, $jsonInputObj, $responsecode);
         } else if ($this->command == "detail") {
             $this->_detail($responseObj, $jsonInputObj, $responsecode);
+        } else if ($this->command == "count") {
+            $this->_count($responseObj, $jsonInputObj, $responsecode);
         }
     }
 

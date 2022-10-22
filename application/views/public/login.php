@@ -15,8 +15,17 @@
     <div class="content">
         <div class="login-page">
             <div class="login-body row">
-                <div class="col-sm-6 login-body-frame"></div>
-                <div class="col-sm-6 login-body-form">
+                <div class="col-sm-6 col-12 login-body-frame">
+                    <div class="logo" onclick="window.location.href='<?php echo base_url(); ?>'">
+                        <div class="logo-icon">
+                            <img src="<?php echo BASE_URL . "assets/images/logo-icon-smile.png"; ?>" />
+                        </div>
+                        <div class="logo-smile">
+                            <img src="<?php echo BASE_URL . "assets/images/logo-smile.png"; ?>" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-12 login-body-form">
                     <h1>Login</h1>
                     <h4>Selamat datang di aplikasi Telkomsel Project Monitoring</h4>
                     <form name="login-form" id="login-form" novalidate="novalidate">

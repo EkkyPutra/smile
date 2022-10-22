@@ -25,7 +25,7 @@
             <div class="card card-default">
                 <!-- .card-header -->
                 <div class="card-header no-sub">
-                    <div class="seg-tools">
+                    <div class="seg-tools" onclick="window.location.href='<?php echo base_url(); ?>'">
                         <i class="fas fa-arrow-left"></i>
                     </div>
                     <div class="row">
@@ -42,7 +42,7 @@
                         <input type="hidden" id="totalPage" name="totalPage" value="<?php echo $totalPage; ?>" />
                         <div class="toolbar-select">
                             <span><i class="far fa-eye"></i> Show</span>
-                            <select id="pageLength">
+                            <select id="pageLength" class="form-control">
                                 <option value="10">10 Rows</option>
                                 <option value="25">25 Rows</option>
                                 <option value="50">50 Rows</option>
@@ -51,7 +51,7 @@
                         </div>
                         <div class="toolbar-select">
                             <span><i class="fas fa-filter"></i> Filters</span>
-                            <select id='user_divisi'>
+                            <select id='user_divisi' class="form-control">
                                 <option value=''>-- Divisi --</option>
                                 <?php
                                 foreach ($usersDivisi as $divisi) {
@@ -59,14 +59,14 @@
                                 }
                                 ?>
                             </select>
-                            <span id="resetFilter"><i class="fas fa-undo"></i> Reset</span>
+                            <span id="resetFilter"><i class="fas fa-undo"></i> Reset Filter</span>
                         </div>
                         <div class="toolbar-search float-right">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input type="text" name="search" id="search" class="form-control" placeholder="Search Lists">
+                                <input type="text" name="search" id="searchList" class="form-control" autocomplete="off" placeholder="Search Lists">
                             </div>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
     <script>
         var $userTable = $('#tableMembersLists');
 
-        function fetchTable(user_divisi, page, limit, refresh = false) {
+        function fetchTable(user_divisi, page, limit, refresh = false, params = []) {
             var limit = $('#pageLength').find(":selected").val();
             var start = (page == 0) ? ($(".paginationX.pCurrent").attr("data-start")) : page;
             var infoX = ((parseInt(start) - 1) * limit) + 1;
@@ -127,6 +127,7 @@
                 type: "POST",
                 data: {
                     user_divisi: user_divisi,
+                    params: params,
                     start: start,
                     limit: limit
                 },
@@ -191,7 +192,7 @@
                                 className: "pt-4"
                             }
                         ];
-                    }                    
+                    }
                     $("#tableMembersLists").DataTable({
                         processing: true,
                         data: res.data,
@@ -218,11 +219,11 @@
             e.preventDefault();
 
             var limit = $(this).val();
-            var user_role = $("#user_role").val();
+            var user_divisi = $("#user_divisi").val();
             $("#pageLength option").removeAttr("selected");
             $("#pageLength").find("option[value='" + limit + "']").attr("selected", true);
             $('#tableMembersLists').DataTable().destroy();
-            fetchTable(user_role, 1, limit, true);
+            fetchTable(user_divisi, 1, limit, true);
         })
 
         function generatePagination(currPage = undefined) {
@@ -274,7 +275,7 @@
         }
 
         $(document).ready(function() {
-            fetchTable($("#user_role").val(), 1, $("#pageLength").find(":selected").val(), true);
+            fetchTable($("#user_divisi").val(), 1, $("#pageLength").find(":selected").val(), true);
             // generatePagination(1);
         })
 
@@ -282,13 +283,13 @@
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = $(this).attr("data-page");
             var limit = $("#pageLength").find(":selected").val();
-            var user_role = $("#user_role").val();
+            var user_divisi = $("#user_divisi").val();
 
             if (!$(this).hasClass("pCurrent")) {
                 $(".overlay-loading").show();
                 if (currPage != clickPage) {
                     $('#tableMembersLists').DataTable().destroy();
-                    fetchTable(user_role, clickPage, limit, true);
+                    fetchTable(user_divisi, clickPage, limit, true);
                     setTimeout(function() {
                         $(".overlay-loading").hide();
                     }, 200);
@@ -300,13 +301,13 @@
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = parseInt(currPage) - 1;
             var limit = $("#pageLength").find(":selected").val();
-            var user_role = $("#user_role").val();
+            var user_divisi = $("#user_divisi").val();
 
             if (!$(this).hasClass("bDisabled")) {
                 $(".overlay-loading").show();
                 if (currPage != clickPage && $("#bPaginationPrev").attr("class") !== "bDisabled") {
                     $('#tableMembersLists').DataTable().destroy();
-                    fetchTable(user_role, clickPage, limit, true);
+                    fetchTable(user_divisi, clickPage, limit, true);
                     setTimeout(function() {
                         $(".overlay-loading").hide();
                     }, 200);
@@ -318,13 +319,13 @@
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = parseInt(currPage) + 1;
             var limit = $("#pageLength").find(":selected").val();
-            var user_role = $("#user_role").val();
+            var user_divisi = $("#user_divisi").val();
 
             if (!$(this).hasClass("bDisabled")) {
                 $(".overlay-loading").show();
                 if (currPage != clickPage && $("#bPaginationNext").attr("class") !== "bDisabled") {
                     $('#tableMembersLists').DataTable().destroy();
-                    fetchTable(user_role, clickPage, limit, true);
+                    fetchTable(user_divisi, clickPage, limit, true);
                     setTimeout(function() {
                         $(".overlay-loading").hide();
                     }, 200);
@@ -336,12 +337,64 @@
             $("#pageLength option").removeAttr("selected");
             $("#pageLength").val($("#pageLength option:first").val());
             $("#pageLength").find("option[value='" + $("#pageLength option:first").val() + "']").attr("selected", true);
-            $("#user_role option").removeAttr("selected");
-            $("#user_role").val($("#user_role option:first").val());
-            $("#user_role").find("option[value='" + $("#user_role option:first").val() + "']").attr("selected", true);
+            $("#user_divisi option").removeAttr("selected");
+            $("#user_divisi").val($("#user_divisi option:first").val());
+            $("#user_divisi").find("option[value='" + $("#user_divisi option:first").val() + "']").attr("selected", true);
             $('#tableMembersLists').DataTable().destroy();
             fetchTable("", 1, 1, true);
 
+        })
+
+        $("#searchList").keypress(function(e) {
+            var key = e.which;
+            if (key == 13) // the enter key code
+            {
+                var query = $(this).val();
+                var limit = $('#pageLength').find(":selected").val();
+                var start = ($(".paginationX.pCurrent").attr("data-start"));
+                var params = {
+                    query: query
+                };
+
+                $.ajax({
+                    url: "<?php echo base_url("performances/getData"); ?>",
+                    type: "POST",
+                    data: {
+                        params: params,
+                        start: start,
+                        limit: limit
+                    },
+                    dataType: "json",
+                    success: function(res) {
+                        var user_divisi = $("#user_divisi").val();
+                        $('#tableMembersLists').DataTable().destroy();
+                        fetchTable(user_divisi, 1, limit, true, params);
+                    }
+
+
+                });
+            }
+        })
+
+        $(".btn-export").on("click", function() {
+            $('.overlay-loading').show();
+            $.ajax({
+                url: '<?php echo base_url("main/exports/performances"); ?>',
+                type: "post",
+                dataType: "json",
+                success: function(response) {
+                    $('.overlay-loading').hide();
+                    if (response.result == 200) {
+                        window.open(response.data.item, '_blank');
+                    } else {
+                        show_notif("error", response.message)
+                    }
+                },
+                error: function(error) {
+                    $('.overlay-loading').hide();
+                    show_notif("error", "Gagal login! Ulangi beberapa saat lagi")
+                }
+            })
         })
     </script>
 </body>

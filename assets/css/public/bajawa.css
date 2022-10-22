@@ -113,6 +113,10 @@
 	table.dataTable>thead .sorting_disabled:after {
 		display: none !important;
 	}
+	table.dataTable .btn {
+		padding: 3px 7px;
+		border-radius: 5px;
+	}
 
 .dataTables_paginate .paginate_button {
 	padding: 0 10px;
@@ -172,7 +176,7 @@ div.dataTables_wrapper div.dataTables_paginate {
 	.toolbar-card-item .tci {
 		border-radius: 10px;
 		margin: 0;
-		padding: 15px;
+		padding: 15px 15px 15px 10px;
 	}
 	.toolbar-card-item .tci-blue {
 		background: linear-gradient(73.75deg, #4880FF 4.37%, #4C61CC 91.96%);
@@ -188,6 +192,7 @@ div.dataTables_wrapper div.dataTables_paginate {
 	}
 		.toolbar-card-item .tci-info {
 			text-align: right;
+			padding-right: 0;
 		}
 			.toolbar-card-item .tci i {
 				color: #A7E5AD;
@@ -363,6 +368,14 @@ div.dataTables_wrapper div.dataTables_paginate {
 	.comment-box .form-control {
 		background-color: #FFF !important;
 	}
+		.comment-box .form-control:disabled {
+			background-color: #e9ecef !important;
+		}
+		.comment-box #button-add-comment.disabled > .input-group-text,
+		.comment-box .button-add-reply.disabled > .input-group-text {
+			background-color: #e9ecef !important;
+			cursor: default;
+		}
 	.comment-box .comment-reply {
 		margin-top: 10px;
 		padding-left: 10px;
@@ -428,7 +441,10 @@ div.dataTables_wrapper div.dataTables_paginate {
 				transform: rotate(90deg);
 				margin-right: 5px;
 			}
-
+	.comment-box .comment-btn-all {
+		color: #3A96EC;
+		cursor: pointer;
+	}
 
 
 @media (max-width: 576px) {

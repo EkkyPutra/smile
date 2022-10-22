@@ -73,6 +73,7 @@ class Activities extends web_base
         $data["totalPage"] = $totalPage;
         $data["comments"] = $comments;
         $data["isMobile"] = $this->agent->is_mobile();
+        $data["user_access"] = $this->smile_session;
 
         $this->load->view("public/project_activity", $data);
     }
@@ -81,6 +82,8 @@ class Activities extends web_base
     {
         header('Content-Type: application/json');
         $url = parent::build_api_url('activities/get/lists');
+        $user_access = $this->smile_session;
+        $access_level = $user_access["access_level"];
         $start = !is_null($this->input->post("start")) ? $this->input->post("start", true) : 1;
         $limit = !is_null($this->input->post("limit")) ? $this->input->post("limit", true) : 10;
         $project_id = !is_null($this->input->post("project_id")) ? $this->input->post("project_id", true) : 10;
@@ -90,6 +93,16 @@ class Activities extends web_base
             "page" => $start,
             "limit" => $limit
         ];
+
+        $params = $this->input->post("params");
+        $data["query"] = !is_null($params) && isset($params["query"]) ? $params["query"] : "";
+        $progress = (!is_null($params) && !empty($params["progress"])) ? $params["progress"] : "";
+        $lastupdate = (!is_null($params) && !empty($params["lastupdate"])) ? $params["lastupdate"] : "";
+        if (!empty($progress))
+            $data["progress"] = explode("-", $progress);
+
+        if (!empty($lastupdate))
+            $data["lastupdate"] = explode("-", trim($lastupdate));
 
         $response = $this->somplakapi->run_curl_api($url, $data);
         $resApi = json_decode($response);
@@ -124,10 +137,17 @@ class Activities extends web_base
                                         <div class="progress-bar ' . $bgProgressBar . ' progress-bar-striped" role="progressbar" style="width: ' . $data->progress . '%;" aria-valuenow="' . $data->progress . '" aria-valuemin="0" aria-valuemax="100">' . $data->progress . '%</div>
                                        </div>';
                     $data->evidence = "<a class='btn btn-outline-primary mr-1' href='" . $data->evidence . "' target='_blank'><i class='fas fa-link'></i></a>";
-                    $data->action = "<button type='button' class='btn btn-outline-warning mr-1' data-toggle='modal' data-target='#modal-activity' onclick='editActivity(\"" . $dataId . "\");'><i class='far fa-edit'></i></button>
-                                     <button type='button' class='btn btn-outline-danger' onclick='removeActivity(\"" . $dataId . "\");'><i class='far fa-trash-alt'></i></button>";
+                    $data->action = "";
+
+                    if ($access_level->activity->is_super == 1 || ($access_level->activity->as_divisi == 1 && $user_access["divisi"] == $data->project_divisi) || $access_level->activity->access->edit == 1)
+                        $data->action .= "<button type='button' class='btn btn-outline-warning mr-1' data-toggle='modal' data-target='#modal-activity' onclick='editActivity(\"" . $dataId . "\");'><i class='far fa-edit'></i></button>";
+
+                    if ($access_level->activity->is_super == 1 || ($access_level->activity->as_divisi == 1 && $user_access["divisi"] == $data->project_divisi) || $access_level->activity->access->delete == 1)
+                        $data->action .= "<button type='button' class='btn btn-outline-danger' onclick='removeActivity(\"" . $dataId . "\");'><i class='far fa-trash-alt'></i></button>";
+                    
                     $res[] = $data;
 
+                    $dataMobile["id"] = ($key + 1);
                     $dataMobile["data"] = ''.
                         '<div class="datatable-activity-mobile">'.
                         '   <label class="title">' . $data->name . '</label>'.

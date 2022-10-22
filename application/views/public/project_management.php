@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="<?php echo base_url("assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css"); ?>">
     <!-- Tags Input -->
     <link rel="stylesheet" href="<?php echo base_url("assets/plugins/jquery-ui/jquery-ui.min.css"); ?>" type="text/css">
+    <!-- Date Range Picker -->
+    <link rel="stylesheet" href="<?php echo base_url("assets/plugins/daterangepicker/daterangepicker.css"); ?>" type="text/css">
 </head>
 
 <body class="bg-grey">
@@ -28,7 +30,7 @@
             <div class="card card-default" id="project-activity">
                 <!-- .card-header -->
                 <div class="card-header no-sub">
-                    <div class="seg-tools">
+                    <div class="seg-tools" onclick="window.location.href='<?php echo base_url(); ?>'">
                         <i class="fas fa-arrow-left"></i>
                     </div>
                     <div class="row">
@@ -36,7 +38,11 @@
                         <?php if (!$is_performa) { ?>
                             <div class="toolHead col-sm-6 col-4 float-right text-right mb-1">
                                 <button class="btn btn-export"><i class="fas fa-upload"></i> <span>Export File</span></button>
-                                <button class="btn btn-tambah" data-toggle="modal" data-target="#modal-proyek"><i class="fas fa-plus"></i><span>Tambah Proyek</span></button>
+                                <?php
+                                $access_level = $user_access["access_level"];
+                                if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && $access_level->project->access->add == 1))
+                                    echo '<button class="btn btn-tambah" data-toggle="modal" data-target="#modal-proyek"><i class="fas fa-plus"></i><span>Tambah Proyek</span></button>';
+                                ?>
                             </div>
                         <?php } ?>
                     </div>
@@ -100,7 +106,7 @@
                                         <span class="col-3"><i class="fas fa-hourglass-half"></i></span>
                                         <div class="tci-info col-12 col-md-9">
                                             <span>Proyek On Track</span>
-                                            <h1>10</h1>
+                                            <h1><?php echo $projectCount->onTrack; ?></h1>
                                         </div>
                                     </div>
                                 </div>
@@ -109,7 +115,7 @@
                                         <span class="col-3"><i class="fas fa-calendar-times"></i></span>
                                         <div class="tci-info col-12 col-md-9">
                                             <span>Proyek Terlambat</span>
-                                            <h1>3</h1>
+                                            <h1><?php echo $projectCount->late; ?></h1>
                                         </div>
                                     </div>
                                 </div>
@@ -118,7 +124,7 @@
                                         <span class="col-3"><i class="fas fa-calendar-check"></i></span>
                                         <div class="tci-info col-12 col-md-9">
                                             <span>Proyek Selesai</span>
-                                            <h1>8</h1>
+                                            <h1><?php echo $projectCount->complete; ?></h1>
                                         </div>
                                     </div>
                                 </div>
@@ -127,7 +133,7 @@
                                         <span class="col-3"><i class="fas fa-signal"></i></span>
                                         <div class="tci-info col-12 col-md-9">
                                             <span>Total Proyek</span>
-                                            <h1>13</h1>
+                                            <h1><?php echo $projectCount->total; ?></h1>
                                         </div>
                                     </div>
                                 </div>
@@ -197,33 +203,98 @@
                         <input type="hidden" id="totalPage" name="totalPage" value="<?php echo $totalPage; ?>" />
                         <div class="toolbar-select">
                             <span><i class="far fa-eye"></i> Show</span>
-                            <select id="pageLength">
+                            <select id="pageLength" class="form-control">
                                 <option value="10">10 Rows</option>
                                 <option value="25">25 Rows</option>
                                 <option value="50">50 Rows</option>
                                 <option value="100">100 Rows</option>
                             </select>
                         </div>
-                        <!-- <div class="toolbar-select">
-                            <span><i class="fas fa-filter"></i> Filters</span>
-                            <select id='user_role'>
-                                <option value=''>-- Role --</option>
-                                <?php
-                                foreach ($usersRole as $role) {
-                                    echo "<option value='" . strtolower($role->value) . "'>" . $role->value . "</option>";
-                                }
-                                ?>
-                            </select>
-                            <span id="resetFilter"><i class="fas fa-undo"></i> Reset</span>
-                        </div>
+                        <?php if ($isMobile) { ?>
+                            <div class="toolbar-select">
+                                <span><i class="fas fa-filter"></i> Filters</span>
+                                <select name="filterParams[]" id="projectType" class="form-control select-filter">
+                                    <option value=''>Tipe</option>
+                                    <?php
+                                    foreach ($projectType as $type) {
+                                        echo "<option value='" . strtolower($type->value) . "'>" . $type->value . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <select name="filterParams[]" id="projectPriority" class="form-control select-filter">
+                                    <option value=''>Priority</option>
+                                    <option value="top">Top</option>
+                                    <option value="nontop">Non Top</option>
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="toolbar-select">
+                                <input type="text" name="filterParams[]" id="filterDeadline" class="form-control filterDeadline" placeholder="-- Batas Waktu --">
+                                <select id="user_divisi" class="form-control select-filter">
+                                    <option value=''>Divisi</option>
+                                    <?php
+                                    foreach ($usersDivisi as $divisi) {
+                                        echo "<option value='" . strtolower($divisi->value) . "'>" . $divisi->value . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <select id="project_progress" class="form-control select-filter">
+                                    <option value=''>Progress</option>
+                                    <option value="76-100">76% - 100%</option>
+                                    <option value="51-75">51% - 75%</option>
+                                    <option value="26-50">26% - 50%</option>
+                                    <option value="0-25">0% - 25%</option>
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="toolbar-select">
+                                <span id="resetFilter"><i class="fas fa-undo"></i> Reset Filter</span>
+                            </div>
+                        <?php } else { ?>
+                            <div class="toolbar-select">
+                                <span><i class="fas fa-filter"></i> Filters</span>
+                                <select name="filterParams[]" id="projectType" class="form-control select-filter">
+                                    <option value=''>Tipe</option>
+                                    <?php
+                                    foreach ($projectType as $type) {
+                                        echo "<option value='" . strtolower($type->value) . "'>" . $type->value . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <select name="filterParams[]" id="projectPriority" class="form-control select-filter">
+                                    <option value=''>Priority</option>
+                                    <option value="top">Top</option>
+                                    <option value="nontop">Non Top</option>
+                                    ?>
+                                </select>
+                                <input type="text" name="filterParams[]" id="filterDeadline" class="form-control filterDeadline" placeholder="-- Batas Waktu --">
+                                <select id="user_divisi" class="form-control select-filter">
+                                    <option value=''>Divisi</option>
+                                    <?php
+                                    foreach ($usersDivisi as $divisi) {
+                                        echo "<option value='" . strtolower($divisi->value) . "'>" . $divisi->value . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <select id="project_progress" class="form-control select-filter">
+                                    <option value=''>Progress</option>
+                                    <option value="76-100">76% - 100%</option>
+                                    <option value="51-75">51% - 75%</option>
+                                    <option value="26-50">26% - 50%</option>
+                                    <option value="0-25">0% - 25%</option>
+                                    ?>
+                                </select>
+                                <span id="resetFilter"><i class="fas fa-undo"></i> Reset Filter</span>
+                            </div>
+                        <?php } ?>
                         <div class="toolbar-search float-right">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input type="text" name="search" id="search" class="form-control" placeholder="Search Lists">
+                                <input type="text" name="search" id="searchList" class="form-control" autocomplete="off" placeholder="Search Lists">
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                     <?php if ($this->agent->is_mobile()) { ?>
                         <table id="tableProjectsLists" class="table table-borderless"></table>
@@ -413,10 +484,12 @@
     <!-- bs-custom-file-input -->
     <script src="<?php echo base_url("assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js"); ?>"></script>
     <script src="<?php echo base_url("assets/plugins/jquery-validation/jquery.validate.min.js"); ?>"></script>
+    <!-- Daterangepicker -->
+    <script src="<?php echo base_url("assets/plugins/daterangepicker/daterangepicker.js"); ?>"></script>
     <script>
         var $projectTable = $('#tableProjectsLists');
 
-        function fetchTable(user_role, page, limit, refresh = false) {
+        function fetchTable(user_divisi, page, limit, refresh = false, params = []) {
             var limit = $('#pageLength').find(":selected").val();
             var start = (page == 0) ? ($(".paginationX.pCurrent").attr("data-start")) : page;
             var infoX = ((parseInt(start) - 1) * limit) + 1;
@@ -428,7 +501,7 @@
                 url: "<?php echo base_url("projects/getData"); ?>",
                 type: "POST",
                 data: {
-                    user_role: user_role,
+                    params: params,
                     start: start,
                     limit: limit
                 },
@@ -453,9 +526,14 @@
 
                     if (res.isMobile) {
                         var tableColumns = [{
-                            data: "data",
-                            width: "100%"
-                        }];
+                                data: "id",
+                                visible: false
+                            },
+                            {
+                                data: "data",
+                                width: "100%"
+                            }
+                        ];
                     } else {
                         var tableColumns = [{
                                 data: "id",
@@ -497,7 +575,7 @@
                                 data: "action",
                                 width: "20%",
                                 orderable: false,
-                                className: "pr-0 pt-3"
+                                className: "pr-0 pt-3 text-center"
                             }
                         ];
                     }
@@ -568,35 +646,68 @@
         }
 
         $(document).ready(function() {
-            fetchTable($("#user_role").val(), 1, $("#pageLength").find(":selected").val(), true);
+            fetchTable("", 1, $("#pageLength").find(":selected").val(), true);
         })
 
         $("#pageLength").on("change", function(e) {
             e.preventDefault();
 
             var limit = $(this).val();
-            var user_role = $("#user_role").val();
+            var user_divisi = $("#user_divisi").val();
             $(".overlay-loading").show();
             $("#pageLength option").removeAttr("selected");
             $("#pageLength").find("option[value='" + limit + "']").attr("selected", true);
             $('#tableProjectsLists').DataTable().destroy();
-            fetchTable(user_role, 1, limit, true);
+            fetchTable(user_divisi, 1, limit, true);
             setTimeout(function() {
                 $(".overlay-loading").hide();
             }, 200);
+        })
+
+        $(".select-filter").on("change", function(e) {
+            var selected = $(".select-filter option:selected").map(function() {
+                return this.value
+            }).get();
+
+            var params = {
+                type: selected[0],
+                priority: selected[1],
+                divisi: selected[2],
+                progress: selected[3],
+                query: $("#searchList").val(),
+                deadline: $("#filterDeadline").val()
+            }
+            var filterDeadline = $("#filterDeadline").attr("data-onchange-date");
+            // console.log($("#filterDeadline").attr("data-onchange-date"));
+
+            var query = $(this).val();
+            var limit = $('#pageLength').find(":selected").val();
+            var start = ($(".paginationX.pCurrent").attr("data-start"));
+
+            $('#tableProjectsLists').DataTable().destroy();
+            fetchTable("", 1, limit, true, params);
+        });
+
+        $(document).on("click", "#resetFilter", function() {
+            $("#pageLength option").removeAttr("selected");
+            $("#pageLength").val($("#pageLength option:first").val());
+            $("#pageLength").find("option[value='" + $("#pageLength option:first").val() + "']").attr("selected", true);
+            $(".select-filter option").removeAttr("selected");
+            $('#tableProjectsLists').DataTable().destroy();
+            fetchTable("", 1, 1, true);
         })
 
         $(document).on("click", ".paginationX", function() {
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = $(this).attr("data-page");
             var limit = $("#pageLength").find(":selected").val();
-            var user_role = $("#user_role").val();
+            var user_divisi = $("#user_divisi").val();
 
             if (!$(this).hasClass("pCurrent")) {
                 $(".overlay-loading").show();
                 if (currPage != clickPage) {
                     $('#tableProjectsLists').DataTable().destroy();
-                    fetchTable(user_role, clickPage, limit, true);
+                    fetchTable(user_divisi, clickPage, limit, true);
                     setTimeout(function() {
                         $(".overlay-loading").hide();
                     }, 200);
@@ -608,13 +719,13 @@
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = parseInt(currPage) - 1;
             var limit = $("#pageLength").find(":selected").val();
-            var user_role = $("#user_role").val();
+            var user_divisi = $("#user_divisi").val();
 
             if (!$(this).hasClass("bDisabled")) {
                 $(".overlay-loading").show();
                 if (currPage != clickPage && $("#bPaginationPrev").attr("class") !== "bDisabled") {
                     $('#tableProjectsLists').DataTable().destroy();
-                    fetchTable(user_role, clickPage, limit, true);
+                    fetchTable(user_divisi, clickPage, limit, true);
                     setTimeout(function() {
                         $(".overlay-loading").hide();
                     }, 200);
@@ -626,19 +737,46 @@
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = parseInt(currPage) + 1;
             var limit = $("#pageLength").find(":selected").val();
-            var user_role = $("#user_role").val();
+            var user_divisi = $("#user_divisi").val();
 
             if (!$(this).hasClass("bDisabled")) {
                 $(".overlay-loading").show();
                 if (currPage != clickPage && $("#bPaginationNext").attr("class") !== "bDisabled") {
                     $('#tableProjectsLists').DataTable().destroy();
-                    fetchTable(user_role, clickPage, limit, true);
+                    fetchTable(user_divisi, clickPage, limit, true);
                     setTimeout(function() {
                         $(".overlay-loading").hide();
                     }, 200);
                 }
             }
         });
+
+        $("#filterDeadline").on("focus", function() {
+            $("#filterDeadline").attr("data-onchange-date", "false");
+            $(this).daterangepicker({
+                locale: 'id',
+                format: 'DD-MM-YYYY'
+            }, function(start, end) {
+                var selected = $(".select-filter option:selected").map(function() {
+                    return this.value
+                }).get();
+
+                var params = {
+                    type: selected[0],
+                    priority: selected[1],
+                    divisi: selected[2],
+                    progress: selected[3],
+                    query: $("#searchList").val(),
+                    deadline: start.format("MM/DD/YYYY") + ' - ' + end.format("MM/DD/YYYY")
+                }
+
+                var limit = $('#pageLength').find(":selected").val();
+                var start = ($(".paginationX.pCurrent").attr("data-start"));
+
+                $('#tableProjectsLists').DataTable().destroy();
+                fetchTable("", 1, limit, true, params);
+            });
+        })
 
         $(function() {
             //Date picker
@@ -705,7 +843,7 @@
                                 $("#modal-close").click();
                                 show_notif('success', response.data.name);
                                 $("#tableProjectsLists").DataTable().destroy();
-                                fetchTable($("#user_role").val(), 1, $("#pageLength").find(":selected").val(), true);
+                                fetchTable($("#user_divisi").val(), 1, $("#pageLength").find(":selected").val(), true);
                             } else {
                                 $('.overlay-loading').hide();
                                 show_notif("error", response.message)
@@ -731,6 +869,14 @@
                     },
                     project_type: {
                         required: "Silahkan pilih tipe proyek"
+                    },
+                    project_link: {
+                        url: "Silahkan masukkan URL yang valid. Cth : http://www.telkomsel.com"
+                    }
+                },
+                rules: {
+                    project_link: {
+                        url: true
                     }
                 },
                 errorElement: 'span',
@@ -773,7 +919,7 @@
                                 $('.overlay-loading').hide();
                                 if (response.result == 200) {
                                     $("#tableProjectsLists").DataTable().destroy();
-                                    fetchTable($("#user_role").val(), 1, $("#pageLength").find(":selected").val(), true);
+                                    fetchTable($("#user_divisi").val(), 1, $("#pageLength").find(":selected").val(), true);
                                     show_notif('success', response.data.name);
                                 }
                             }
@@ -911,6 +1057,54 @@
 
             $("#row-pic-" + id).remove();
         }
+
+        $("#searchList").keypress(function(e) {
+            var key = e.which;
+            if (key == 13) // the enter key code
+            {
+                var query = $(this).val();
+                var selected = $(".select-filter option:selected").map(function() {
+                    return this.value
+                }).get();
+
+                var params = {
+                    query: query,
+                    type: selected[0],
+                    priority: selected[1],
+                    divisi: selected[2],
+                    progress: selected[3],
+                    deadline: $("#filterDeadline").val()
+                }
+
+                console.log(params);
+                var limit = $('#pageLength').find(":selected").val();
+                var start = ($(".paginationX.pCurrent").attr("data-start"));
+
+                $('#tableProjectsLists').DataTable().destroy();
+                fetchTable("", 1, limit, true, params);
+            }
+        })
+
+        $(".btn-export").on("click", function() {
+            $('.overlay-loading').show();
+            $.ajax({
+                url: '<?php echo base_url("main/exports/projects"); ?>',
+                type: "post",
+                dataType: "json",
+                success: function(response) {
+                    $('.overlay-loading').hide();
+                    if (response.result == 200) {
+                        window.open(response.data.item, '_blank');
+                    } else {
+                        show_notif("error", response.message)
+                    }
+                },
+                error: function(error) {
+                    $('.overlay-loading').hide();
+                    show_notif("error", "Gagal login! Ulangi beberapa saat lagi")
+                }
+            })
+        })
     </script>
 
 </body>

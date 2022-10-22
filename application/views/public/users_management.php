@@ -21,11 +21,10 @@
     </div>
     <div class="content">
         <div class="profile-page">
-            <!-- SELECT2 EXAMPLE -->
             <div class="card card-default">
                 <!-- .card-header -->
                 <div class="card-header no-sub">
-                    <div class="seg-tools">
+                    <div class="seg-tools" onclick="window.location.href='<?php echo base_url(); ?>'">
                         <i class="fas fa-arrow-left"></i>
                     </div>
                     <h3 class="seg-title">User Management</h3>
@@ -44,16 +43,16 @@
                         <input type="hidden" id="totalPage" name="totalPage" value="<?php echo $totalPage; ?>" />
                         <div class="toolbar-select">
                             <span><i class="far fa-eye"></i> Show</span>
-                            <select id="pageLength">
+                            <select id="pageLength" class="form-control">
                                 <option value="10">10 Rows</option>
                                 <option value="25">25 Rows</option>
                                 <option value="50">50 Rows</option>
                                 <option value="100">100 Rows</option>
                             </select>
                         </div>
-                        <div class="toolbar-select">
+                        <div class="toolbar-select row">
                             <span><i class="fas fa-filter"></i> Filters</span>
-                            <select id='user_role'>
+                            <select id='user_role' class="form-control">
                                 <option value=''>-- Role --</option>
                                 <?php
                                 foreach ($usersRole as $role) {
@@ -61,14 +60,14 @@
                                 }
                                 ?>
                             </select>
-                            <span id="resetFilter"><i class="fas fa-undo"></i> Reset</span>
+                            <span id="resetFilter"><i class="fas fa-undo"></i> Reset Filter</span>
                         </div>
                         <div class="toolbar-search float-right">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input type="text" name="search" id="search" class="form-control" placeholder="Search Lists">
+                                <input type="text" name="search" id="searchList" class="form-control" autocomplete="off" placeholder="Search Lists">
                             </div>
                         </div>
                     </div>
@@ -124,7 +123,7 @@
                                 <div class="form-group col-12">
                                     <label for="user_divisi">Divisi</label>
                                     <div class="input-group">
-                                        <select name="user_divisi" id="user_divisi" class="form-control" autocomplete="off" required="required">
+                                        <select name="user_divisi" id="user_divisi" class="form-control select2" autocomplete="off" required="required">
                                             <option value="">-- Pilih Divisi --</option>
                                             <?php
                                             if (!is_null($usersDivisi)) {
@@ -236,13 +235,61 @@
     <script src="<?php echo base_url("assets/plugins/datatables-buttons/js/buttons.print.min.js"); ?>"></script>
     <!-- BootBox -->
     <script src="<?php echo base_url("assets/js/bootstarp-bootbox.min.js"); ?>"></script>
+    <!-- Select2 -->
+    <script src="<?php echo base_url("assets/plugins/select2/js/select2.full.min.js"); ?>"></script>
     <!-- bs-custom-file-input -->
     <script src="<?php echo base_url("assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js"); ?>"></script>
     <script src="<?php echo base_url("assets/plugins/jquery-validation/jquery.validate.min.js"); ?>"></script>
     <script>
         var $userTable = $('#tableUsersLists');
+        var isMobile = "<?php echo $isMobile; ?>";
 
-        function fetchTable(user_role, page, limit, refresh = false) {
+        var tableColumns;
+        if (isMobile == 1) {
+            tableColumns = [{
+                data: "data",
+                width: "100%"
+            }];
+        } else {
+            tableColumns = [{
+                    data: "id",
+                    width: "5%",
+                    orderable: false
+                },
+                {
+                    data: "avatar_thumb",
+                    width: "10%",
+                    orderable: false
+                },
+                {
+                    data: "name",
+                    width: "25%",
+                    className: "pt-4"
+                },
+                {
+                    data: "user_role",
+                    width: "15%",
+                    className: "pt-4"
+                },
+                {
+                    data: "user_divisi",
+                    width: "15%",
+                    className: "pt-4"
+                },
+                {
+                    data: "handphone",
+                    width: "20%",
+                    className: "pt-4"
+                },
+                {
+                    data: "action",
+                    width: "10%",
+                    className: "pt-4"
+                }
+            ]
+        }
+
+        function fetchTable(user_role, page, limit, refresh = false, params = []) {
             var limit = $('#pageLength').find(":selected").val();
             var start = (page == 0) ? ($(".paginationX.pCurrent").attr("data-start")) : page;
             var infoX = ((parseInt(start) - 1) * limit) + 1;
@@ -255,6 +302,7 @@
                 type: "POST",
                 data: {
                     user_role: user_role,
+                    params: params,
                     start: start,
                     limit: limit
                 },
@@ -275,51 +323,6 @@
 
                     if (refresh) {
                         generatePagination(page);
-                    }
-
-                    var tableColumns;
-                    if (res.isMobile) {
-                        tableColumns = [{
-                            data: "data",
-                            width: "100%"
-                        }];
-                    } else {
-                        tableColumns = [{
-                                data: "id",
-                                width: "5%",
-                                orderable: false
-                            },
-                            {
-                                data: "avatar_thumb",
-                                width: "10%",
-                                orderable: false
-                            },
-                            {
-                                data: "name",
-                                width: "25%",
-                                className: "pt-4"
-                            },
-                            {
-                                data: "user_role",
-                                width: "15%",
-                                className: "pt-4"
-                            },
-                            {
-                                data: "user_divisi",
-                                width: "15%",
-                                className: "pt-4"
-                            },
-                            {
-                                data: "handphone",
-                                width: "20%",
-                                className: "pt-4"
-                            },
-                            {
-                                data: "action",
-                                width: "10%",
-                                className: "pt-4"
-                            }
-                        ]
                     }
 
                     $("#tableUsersLists").DataTable({
@@ -471,7 +474,6 @@
             $("#user_role").find("option[value='" + $("#user_role option:first").val() + "']").attr("selected", true);
             $('#tableUsersLists').DataTable().destroy();
             fetchTable("", 1, 1, true);
-
         })
 
         $("#btn-avatar").on("click", function() {
@@ -648,6 +650,56 @@
                 }
             });
         }
+
+        $("#searchList").keypress(function(e) {
+            var key = e.which;
+            if (key == 13) // the enter key code
+            {
+                var query = $(this).val();
+                var limit = $('#pageLength').find(":selected").val();
+                var start = ($(".paginationX.pCurrent").attr("data-start"));
+                var params = {
+                    query: query
+                };
+
+                $.ajax({
+                    url: "<?php echo base_url("users/getData"); ?>",
+                    type: "POST",
+                    data: {
+                        params: params,
+                        start: start,
+                        limit: limit
+                    },
+                    dataType: "json",
+                    success: function(res) {
+                        var user_role = $("#user_role").val();
+                        $('#tableUsersLists').DataTable().destroy();
+                        fetchTable(user_role, 1, limit, true, params);
+                    }
+                });
+            }
+        })
+
+        $(".btn-export").on("click", function() {
+            $('.overlay-loading').show();
+            $.ajax({
+                url: '<?php echo base_url("main/exports/users"); ?>',
+                type: "post",
+                dataType: "json",
+                success: function(response) {
+                    $('.overlay-loading').hide();
+                    if (response.result == 200) {
+                        window.open(response.data.item, '_blank');
+                    } else {
+                        show_notif("error", response.message)
+                    }
+                },
+                error: function(error) {
+                    $('.overlay-loading').hide();
+                    show_notif("error", "Gagal login! Ulangi beberapa saat lagi")
+                }
+            })
+        })
     </script>
 </body>
 

@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="<?php echo base_url("assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css"); ?>">
     <!-- Tags Input -->
     <link rel="stylesheet" href="<?php echo base_url("assets/plugins/jquery-ui/jquery-ui.min.css"); ?>" type="text/css">
+    <!-- Date Range Picker -->
+    <link rel="stylesheet" href="<?php echo base_url("assets/plugins/daterangepicker/daterangepicker.css"); ?>" type="text/css">
 </head>
 
 <body class="bg-grey">
@@ -118,26 +120,44 @@
                             <h3 class="col-6 seg-title">Daftar Aktivitas</h3>
                             <div class="col-6 float-right text-right">
                                 <button class="btn btn-export"><i class="fas fa-upload"></i> <span>Export File</span></button>
-                                <button class="btn btn-tambah" data-toggle="modal" data-target="#modal-activity"><i class="fas fa-plus"></i><span>Tambah Aktivitas</span></button>
+
+                                <?php
+                                $access_level = $user_access["access_level"];
+                                if ($access_level->activity->is_super == 1 || ($access_level->activity->as_divisi == 1 && $access_level->activity->access->add == 1))
+                                    echo '<button class="btn btn-tambah" data-toggle="modal" data-target="#modal-activity"><i class="fas fa-plus"></i><span>Tambah Aktivitas</span></button>';
+                                ?>
                             </div>
                         </div>
 
                         <input type="hidden" id="totalPage" name="totalPage" value="<?php echo $totalPage; ?>" />
                         <div class="toolbar-select">
                             <span><i class="far fa-eye"></i> Show</span>
-                            <select id="pageLength">
+                            <select id="pageLength" class="form-control">
                                 <option value="10">10 Rows</option>
                                 <option value="25">25 Rows</option>
                                 <option value="50">50 Rows</option>
                                 <option value="100">100 Rows</option>
                             </select>
                         </div>
+                        <div class="toolbar-select">
+                            <span><i class="fas fa-filter"></i> Filters</span>
+                            <input type="text" name="filterParams[]" id="filterLastUpdate" class="form-control filterLastUpdate" placeholder="-- Last Update --">
+                            <select id="project_progress" class="form-control select-filter">
+                                <option value=''>Progress</option>
+                                <option value="76-100">76% - 100%</option>
+                                <option value="51-75">51% - 75%</option>
+                                <option value="26-50">26% - 50%</option>
+                                <option value="0-25">0% - 25%</option>
+                                ?>
+                            </select>
+                            <span id="resetFilter"><i class="fas fa-undo"></i> Reset Filter</span>
+                        </div>
                         <div class="toolbar-search float-right">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input type="text" name="search" id="search" class="form-control" placeholder="Search Lists">
+                                <input type="text" name="search" id="searchList" class="form-control" autocomplete="off" placeholder="Search Lists">
                             </div>
                         </div>
                     </div>
@@ -179,14 +199,28 @@
                                             } else {
                                                 echo 0;
                                             }
+
+                                            $access_level = $user_access["access_level"];
+                                            $commentDisable = 'disabled="disabled"';
+                                            $addCommentClass = "disabled";
+                                            $replyDisable = 'disabled="disabled"';
+                                            $addReplyClass = "disabled";
+                                            if ($access_level->comment->is_super == 1 || ($access_level->comment->as_divisi == 1 && $user_access["divisi"] == $projectDetail->project_divisi) || $access_level->comment->access->add == 1) {
+                                                $commentDisable = '';
+                                                $addCommentClass = '';
+                                            }
+                                            if ($access_level->comment->is_super == 1 || ($access_level->comment->as_divisi == 1 && $user_access["divisi"] == $projectDetail->project_divisi) || $access_level->comment->access->reply == 1) {
+                                                $replyDisable = '';
+                                                $addReplyClass = '';
+                                            }
                                             ?>
                                             &nbsp;Comment
                                         </span>
                                     </div>
                                     <div class="form-group col-12 input-group">
                                         <form name="comment-form" id="comment-form">
-                                            <textarea class="form-control" name="comment-text" id="comment-text" rows="3" style="resize: none;"></textarea>
-                                            <div class="input-group-append" id="button-add-comment">
+                                            <textarea class="form-control" name="comment-text" id="comment-text" rows="3" style="resize: none;" <?php echo $commentDisable; ?>></textarea>
+                                            <div class="input-group-append <?php echo $addCommentClass; ?>" id="button-add-comment">
                                                 <div class="input-group-text">
                                                     <i class="fas fa-paper-plane"></i>
                                                 </div>
@@ -196,12 +230,19 @@
                                     <div class="form-group form-comment-seg">
                                         <?php
                                         if (!is_null($comments->items)) {
+                                            $countComment = count($comments->items);
+                                            $xComment = ($countComment > 5) ? $countComment - 5 : 5;
                                             foreach ($comments->items as $keyComment => $comment) {
                                                 $commentInitial = "";
                                                 foreach (explode(" ", $comment->username, 2) as $commentInit) {
                                                     $commentInitial .= substr($commentInit, 0, 1);
                                                 }
-                                                echo '<div class="comment-reply row" id="comment-reply-' . $comment->id . '">';
+
+                                                $hideComment = "";
+                                                if (($keyComment + 1) > 5) {
+                                                    $hideComment = 'style="display:none;"';
+                                                }
+                                                echo '<div class="comment-reply row" id="comment-reply-' . $comment->id . '" ' . $hideComment . '>';
                                                 echo '    <div class="comment-reply-init">';
                                                 echo '        <span>' . $commentInitial . '</span>';
                                                 echo '    </div>';
@@ -212,12 +253,12 @@
                                                 echo '            <p>' . $comment->comment . '</p>';
                                                 echo '        </div>';
                                                 echo '        <div class="comment-reply-info">';
-                                                echo '            <span class="comment-info-date">About 20 hours ago |</span>';
+                                                echo '            <span class="comment-info-date">About ' . $this->myutils->dateDiff(date("Y-m-d H:i:s"), $comment->created, 1) . ' ago |</span>';
                                                 echo '            <span class="comment-info-reply">Reply</span>';
                                                 echo '        </div>';
                                                 echo '        <div class="comment-reply-input input-group">';
-                                                echo '            <input type="text" name="comment-reply-textbox" id="comment-reply-textbox-' . $comment->id . '" class="form-control comment-reply-textbox" data-comment-id="' . $comment->id . '" placeholder="Add Reply" autocomplete="off" required="required" />';
-                                                echo '            <div class="input-group-append button-add-reply" id="button-add-reply" data-reply-id="' . $comment->id . '">';
+                                                echo '            <input type="text" name="comment-reply-textbox" id="comment-reply-textbox-' . $comment->id . '" class="form-control comment-reply-textbox" data-comment-id="' . $comment->id . '" ' . $replyDisable . ' placeholder="Add Reply" autocomplete="off" required="required" />';
+                                                echo '            <div class="input-group-append button-add-reply ' . $addReplyClass . '" id="button-add-reply-' . $comment->id . '" data-reply-id="' . $comment->id . '" onclick="javascript:addCommentReply(\'' . $comment->id . '\')">';
                                                 echo '                <div class="input-group-text">';
                                                 echo '                    <i class="fas fa-paper-plane"></i>';
                                                 echo '                </div>';
@@ -259,7 +300,7 @@
                                                         echo '            <p>' . $reply->comment . '</p>';
                                                         echo '        </div>';
                                                         echo '        <div class="comment-reply-info">';
-                                                        echo '            <span class="comment-info-date">About 20 hours ago |</span>';
+                                                        echo '            <span class="comment-info-date">About ' . $this->myutils->dateDiff(date("Y-m-d H:i:s"), $reply->created, 1) . ' ago |</span>';
                                                         echo '            <span class="comment-info-reply">Reply</span>';
                                                         echo '        </div>';
                                                         echo '    </div>';
@@ -268,6 +309,12 @@
                                                 }
 
                                                 echo '    </div>';
+                                                echo '</div>';
+                                            }
+
+                                            if ($countComment > 5) {
+                                                echo '<div class="comment-btn-all">';
+                                                echo '    <span>Load all ' . ($countComment - 5) . ' comments</span>';
                                                 echo '</div>';
                                             }
                                         }
@@ -356,13 +403,16 @@
     <script src="<?php echo base_url("assets/plugins/datatables-buttons/js/buttons.print.min.js"); ?>"></script>
     <!-- BootBox -->
     <script src="<?php echo base_url("assets/js/bootstarp-bootbox.min.js"); ?>"></script>
+    <script src="<?php echo base_url("assets/plugins/moment/moment.min.js"); ?>"></script>
     <!-- bs-custom-file-input -->
     <script src="<?php echo base_url("assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js"); ?>"></script>
     <script src="<?php echo base_url("assets/plugins/jquery-validation/jquery.validate.min.js"); ?>"></script>
+    <!-- Daterangepicker -->
+    <script src="<?php echo base_url("assets/plugins/daterangepicker/daterangepicker.js"); ?>"></script>
     <script>
         var $projectTable = $('#tableActivitiesLists');
 
-        function fetchTable(user_role, page, limit, refresh = false) {
+        function fetchTable(user_role, page, limit, refresh = false, params = []) {
             var limit = $('#pageLength').find(":selected").val();
             var start = (page == 0) ? ($(".paginationX.pCurrent").attr("data-start")) : page;
             var infoX = ((parseInt(start) - 1) * limit) + 1;
@@ -375,6 +425,7 @@
                 type: "POST",
                 data: {
                     project_id: <?php echo $projectDetail->id; ?>,
+                    params: params,
                     start: start,
                     limit: limit
                 },
@@ -400,6 +451,9 @@
                     var tableColumnDefs;
                     if (res.isMobile) {
                         var tableColumns = [{
+                            data: "id",
+                            visible: false
+                        }, {
                             data: "data",
                             width: "100%"
                         }];
@@ -645,7 +699,13 @@
                         required: "Silahkan masukkan progress aktivitas"
                     },
                     activities_evidence: {
-                        required: "Silahkan masukkan evidence aktivitas"
+                        required: "Silahkan masukkan evidence aktivitas",
+                        url: "Silahkan masukkan URL yang valid. Cth : http://www.telkomsel.com"
+                    }
+                },
+                rules: {
+                    activities_evidence: {
+                        url: true
                     }
                 },
                 errorElement: 'span',
@@ -661,6 +721,71 @@
                 }
             });
         });
+
+        $(".select-filter").on("change", function(e) {
+            var selected = $(".select-filter option:selected").map(function() {
+                return this.value
+            }).get();
+
+            var params = {
+                progress: selected[0],
+                query: $("#searchList").val(),
+                lastupdate: $("#filterLastUpdate").val()
+            }
+
+            var limit = $('#pageLength').find(":selected").val();
+            var start = ($(".paginationX.pCurrent").attr("data-start"));
+
+            $('#tableActivitiesLists').DataTable().destroy();
+            fetchTable("", 1, limit, true, params);
+        });
+
+        $("#filterLastUpdate").on("focus", function() {
+            $(this).daterangepicker({
+                locale: 'id',
+                format: 'DD-MM-YYYY'
+            }, function(start, end) {
+                var selected = $(".select-filter option:selected").map(function() {
+                    return this.value
+                }).get();
+
+                console.log(selected);
+                var params = {
+                    progress: selected[0],
+                    query: $("#searchList").val(),
+                    lastupdate: start.format("MM/DD/YYYY") + ' - ' + end.format("MM/DD/YYYY")
+                }
+
+                var limit = $('#pageLength').find(":selected").val();
+                var start = ($(".paginationX.pCurrent").attr("data-start"));
+
+                $('#tableActivitiesLists').DataTable().destroy();
+                fetchTable("", 1, limit, true, params);
+            });
+        })
+
+        $("#searchList").keypress(function(e) {
+            var key = e.which;
+            if (key == 13) // the enter key code
+            {
+                var query = $(this).val();
+                var selected = $(".select-filter option:selected").map(function() {
+                    return this.value
+                }).get();
+
+                var params = {
+                    progress: selected[0],
+                    query: $("#searchList").val(),
+                    lastupdate: $("#filterLastUpdate").val()
+                }
+
+                var limit = $('#pageLength').find(":selected").val();
+                var start = ($(".paginationX.pCurrent").attr("data-start"));
+
+                $('#tableActivitiesLists').DataTable().destroy();
+                fetchTable("", 1, limit, true, params);
+            }
+        })
 
         function editActivity(id) {
             $("#activitiesForm").each(function() {
@@ -760,19 +885,19 @@
                                 '    <div class="comment-reply-init">' +
                                 '        <span>' + newComment.user_initial + '</span>' +
                                 '    </div>' +
-                                '    <div class="comment-reply-text">' +
+                                '    <div class="comment-reply-text" id="comment-reply-text-' + newComment.id + '">' +
                                 '        <div class="comment-reply-text-box">' +
                                 '            <span class="comment-name">' + newComment.user_name + '</span>' +
                                 '            <span class="comment-role">' + newComment.user_role + ' ' + newComment.user_divisi + '</span>' +
                                 '            <p>' + newComment.comment + '</p>' +
                                 '        </div>' +
                                 '        <div class="comment-reply-info">' +
-                                '            <span class="comment-info-date">About 20 hours ago |</span>' +
+                                '            <span class="comment-info-date">About a few seconds ago |</span>' +
                                 '            <span class="comment-info-reply">Reply</span>' +
                                 '        </div>' +
                                 '        <div class="comment-reply-input input-group">' +
-                                '            <input type="text" name="comment-reply-textbox" id="comment-reply-textbox" class="form-control comment-reply-textbox" placeholder="Add Reply" autocomplete="off" required="required" />' +
-                                '            <div class="input-group-append">' +
+                                '            <input type="text" name="comment-reply-textbox" id="comment-reply-textbox-' + newComment.id + '" class="form-control comment-reply-textbox" placeholder="Add Reply" data-comment-id="' + newComment.id + '" placeholder="Add Reply" autocomplete="off" required="required" />' +
+                                '            <div class="input-group-append button-add-reply" id="button-add-reply-' + newComment.id + '" data-reply-id="' + newComment.id + '" onclick="javascript:addCommentReply(\'' + newComment.id + '\')">' +
                                 '                <div class="input-group-text">' +
                                 '                    <i class="fas fa-paper-plane"></i>' +
                                 '                </div>' +
@@ -795,8 +920,8 @@
             }
         })
 
-        $(".button-add-reply").on("click", function() {
-            var comment_id = $(this).attr("data-reply-id");
+        function addCommentReply(comment_id) {
+            // var comment_id = $(this).attr("data-reply-id");
             var comment = $("#comment-reply-textbox-" + comment_id).val();
 
             if (comment !== "") {
@@ -820,14 +945,14 @@
                                 '    <div class="comment-reply-init">' +
                                 '        <span>' + newReply.user_initial + '</span>' +
                                 '    </div>' +
-                                '    <div class="comment-reply-text">' +
+                                '    <div class="comment-reply-text" id="comment-reply-' + newComment.id + '">' +
                                 '        <div class="comment-reply-text-box">' +
                                 '            <span class="comment-name">' + newReply.user_name + '</span>' +
                                 '            <span class="comment-role">' + newReply.user_divisi + '&nbsp;' + newReply.user_role + '</span>' +
                                 '            <p>' + newReply.comment + '</p>' +
                                 '        </div>' +
                                 '        <div class="comment-reply-info">' +
-                                '            <span class="comment-info-date">About 20 hours ago |</span>' +
+                                '            <span class="comment-info-date">About a few seconds ago |</span>' +
                                 '            <span class="comment-info-reply">Reply</span>' +
                                 '        </div>' +
                                 '    </div>' +
@@ -844,13 +969,39 @@
                     }
                 });
             }
-        })
+        }
 
         $(".comment-btn-level").on("click", function() {
             var comment_id = $(this).attr("data-comment-id");
 
             $(".comment-reply [data-comment-id='" + comment_id + "']").show();
             $(this).hide();
+        })
+
+        $(".comment-btn-all").on("click", function() {
+            $(".comment-reply").show();
+            $(".comment-btn-all").hide();
+        })
+
+        $(".btn-export").on("click", function() {
+            $('.overlay-loading').show();
+            $.ajax({
+                url: '<?php echo base_url("main/exports/activities/" . $projectDetail->slug); ?>',
+                type: "post",
+                dataType: "json",
+                success: function(response) {
+                    $('.overlay-loading').hide();
+                    if (response.result == 200) {
+                        window.open(response.data.item, '_blank');
+                    } else {
+                        show_notif("error", response.message)
+                    }
+                },
+                error: function(error) {
+                    $('.overlay-loading').hide();
+                    show_notif("error", "Gagal login! Ulangi beberapa saat lagi")
+                }
+            })
         })
     </script>
 

@@ -40,8 +40,22 @@ class Projects extends web_base
         $resApiProejctType = json_decode($responseProejctType);
 
         $urlDivisi = parent::build_api_url("masters/get/division");
-        $responseDivisi = $this->somplakapi->run_curl_api($urlDivisi, []);
+        if ($this->access_level->project->is_super == 1) {
+            $paramsDivisi["all_divisi"] = true;
+        } else if ($this->access_level->project->is_super == 0 && $this->access_level->project->as_divisi == 1) {
+            $paramsDivisi["all_disivi"] = false;
+            $paramsDivisi["user_divisi"] = $this->smile_session["divisi"];
+        }
+        $responseDivisi = $this->somplakapi->run_curl_api($urlDivisi, $paramsDivisi);
         $resApiDivisi = json_decode($responseDivisi);
+
+        $urlProjectType = parent::build_api_url("masters/get/project");
+        $responseProjectType = $this->somplakapi->run_curl_api($urlProjectType, []);
+        $resApiProjectType = json_decode($responseProjectType);
+
+        $urlProjectCount = parent::build_api_url("projects/get/count");
+        $responseProejctCount = $this->somplakapi->run_curl_api($urlProjectCount, []);
+        $resApiProejctCount = json_decode($responseProejctCount);
 
         $projectType = null;
         if ($resApiProejctType->result == 200)
@@ -51,16 +65,26 @@ class Projects extends web_base
         if ($resApiDivisi->result == 200)
             $usersDivisi = $resApiDivisi->data->item;
 
+        $projectType = null;
+        if ($resApiProjectType->result == 200)
+            $projectType = $resApiProjectType->data->item;
+
         $totalPage = 0;
         if ($resApi->result == 200) {
             $totalPage = $resApi->data->totalPage;
         }
+
+        $projectCount = null;
+        if ($resApiProejctCount->result == 200)
+            $projectCount = $resApiProejctCount->data->item;
 
         $data["is_performa"] = false;
         $data["projectType"] = $projectType;
         $data["usersDivisi"] = $usersDivisi;
         $data["totalPage"] = $totalPage;
         $data["isMobile"] = $this->agent->is_mobile();
+        $data["user_access"] = $this->smile_session;
+        $data["projectCount"] = $projectCount;
 
         $this->load->view("public/project_management", $data);
     }
@@ -69,6 +93,8 @@ class Projects extends web_base
     {
         header('Content-Type: application/json');
         $url = parent::build_api_url('projects/get/lists');
+        $user_access = $this->smile_session;
+        $access_level = $user_access["access_level"];
         $start = !is_null($this->input->post("start")) ? $this->input->post("start", true) : 1;
         $limit = !is_null($this->input->post("limit")) ? $this->input->post("limit", true) : 10;
 
@@ -76,6 +102,19 @@ class Projects extends web_base
             "page" => $start,
             "limit" => $limit
         ];
+
+        $params = $this->input->post("params");
+        $data["type"] = !is_null($params) && isset($params["type"]) ? $params["type"] : "";
+        $data["priority"] = !is_null($params) && isset($params["priority"]) ? ($params["priority"] == "top" ? 1 : 0) : -1;
+        $data["divisi"] = !is_null($params) && isset($params["divisi"]) ? $params["divisi"] : "";
+        $data["query"] = !is_null($params) && isset($params["query"]) ? $params["query"] : "";
+        $progress = (!is_null($params) && !empty($params["progress"])) ? $params["progress"] : "";
+        $deadline = (!is_null($params) && !empty($params["deadline"])) ? $params["deadline"] : "";
+        if (!empty($progress))
+            $data["progress"] = explode("-", $progress);
+
+        if (!empty($deadline))
+            $data["deadline"] = explode("-", trim($deadline));
 
         $response = $this->somplakapi->run_curl_api($url, $data);
         $resApi = json_decode($response);
@@ -92,18 +131,19 @@ class Projects extends web_base
             if (!is_null($resData)) {
                 $rowsPerPage = count($resData);
                 foreach ($resData as $key => $data) {
-                    if ($data->progress > 0 && $data->progress <= 25) {
-                        $bgProgressBar = "bg-info";
-                    } else if ($data->progress > 25 && $data->progress <= 50) {
-                        $bgProgressBar = "bg-warning";
-                    } else if ($data->progress > 50 && $data->progress <= 75) {
-                        $bgProgressBar = "bg-primary";
+                    if ($data->progress > 0 && $data->progress <= 10) {
+                        $bgProgressBar = "bg-red";
+                    } else if ($data->progress > 11 && $data->progress <= 50) {
+                        $bgProgressBar = "bg-yellow";
+                    } else if ($data->progress > 51 && $data->progress <= 99) {
+                        $bgProgressBar = "bg-blue";
                     } else {
-                        $bgProgressBar = "bg-danger";
+                        $bgProgressBar = "bg-green";
                     }
 
                     $userHandphone = !is_null($data->pic) ? $data->pic[0]->pic_handphone : "";
                     $userHandphone = (!empty($userHandphone) && substr($userHandphone, 0,1 ) == 0) ? "62" . substr($userHandphone, 1) : "";
+                    $projectDivisi = $data->project_divisi;
                     $dataId = $data->id;
                     $data->id = ($key + 1);
                     $data->deadline = date("d/m/Y", strtotime($data->deadline));
@@ -112,13 +152,23 @@ class Projects extends web_base
                                         <div class="progress-bar ' . $bgProgressBar . ' progress-bar-striped" role="progressbar" style="width: ' . $data->progress . '%;" aria-valuenow="' . $data->progress . '" aria-valuemin="0" aria-valuemax="100">' . $data->progress . '%</div>
                                        </div>';
                     $data->priority = ($data->priority == "Yes") ? "<span class='top-priority'><i class='fas fa-angle-double-up'></i> TOP</span>" : "";
-                    $data->action = "<a class='btn btn-outline-success mr-1' href='" . base_url("../activities/lists/$data->slug"). "'><i class='far fa-eye'></i></button>
-                                     <a class='btn btn-outline-warning mr-1' href='https://wa.me/" . $userHandphone . "' target='_blank'><i class='fab fa-whatsapp'></i></a>
-                                     <a class='btn btn-outline-primary mr-1' href='" . $data->link . "' target='_blank'><i class='fas fa-link'></i></a>
-                                     <button type='button' class='btn btn-outline-info mr-1' onclick='editProject(\"" . $dataId . "\");'><i class='fas fa-edit'></i></button>
-                                     <button type='button' class='btn btn-outline-danger' onclick='removeProject(\"" . $dataId . "\");'><i class='far fa-trash-alt'></i></button>";
+                    $data->action = "";
+                    if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && $user_access["divisi"] == $projectDivisi) || $access_level->activity->access->lists == 1)
+                        $data->action .= "<a class='btn btn-default btn-eye mr-1' href='" . base_url("../activities/lists/$data->slug"). "'><i class='far fa-eye'></i></button>";
+
+                    $data->action .= "<a class='btn btn-default btn-wa mr-1' href='https://wa.me/" . $userHandphone . "' target='_blank'><i class='fab fa-whatsapp'></i></a>";
+                    $data->action .= "<a class='btn btn-default btn-link mr-1' href='" . $data->link . "' target='_blank'><i class='fas fa-link'></i></a>";
+                    $data->action .= "<a class='btn btn-default btn-comment mr-1' href='" . base_url("../activities/lists/$data->slug#comment-text") . "'><i class='far fa-comment'></i></a>";
+
+                    if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && $user_access["divisi"] == $projectDivisi) || $access_level->project->access->edit == 1)
+                        $data->action .= "<button type='button' class='btn btn-default btn-edit mr-1' onclick='editProject(\"" . $dataId . "\");'><i class='fas fa-edit'></i></button>";
+
+                    if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && $user_access["divisi"] == $projectDivisi) || $access_level->project->access->delete == 1)
+                        $data->action .= "<button type='button' class='btn btn-default btn-delete' onclick='removeProject(\"" . $dataId . "\");'><i class='far fa-trash-alt'></i></button>";
+
                     $res[] = $data;
 
+                    $dataMobile["id"] = ($key + 1);
                     $dataMobile["data"] = ''.
                         '<div class="datatable-project-mobile">'.
                         '   <label class="title">' . $data->name . '</label>'.
