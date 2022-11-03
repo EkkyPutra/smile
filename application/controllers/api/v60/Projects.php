@@ -6,6 +6,7 @@ include_once(APPPATH . "controllers/api/components/API_Controller.php");
 include_once(APPPATH . "controllers/api/components/Projects/Create.php");
 include_once(APPPATH . "controllers/api/components/Projects/Get.php");
 include_once(APPPATH . "controllers/api/components/Projects/Remove.php");
+include_once(APPPATH . "controllers/api/components/Projects/Update.php");
 
 class Projects extends API_Controller
 {
@@ -69,6 +70,21 @@ class Projects extends API_Controller
         try {
             $remove = new Remove($command);
             $remove->action($this->responseObj, $this->jsonInputObj, $this->res_code, $this->res_message);
+
+            $this->sendResponse($this->res_code, $this->res_message);
+        } catch (Exception $e) {
+            $this->sendResponseError($e);
+        }
+        $this->writeLogOutput();
+    }
+
+    public function update()
+    {
+        $this->writeLogInput();
+
+        try {
+            $update = new Update();
+            $update->action($this->responseObj, $this->jsonInputObj, $this->res_code, $this->res_message);
 
             $this->sendResponse($this->res_code, $this->res_message);
         } catch (Exception $e) {

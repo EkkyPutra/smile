@@ -47,7 +47,14 @@ class Create
         if ($activiesId > 0) {
             $this->CI->project->updateProject([
                 "id" => $project->id,
-                "progress" => $jsonInputObj->progress
+                "progress" => $jsonInputObj->progress,
+                "updated" => date("Y-m-d H:i:s")
+            ]);
+
+            $this->CI->project->addProgress([
+                "project_id" => $project->id,
+                "progress" => $jsonInputObj->progress,
+                "created" => date("Y-m-d H:i:s")
             ]);
             $dataActivities["project_name"] = $project->name;
             unset($dataActivities["user"]);

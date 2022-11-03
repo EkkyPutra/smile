@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 include_once(APPPATH . "controllers/components/Transformer.php");
 
-class Create
+class Update
 {
     protected $CI;
     protected $appSrc;
@@ -20,8 +20,10 @@ class Create
 
     public function action(&$responseObj, &$jsonInputObj, &$responsecode, &$responseMessage)
     {
-        if (!isset($jsonInputObj->name) || !isset($jsonInputObj->divisi) || !isset($jsonInputObj->type) || !isset($jsonInputObj->deadline) || !isset($jsonInputObj->description) || !isset($jsonInputObj->pic_ids))
-            throw new Exception("Data tidak lengkap. Silahkan cek kembali data anda!", 422);
+        $id = isset($jsonInputObj->id) ? $jsonInputObj->id : "";
+        $projectExist = $this->CI->project->getProjectById($id);
+        if (empty($id) || is_null($projectExist))
+            throw new Exception("Project tidak ditemukan. Silahkan cek kembali data anda.", 422);
 
         $pics = null;
         if (is_array($jsonInputObj->pic_ids)) {
@@ -36,17 +38,14 @@ class Create
                 $picRole = $this->CI->master->getMasterById($checkPic->role);
                 $checkPic->divisi = ucwords($picDivisi->value);
                 $checkPic->role = ucwords($picRole->value);
-                $checkPic->type_id = $pic->type;
                 $checkPic->type = ($pic->type == 1) ? "Leader" : "Member";
                 $pics[] = $checkPic;
             }
         }
 
-        $pics = array_map("unserialize", array_unique(array_map("serialize", $pics)));
-
         $projectSlug = $this->CI->myutils->slug_name($jsonInputObj->name);
         $checkProjectSluExist = $this->CI->project->getProjectBySlug($projectSlug);
-        if (!is_null($checkProjectSluExist))
+        if (!is_null($checkProjectSluExist) && $checkProjectSluExist->id != $id)
             $projectSlug .= "-" . $this->CI->myutils->generateRandomString(3);
 
         $checkType = $this->CI->master->getMasterByIdType($jsonInputObj->type, 2);
@@ -59,30 +58,30 @@ class Create
 
         $timeTs = date("Y-m-d H:i:s");
         $dataProject = [
+            "id" => $id,
             "name" => $jsonInputObj->name,
             "divisi" => $checkDivisi->id,
             "priority" => (isset($jsonInputObj->priority) && $jsonInputObj->priority == "on") ? 1 : 0,
             "type" => $checkType->id,
             "deadline" => $jsonInputObj->deadline,
-            "progress" => isset($jsonInputObj->progress) ? $jsonInputObj->progress : 0,
             "link" => isset($jsonInputObj->link) ? $jsonInputObj->link : "",
             "description" => $jsonInputObj->description,
-            "created" => $timeTs,
             "updated" => $timeTs,
             "slug" => $projectSlug
         ];
 
-        $projectId = $this->CI->project->addRow($dataProject);
-        if ($projectId > 0) {
+        $updateProject = $this->CI->project->updateProject($dataProject);
+        if ($updateProject) {
             $dataProject["divisi"] = ucwords($checkDivisi->value);
             $dataProject["type"] = ucwords($checkType->value);
             $dataProject["priority"] = ($dataProject["priority"] == 0) ? "No" : "Yes";
 
-            foreach ($pics as $pic) {
+            $this->CI->project->removeProjectPic($id);
+            foreach ($jsonInputObj->pic_ids as $pic) {
                 $dataPic = [
-                    "project_id" => $projectId,
+                    "project_id" => $id,
                     "user_id" => $pic->id,
-                    "type" => $pic->type_id
+                    "type" => $pic->type
                 ];
                 $this->CI->project->addPic($dataPic);
             }
@@ -90,10 +89,11 @@ class Create
 
             $responsecode = 200;
             $responseObj = [
-                "name" => "Add New Project Success",
+                "name" => "Project Updated",
                 "item" => $dataProject
             ];
         }
     }
+
 
 }

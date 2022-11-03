@@ -26,308 +26,340 @@
     </div>
     <div class="content">
         <div class="proyek-page">
-            <!-- SELECT2 EXAMPLE -->
-            <div class="card card-default" id="project-activity">
-                <!-- .card-header -->
-                <div class="card-header no-sub">
-                    <div class="seg-tools" onClick="location.href='<?php echo base_url("projects/management"); ?>'">
-                        <i class="fas fa-arrow-left"></i>
+            <?php if (!is_null($projectDetail)) { ?>
+                <!-- SELECT2 EXAMPLE -->
+                <div class="card card-default" id="project-activity">
+                    <!-- .card-header -->
+                    <div class="card-header no-sub">
+                        <div class="seg-tools" onClick="location.href='<?php echo base_url("projects/management"); ?>'">
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
+                        <div class="row">
+                            <h3 class="col-sm-6 col-12 seg-title"><?php echo $projectDetail->name; ?></h3>
+                        </div>
                     </div>
-                    <div class="row">
-                        <h3 class="col-sm-6 col-12 seg-title"><?php echo $projectDetail->name; ?></h3>
-                    </div>
-                </div>
-                <!-- /.card-header -->
-                <!-- .card-body -->
-                <div class="card-body">
-                    <div id="toolbar">
-                        <div class="general-info" id="general-info">
-                            <div class="general-info-seg row">
-                                <div class="gis-left col-sm-6 col-12">
-                                    <label class="title">General Information</label>
-                                    <div class="form-group mb-0 row">
-                                        <label class="col-4 col-form-label">Nama Proyek</label>
-                                        <label class="col-8 col-form-label"><?php echo $projectDetail->name; ?></label>
-                                    </div>
-                                    <div class="form-group mb-0 row">
-                                        <label class="col-4 col-form-label">Deskripsi Proyek</label>
-                                        <label class="col-8 col-form-label">:&nbsp;<?php echo $projectDetail->description; ?></label>
-                                    </div>
-                                    <div class="form-group mb-0 row">
-                                        <label class="col-4 col-form-label">Tipe</label>
-                                        <label class="col-8 col-form-label">:&nbsp;<span class='top-priority'><i class='fas fa-angle-double-up'></i> TOP</span></label>
-                                    </div>
-                                    <div class="form-group mb-0 row">
-                                        <label class="col-4 col-form-label">Progress</label>
-                                        <div class="col-8 pt-10">:&nbsp;
-                                            <div class="progress" id="general-info-progress">
-                                                <div class="progress-bar bg-primary progress-bar-striped" role="progressbar" style="width: <?php echo $projectDetail->last_progress; ?>%;" aria-valuenow="<?php echo $projectDetail->last_progress; ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $projectDetail->last_progress; ?>%</div>
+                    <!-- /.card-header -->
+                    <!-- .card-body -->
+                    <div class="card-body">
+                        <div id="toolbar">
+                            <div class="general-info" id="general-info">
+                                <div class="general-info-seg row">
+                                    <div class="gis-left col-sm-6 col-12">
+                                        <label class="title">General Information</label>
+                                        <div class="form-group mb-0 row">
+                                            <label class="col-4 col-form-label">Nama Proyek</label>
+                                            <label class="col-8 col-form-label">:&nbsp;<?php echo $projectDetail->name; ?></label>
+                                        </div>
+                                        <div class="form-group mb-0 row">
+                                            <label class="col-4 col-form-label">Deskripsi Proyek</label>
+                                            <label class="col-8 col-form-label">:&nbsp;<?php echo $projectDetail->description; ?></label>
+                                        </div>
+                                        <div class="form-group mb-0 row">
+                                            <label class="col-4 col-form-label">Tipe</label>
+                                            <label class="col-8 col-form-label">:&nbsp;
+                                                <span style="margin-right: 10px;"><?php echo strtoupper($projectDetail->project_type); ?></span>
+                                                <?php if (intval($projectDetail->priority) == 1) { ?>
+                                                    <span class='top-priority'><i class='fas fa-angle-double-up'></i> TOP</span>
+                                                <?php } ?>
+                                            </label>
+                                        </div>
+                                        <div class="form-group mb-0 row">
+                                            <label class="col-4 col-form-label">Progress</label>
+                                            <div class="col-8 pt-10">:&nbsp;
+                                                <div class="progress" id="general-info-progress">
+                                                    <div class="progress-bar bg-primary progress-bar-striped" role="progressbar" style="width: <?php echo $projectDetail->last_progress; ?>%;" aria-valuenow="<?php echo $projectDetail->last_progress; ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $projectDetail->last_progress; ?>%</div>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="form-group mb-0 row">
+                                            <label class="col-4 col-form-label">Batas Waktu</label>
+                                            <label class="col-8 col-form-label">:&nbsp;<?php echo $projectDetail->deadline; ?></label>
+                                        </div>
+                                        <div class="form-group mb-0 row">
+                                            <label class="col-4 col-form-label">Divisi</label>
+                                            <label class="col-8 col-form-label">:&nbsp;<?php echo '<div class="table-seg-box" style="background-color: #' . $projectDetail->project_divisi_bg . '; color: #' . $projectDetail->project_divisi_color . '">' . ucwords($projectDetail->project_divisi) . '</div>'; ?></label>
+                                        </div>
+                                        <div class="form-group mb-0 row">
+                                            <label class="col-4 col-form-label">Link Proyek</label>
+                                            <label class="col-8 col-form-label">:&nbsp;<a href="<?php echo $projectDetail->link; ?>" target="_blank"><?php echo $projectDetail->link; ?></a></label>
+                                        </div>
                                     </div>
-                                    <div class="form-group mb-0 row">
-                                        <label class="col-4 col-form-label">Batas Waktu</label>
-                                        <label class="col-8 col-form-label">:&nbsp;<?php echo $projectDetail->deadline; ?></label>
-                                    </div>
-                                    <div class="form-group mb-0 row">
-                                        <label class="col-4 col-form-label">Link Proyek</label>
-                                        <label class="col-8 col-form-label">:&nbsp;<a href="<?php echo $projectDetail->link; ?>" target="_blank"><?php echo $projectDetail->link; ?></a></label>
+                                    <div class="gis-right col-sm-6 col-12">
+                                        <label class="title">PIC Information</label>
+                                        <div class="gis-pic">
+                                            <?php if (isset($projectPicLeader)) { ?>
+                                                <label>PIC Leader</label>
+                                                <div class="gis-pic-leader row">
+                                                    <div class="gis-init col-sm-1 col-2">
+                                                        <span id="label-pic-leader-initial"><?php echo $projectPicLeader->pic_init; ?></span>
+                                                    </div>
+                                                    <div class="gis-info col-sm-11 col-10">
+                                                        <label id="label-pic-leader-name"><?php echo $projectPicLeader->pic_name; ?></label>
+                                                        <span id="label-pic-leader-handphone"><?php echo $projectPicLeader->pic_handphone; ?></span>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                            <label>PIC Member</label>
+                                            <div class="gis-pic-members">
+                                                <?php
+                                                if (isset($projectDetail->pic->members) && !empty($projectDetail->pic->members) && !is_null($projectDetail->pic->members)) {
+                                                    foreach ($projectDetail->pic->members as $picMember) {
+                                                        $picMemberrInitial = "";
+                                                        foreach (explode(" ", $picMember->pic_name, 2) as $memberInit) {
+                                                            $picMemberrInitial .= substr($memberInit, 0, 1);
+                                                        }
+
+                                                        echo '<div class="row">';
+                                                        echo '   <div class="gis-init col-sm-1 col-2">';
+                                                        echo '       <span id="label-pic-leader-initial">' . $picMemberrInitial . '</span>';
+                                                        echo '   </div>';
+                                                        echo '   <div class="gis-info col-sm-11 col-10">';
+                                                        echo '       <label id="label-pic-leader-name">' . $picMember->pic_name . '</label>';
+                                                        echo '       <span id="label-pic-leader-handphone">' . $picMember->pic_handphone . '</span>';
+                                                        echo '   </div>';
+                                                        echo '</div>';
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="gis-right col-sm-6 col-12">
-                                    <label class="title">PIC Information</label>
-                                    <div class="gis-pic">
-                                        <label>PIC Leader</label>
-                                        <div class="gis-pic-leader row">
-                                            <div class="gis-init col-sm-1 col-2">
-                                                <span id="label-pic-leader-initial"><?php echo $projectPicLeader->pic_init; ?></span>
-                                            </div>
-                                            <div class="gis-info col-sm-11 col-10">
-                                                <label id="label-pic-leader-name"><?php echo $projectPicLeader->pic_name; ?></label>
-                                                <span id="label-pic-leader-handphone"><?php echo $projectPicLeader->pic_handphone; ?></span>
-                                            </div>
+                            </div>
+                            <div class="toolHead row">
+                                <h3 class="col-6 seg-title">Daftar Aktivitas</h3>
+                                <div class="col-6 float-right text-right">
+                                    <button class="btn btn-export"><i class="fas fa-upload"></i> <span>Export File</span></button>
 
+                                    <?php
+                                    $access_level = $user_access["access_level"];
+                                    if ($access_level->activity->is_super == 1 || ($access_level->activity->as_divisi == 1 && strtoupper($user_access["divisi"]) == strtoupper($projectDetail->project_divisi)) || $asAssign)
+                                        echo '<button class="btn btn-tambah" data-toggle="modal" data-target="#modal-activity"><i class="fas fa-plus"></i><span>Tambah Aktivitas</span></button>';
+                                    ?>
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="totalPage" name="totalPage" value="<?php echo $totalPage; ?>" />
+                            <div class="toolbar-select">
+                                <span><i class="far fa-eye"></i> Show</span>
+                                <select id="pageLength" class="form-control">
+                                    <option value="10">10 Rows</option>
+                                    <option value="25">25 Rows</option>
+                                    <option value="50">50 Rows</option>
+                                    <option value="100">100 Rows</option>
+                                </select>
+                            </div>
+
+                            <?php if ($isMobile) { ?>
+                                <div class="toolbar-select">
+                                    <span><i class="fas fa-filter"></i> Filters</span>
+                                    <input type="text" name="filterParams[]" id="filterLastUpdate" class="form-control filterLastUpdate" placeholder="-- Last Update --">
+                                </div>
+                                <div class="toolbar-select">
+                                    <select id="project_progress" class="form-control select-filter">
+                                        <option value=''>Progress</option>
+                                        <option value="76-100">76% - 100%</option>
+                                        <option value="51-75">51% - 75%</option>
+                                        <option value="26-50">26% - 50%</option>
+                                        <option value="0-25">0% - 25%</option>
+                                        ?>
+                                    </select>
+                                    <span id="resetFilter"><i class="fas fa-undo"></i> Reset Filter</span>
+                                </div>
+                            <?php } else { ?>
+                                <div class="toolbar-select">
+                                    <span><i class="fas fa-filter"></i> Filters</span>
+                                    <input type="text" name="filterParams[]" id="filterLastUpdate" class="form-control filterLastUpdate" placeholder="-- Last Update --">
+                                    <select id="project_progress" class="form-control select-filter">
+                                        <option value=''>Progress</option>
+                                        <option value="76-100">76% - 100%</option>
+                                        <option value="51-75">51% - 75%</option>
+                                        <option value="26-50">26% - 50%</option>
+                                        <option value="0-25">0% - 25%</option>
+                                        ?>
+                                    </select>
+                                    <span id="resetFilter"><i class="fas fa-undo"></i> Reset Filter</span>
+                                </div>
+                            <?php } ?>
+                            <div class="toolbar-search float-right">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                    </div>
+                                    <input type="text" name="search" id="searchList" class="form-control" autocomplete="off" placeholder="Search Lists">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="project-activity col-sm-8 col-12">
+                                <?php if ($isMobile) { ?>
+                                    <table id="tableActivitiesLists" class="table table-borderless"></table>
+                                <?php } else { ?>
+                                    <table id="tableActivitiesLists" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama Aktivitas</th>
+                                                <th>Last Update</th>
+                                                <th>Aktivitas Progress</th>
+                                                <th>Evidence</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                <?php } ?>
+                                <div class="pageInfo row">
+                                    <div class="bInfo col-6 float-left">Showing <span id="infoX">00</span>-<span id="infoY">00</span> of <span id="infoZ">00</span></div>
+                                    <div class="bPagination col-6 float-right text-right">
+                                        <ul class="ulBPagination">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="activity-comment col-sm-4 col-12">
+                                <div class="comment-box">
+                                    <form name="form-comment">
+                                        <div class="comment-count">
+                                            <i class="fas fa-angle-double-right"></i>
+                                            <span>
+                                                <?php
+                                                if (!is_null($comments->items)) {
+                                                    echo $comments->total;
+                                                } else {
+                                                    echo 0;
+                                                }
+
+                                                $access_level = $user_access["access_level"];
+                                                $commentDisable = 'disabled="disabled"';
+                                                $addCommentClass = "disabled";
+                                                $replyDisable = 'disabled="disabled"';
+                                                $addReplyClass = "disabled";
+                                                if ($access_level->comment->is_super == 1 || ($access_level->comment->as_divisi == 1 && $user_access["divisi"] == $projectDetail->project_divisi) || $access_level->comment->access->add == 1) {
+                                                    $commentDisable = '';
+                                                    $addCommentClass = '';
+                                                }
+                                                if ($access_level->comment->is_super == 1 || ($access_level->comment->as_divisi == 1 && $user_access["divisi"] == $projectDetail->project_divisi) || $access_level->comment->access->reply == 1) {
+                                                    $replyDisable = '';
+                                                    $addReplyClass = '';
+                                                }
+                                                ?>
+                                                &nbsp;Comment
+                                            </span>
                                         </div>
-                                        <label>PIC Member</label>
-                                        <div class="gis-pic-members">
+                                        <div class="form-group col-12 input-group">
+                                            <form name="comment-form" id="comment-form">
+                                                <textarea class="form-control" name="comment-text" id="comment-text" rows="3" style="resize: none;" <?php echo $commentDisable; ?>></textarea>
+                                                <div class="input-group-append <?php echo $addCommentClass; ?>" id="button-add-comment">
+                                                    <div class="input-group-text">
+                                                        <i class="fas fa-paper-plane"></i>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="form-group form-comment-seg">
                                             <?php
-                                            if (isset($projectDetail->pic->members) && !empty($projectDetail->pic->members)) {
-                                                foreach ($projectDetail->pic->members as $picMember) {
-                                                    $picMemberrInitial = "";
-                                                    foreach (explode(" ", $picMember->pic_name, 2) as $memberInit) {
-                                                        $picMemberrInitial .= substr($memberInit, 0, 1);
+                                            if (!is_null($comments->items)) {
+                                                $countComment = count($comments->items);
+                                                $xComment = ($countComment > 5) ? $countComment - 5 : 5;
+                                                foreach ($comments->items as $keyComment => $comment) {
+                                                    $commentInitial = "";
+                                                    foreach (explode(" ", $comment->username, 2) as $commentInit) {
+                                                        $commentInitial .= substr($commentInit, 0, 1);
                                                     }
 
-                                                    echo '<div class="row">';
-                                                    echo '   <div class="gis-init col-sm-1 col-2">';
-                                                    echo '       <span id="label-pic-leader-initial">' . $picMemberrInitial . '</span>';
-                                                    echo '   </div>';
-                                                    echo '   <div class="gis-info col-sm-11 col-10">';
-                                                    echo '       <label id="label-pic-leader-name">' . $picMember->pic_name . '</label>';
-                                                    echo '       <span id="label-pic-leader-handphone">' . $picMember->pic_handphone . '</span>';
-                                                    echo '   </div>';
+                                                    $hideComment = "";
+                                                    if (($keyComment + 1) > 5) {
+                                                        $hideComment = 'style="display:none;"';
+                                                    }
+                                                    echo '<div class="comment-reply row" id="comment-reply-' . $comment->id . '" ' . $hideComment . '>';
+                                                    echo '    <div class="comment-reply-init">';
+                                                    echo '        <span>' . $commentInitial . '</span>';
+                                                    echo '    </div>';
+                                                    echo '    <div class="comment-reply-text" id="comment-reply-text-' . $comment->id . '">';
+                                                    echo '        <div class="comment-reply-text-box">';
+                                                    echo '            <span class="comment-name">' . $comment->username . '</span>';
+                                                    echo '            <span class="comment-role">' . $comment->user_role . '&nbsp;' . $comment->user_divisi . '</span>';
+                                                    echo '            <p>' . $comment->comment . '</p>';
+                                                    echo '        </div>';
+                                                    echo '        <div class="comment-reply-info">';
+                                                    echo '            <span class="comment-info-date">About ' . $this->myutils->dateDiff(date("Y-m-d H:i:s"), $comment->created, 1) . ' ago |</span>';
+                                                    echo '            <span class="comment-info-reply">Reply</span>';
+                                                    echo '        </div>';
+                                                    echo '        <div class="comment-reply-input input-group">';
+                                                    echo '            <input type="text" name="comment-reply-textbox" id="comment-reply-textbox-' . $comment->id . '" class="form-control comment-reply-textbox" data-comment-id="' . $comment->id . '" ' . $replyDisable . ' placeholder="Add Reply" autocomplete="off" required="required" />';
+                                                    echo '            <div class="input-group-append button-add-reply ' . $addReplyClass . '" id="button-add-reply-' . $comment->id . '" data-reply-id="' . $comment->id . '" onclick="javascript:addCommentReply(\'' . $comment->id . '\')">';
+                                                    echo '                <div class="input-group-text">';
+                                                    echo '                    <i class="fas fa-paper-plane"></i>';
+                                                    echo '                </div>';
+                                                    echo '            </div>';
+                                                    echo '        </div>';
+
+                                                    if (!is_null($comment->reply)) {
+                                                        $totalReply = 0;
+                                                        $countReply = count($comment->reply);
+
+                                                        if ($countReply > 2) {
+                                                            echo '<div class="comment-btn-level" data-comment-id="' . $comment->id . '">';
+                                                            echo '    <i class="fas fa-level-up-alt"></i>';
+                                                            echo '    <span>view replies (' . ($countReply - 2) . ')</span>';
+                                                            echo '</div>';
+                                                        }
+
+                                                        foreach ($comment->reply as $keyReply => $reply) {
+                                                            $replyCss = '';
+                                                            if ($countReply > 2) {
+                                                                if ($keyReply < ($countReply - 2)) {
+                                                                    $replyCss = 'style="display: none;"';
+                                                                }
+                                                            }
+
+                                                            $replyInitial = "";
+                                                            foreach (explode(" ", $reply->username, 2) as $replyInit) {
+                                                                $replyInitial .= substr($replyInit, 0, 1);
+                                                            }
+
+                                                            echo '<div class="comment-reply row" data-comment-id="' . $comment->id . '" ' . $replyCss . '>';
+                                                            echo '    <div class="comment-reply-init">';
+                                                            echo '        <span>' . $replyInitial . '</span>';
+                                                            echo '    </div>';
+                                                            echo '    <div class="comment-reply-text">';
+                                                            echo '        <div class="comment-reply-text-box">';
+                                                            echo '            <span class="comment-name">' . $reply->username . '</span>';
+                                                            echo '            <span class="comment-role">' . $reply->user_divisi . '&nbsp;' . $reply->user_role . '</span>';
+                                                            echo '            <p>' . $reply->comment . '</p>';
+                                                            echo '        </div>';
+                                                            echo '        <div class="comment-reply-info">';
+                                                            echo '            <span class="comment-info-date">About ' . $this->myutils->dateDiff(date("Y-m-d H:i:s"), $reply->created, 1) . ' ago |</span>';
+                                                            echo '            <span class="comment-info-reply">Reply</span>';
+                                                            echo '        </div>';
+                                                            echo '    </div>';
+                                                            echo '</div>';
+                                                        }
+                                                    }
+
+                                                    echo '    </div>';
+                                                    echo '</div>';
+                                                }
+
+                                                if ($countComment > 5) {
+                                                    echo '<div class="comment-btn-all">';
+                                                    echo '    <span>Load all ' . ($countComment - 5) . ' comments</span>';
                                                     echo '</div>';
                                                 }
                                             }
 
                                             ?>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="toolHead row">
-                            <h3 class="col-6 seg-title">Daftar Aktivitas</h3>
-                            <div class="col-6 float-right text-right">
-                                <button class="btn btn-export"><i class="fas fa-upload"></i> <span>Export File</span></button>
-
-                                <?php
-                                $access_level = $user_access["access_level"];
-                                if ($access_level->activity->is_super == 1 || ($access_level->activity->as_divisi == 1 && $access_level->activity->access->add == 1))
-                                    echo '<button class="btn btn-tambah" data-toggle="modal" data-target="#modal-activity"><i class="fas fa-plus"></i><span>Tambah Aktivitas</span></button>';
-                                ?>
-                            </div>
-                        </div>
-
-                        <input type="hidden" id="totalPage" name="totalPage" value="<?php echo $totalPage; ?>" />
-                        <div class="toolbar-select">
-                            <span><i class="far fa-eye"></i> Show</span>
-                            <select id="pageLength" class="form-control">
-                                <option value="10">10 Rows</option>
-                                <option value="25">25 Rows</option>
-                                <option value="50">50 Rows</option>
-                                <option value="100">100 Rows</option>
-                            </select>
-                        </div>
-                        <div class="toolbar-select">
-                            <span><i class="fas fa-filter"></i> Filters</span>
-                            <input type="text" name="filterParams[]" id="filterLastUpdate" class="form-control filterLastUpdate" placeholder="-- Last Update --">
-                            <select id="project_progress" class="form-control select-filter">
-                                <option value=''>Progress</option>
-                                <option value="76-100">76% - 100%</option>
-                                <option value="51-75">51% - 75%</option>
-                                <option value="26-50">26% - 50%</option>
-                                <option value="0-25">0% - 25%</option>
-                                ?>
-                            </select>
-                            <span id="resetFilter"><i class="fas fa-undo"></i> Reset Filter</span>
-                        </div>
-                        <div class="toolbar-search float-right">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
-                                </div>
-                                <input type="text" name="search" id="searchList" class="form-control" autocomplete="off" placeholder="Search Lists">
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="project-activity col-sm-8 col-12">
-                            <?php if ($isMobile) { ?>
-                                <table id="tableActivitiesLists" class="table table-borderless"></table>
-                            <?php } else { ?>
-                                <table id="tableActivitiesLists" class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama Aktivitas</th>
-                                            <th>Last Update</th>
-                                            <th>Aktivitas Progress</th>
-                                            <th>Evidence</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            <?php } ?>
-                            <div class="pageInfo row">
-                                <div class="bInfo col-6 float-left">Showing <span id="infoX">00</span>-<span id="infoY">00</span> of <span id="infoZ">00</span></div>
-                                <div class="bPagination col-6 float-right text-right">
-                                    <ul class="ulBPagination">
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="activity-comment col-sm-4 col-12">
-                            <div class="comment-box">
-                                <form name="form-comment">
-                                    <div class="comment-count">
-                                        <i class="fas fa-angle-double-right"></i>
-                                        <span>
-                                            <?php
-                                            if (!is_null($comments->items)) {
-                                                echo $comments->total;
-                                            } else {
-                                                echo 0;
-                                            }
-
-                                            $access_level = $user_access["access_level"];
-                                            $commentDisable = 'disabled="disabled"';
-                                            $addCommentClass = "disabled";
-                                            $replyDisable = 'disabled="disabled"';
-                                            $addReplyClass = "disabled";
-                                            if ($access_level->comment->is_super == 1 || ($access_level->comment->as_divisi == 1 && $user_access["divisi"] == $projectDetail->project_divisi) || $access_level->comment->access->add == 1) {
-                                                $commentDisable = '';
-                                                $addCommentClass = '';
-                                            }
-                                            if ($access_level->comment->is_super == 1 || ($access_level->comment->as_divisi == 1 && $user_access["divisi"] == $projectDetail->project_divisi) || $access_level->comment->access->reply == 1) {
-                                                $replyDisable = '';
-                                                $addReplyClass = '';
-                                            }
-                                            ?>
-                                            &nbsp;Comment
-                                        </span>
-                                    </div>
-                                    <div class="form-group col-12 input-group">
-                                        <form name="comment-form" id="comment-form">
-                                            <textarea class="form-control" name="comment-text" id="comment-text" rows="3" style="resize: none;" <?php echo $commentDisable; ?>></textarea>
-                                            <div class="input-group-append <?php echo $addCommentClass; ?>" id="button-add-comment">
-                                                <div class="input-group-text">
-                                                    <i class="fas fa-paper-plane"></i>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="form-group form-comment-seg">
-                                        <?php
-                                        if (!is_null($comments->items)) {
-                                            $countComment = count($comments->items);
-                                            $xComment = ($countComment > 5) ? $countComment - 5 : 5;
-                                            foreach ($comments->items as $keyComment => $comment) {
-                                                $commentInitial = "";
-                                                foreach (explode(" ", $comment->username, 2) as $commentInit) {
-                                                    $commentInitial .= substr($commentInit, 0, 1);
-                                                }
-
-                                                $hideComment = "";
-                                                if (($keyComment + 1) > 5) {
-                                                    $hideComment = 'style="display:none;"';
-                                                }
-                                                echo '<div class="comment-reply row" id="comment-reply-' . $comment->id . '" ' . $hideComment . '>';
-                                                echo '    <div class="comment-reply-init">';
-                                                echo '        <span>' . $commentInitial . '</span>';
-                                                echo '    </div>';
-                                                echo '    <div class="comment-reply-text" id="comment-reply-text-' . $comment->id . '">';
-                                                echo '        <div class="comment-reply-text-box">';
-                                                echo '            <span class="comment-name">' . $comment->username . '</span>';
-                                                echo '            <span class="comment-role">' . $comment->user_role . '&nbsp;' . $comment->user_divisi . '</span>';
-                                                echo '            <p>' . $comment->comment . '</p>';
-                                                echo '        </div>';
-                                                echo '        <div class="comment-reply-info">';
-                                                echo '            <span class="comment-info-date">About ' . $this->myutils->dateDiff(date("Y-m-d H:i:s"), $comment->created, 1) . ' ago |</span>';
-                                                echo '            <span class="comment-info-reply">Reply</span>';
-                                                echo '        </div>';
-                                                echo '        <div class="comment-reply-input input-group">';
-                                                echo '            <input type="text" name="comment-reply-textbox" id="comment-reply-textbox-' . $comment->id . '" class="form-control comment-reply-textbox" data-comment-id="' . $comment->id . '" ' . $replyDisable . ' placeholder="Add Reply" autocomplete="off" required="required" />';
-                                                echo '            <div class="input-group-append button-add-reply ' . $addReplyClass . '" id="button-add-reply-' . $comment->id . '" data-reply-id="' . $comment->id . '" onclick="javascript:addCommentReply(\'' . $comment->id . '\')">';
-                                                echo '                <div class="input-group-text">';
-                                                echo '                    <i class="fas fa-paper-plane"></i>';
-                                                echo '                </div>';
-                                                echo '            </div>';
-                                                echo '        </div>';
-
-                                                if (!is_null($comment->reply)) {
-                                                    $totalReply = 0;
-                                                    $countReply = count($comment->reply);
-
-                                                    if ($countReply > 2) {
-                                                        echo '<div class="comment-btn-level" data-comment-id="' . $comment->id . '">';
-                                                        echo '    <i class="fas fa-level-up-alt"></i>';
-                                                        echo '    <span>view replies (' . ($countReply - 2) . ')</span>';
-                                                        echo '</div>';
-                                                    }
-
-                                                    foreach ($comment->reply as $keyReply => $reply) {
-                                                        $replyCss = '';
-                                                        if ($countReply > 2) {
-                                                            if ($keyReply < ($countReply - 2)) {
-                                                                $replyCss = 'style="display: none;"';
-                                                            }
-                                                        }
-
-                                                        $replyInitial = "";
-                                                        foreach (explode(" ", $reply->username, 2) as $replyInit) {
-                                                            $replyInitial .= substr($replyInit, 0, 1);
-                                                        }
-
-                                                        echo '<div class="comment-reply row" data-comment-id="' . $comment->id . '" ' . $replyCss . '>';
-                                                        echo '    <div class="comment-reply-init">';
-                                                        echo '        <span>' . $replyInitial . '</span>';
-                                                        echo '    </div>';
-                                                        echo '    <div class="comment-reply-text">';
-                                                        echo '        <div class="comment-reply-text-box">';
-                                                        echo '            <span class="comment-name">' . $reply->username . '</span>';
-                                                        echo '            <span class="comment-role">' . $reply->user_divisi . '&nbsp;' . $reply->user_role . '</span>';
-                                                        echo '            <p>' . $reply->comment . '</p>';
-                                                        echo '        </div>';
-                                                        echo '        <div class="comment-reply-info">';
-                                                        echo '            <span class="comment-info-date">About ' . $this->myutils->dateDiff(date("Y-m-d H:i:s"), $reply->created, 1) . ' ago |</span>';
-                                                        echo '            <span class="comment-info-reply">Reply</span>';
-                                                        echo '        </div>';
-                                                        echo '    </div>';
-                                                        echo '</div>';
-                                                    }
-                                                }
-
-                                                echo '    </div>';
-                                                echo '</div>';
-                                            }
-
-                                            if ($countComment > 5) {
-                                                echo '<div class="comment-btn-all">';
-                                                echo '    <span>Load all ' . ($countComment - 5) . ' comments</span>';
-                                                echo '</div>';
-                                            }
-                                        }
-
-                                        ?>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- /.card-body -->
                 </div>
-                <!-- /.card-body -->
-            </div>
+            <?php } else { ?>
+                <?php include(APPPATH . "views/layout/error_page.php"); ?>
+            <?php } ?>
         </div>
     </div>
 
@@ -374,7 +406,7 @@
                                 <div class="form-group col-12">
                                     <label for="activities_evidence">Evidence</label>
                                     <div class="input-group">
-                                        <input type="text" name="activities_evidence" id="activities_evidence" class="form-control" placeholder="Contoh: smile.com/evidence.png" autocomplete="off" required="required" />
+                                        <input type="text" name="activities_evidence" id="activities_evidence" class="form-control" placeholder="Contoh: smile.com/evidence.png" autocomplete="off" />
                                     </div>
                                 </div>
                             </div>
@@ -531,40 +563,37 @@
             var minPage = (totalPage >= 4) ? (totalPage - 3) : totalPage;
             var xPage = (currPage === undefined || totalPage <= 4) ? 1 : ((currPage > minPage) ? minPage : currPage);
 
-            for (var i = xPage; i <= parseInt(totalPage); i++) {
+            for (var i = 1; i <= parseInt(totalPage); i++) {
                 if (i == parseInt(currPage)) {
                     pCurrent = "pCurrent";
                 } else {
                     pCurrent = "";
                 }
 
-                if ((totalPage > 4 && (i == parseInt(xPage) || i == (parseInt(xPage) + 1))) || (i >= 6 && ((i == (totalPage - 1)) || (i == totalPage)))) {
+                if (i == currPage || (i >= (currPage - 2) && i <= currPage) || (i <= (currPage + 2) && i >= currPage) || i == (currPage + 1) || i == (currPage + 2)) {
                     $(".ulBPagination").append('<li class="paginationX ' + pCurrent + '" data-page="' + i + '" data-start="' + (i - 1) + '">' + i + '</li>');
-                } else if (totalPage <= 2) {
-                    $(".ulBPagination").append('<li class="paginationX ' + pCurrent + '" data-page="' + i + '" data-start="' + (i - 1) + '">' + i + '</li>');
-                } else if (totalPage == 3 || totalPage == 4) {
-                    $(".ulBPagination").append('<li class="paginationX ' + pCurrent + '" data-page="' + i + '" data-start="' + (i - 1) + '">' + i + '</li>');
-                } else {
-                    xT = xT + 1;
-                    if (xT <= 2) {
-                        $(".ulBPagination").append('<li data-page="' + i + '" data-start="' + (i - 1) + '">.</li>');
-                    }
                 }
             }
 
-            var bPrevDisabled = "";
+            var bFirstDisabled = "";
             var bNextDisabled = "";
+            var bPrevDisabled = "";
+            var bLastDisabled = "";
             if (currPage === undefined || currPage == 1) {
-                bPrevDisabled = 'class="bDisabled"';
+                bFirstDisabled = 'bDisabled';
+                bPrevDisabled = 'bDisabled';
             }
             if (currPage === undefined || currPage == totalPage) {
-                bNextDisabled = 'class="bDisabled"';
+                bLastDisabled = 'bDisabled';
+                bNextDisabled = 'bDisabled';
             }
 
             $(".ulBPagination").append(
                 '<li id="bPaginationNav">' +
-                '<span id="bPaginationPrev" ' + bPrevDisabled + '><i class=" fas fa-chevron-left"></i></span>' +
-                '<span id="bPaginationNext" ' + bNextDisabled + '><i class="fas fa-chevron-right"></i></span > ' +
+                '   <span class="btnPagination ' + bFirstDisabled + '" id="bPaginationFirst"><i class="fas fa-angle-double-left"></i></span>' +
+                '   <span class="btnPagination ' + bPrevDisabled + '" id="bPaginationPrev"><i class="fas fa-angle-left"></i></span>' +
+                '   <span class="btnPagination ' + bNextDisabled + '" id="bPaginationNext"><i class="fas fa-angle-right"></i></span>' +
+                '   <span class="btnPagination ' + bLastDisabled + '" id="bPaginationLast"><i class="fas fa-angle-double-right"></i></span>' +
                 '</li>');
         }
 
@@ -605,6 +634,43 @@
             }
         })
 
+        $(document).on("click", "#bPaginationFirst", function() {
+            var currPage = $(".paginationX.pCurrent").attr("data-page");
+            var clickPage = parseInt(currPage) - 1;
+            var limit = $("#pageLength").find(":selected").val();
+            var user_divisi = $("#user_divisi").val();
+
+            if (!$(this).hasClass("bDisabled")) {
+                $(".overlay-loading").show();
+                if (currPage != clickPage && $("#bPaginationPrev").attr("class") !== "bDisabled") {
+                    $('#tableActivitiesLists').DataTable().destroy();
+                    fetchTable(user_divisi, 1, limit, true);
+                    setTimeout(function() {
+                        $(".overlay-loading").hide();
+                    }, 200);
+                }
+            }
+        });
+
+        $(document).on("click", "#bPaginationLast", function() {
+            var currPage = $(".paginationX.pCurrent").attr("data-page");
+            var clickPage = parseInt(currPage) - 1;
+            var limit = $("#pageLength").find(":selected").val();
+            var user_divisi = $("#user_divisi").val();
+            var totalPage = $('#totalPage').val();
+
+            if (!$(this).hasClass("bDisabled")) {
+                $(".overlay-loading").show();
+                if (currPage != clickPage && $("#bPaginationPrev").attr("class") !== "bDisabled") {
+                    $('#tableActivitiesLists').DataTable().destroy();
+                    fetchTable(user_divisi, totalPage, limit, true);
+                    setTimeout(function() {
+                        $(".overlay-loading").hide();
+                    }, 200);
+                }
+            }
+        });
+
         $(document).on("click", "#bPaginationPrev", function() {
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = parseInt(currPage) - 1;
@@ -639,6 +705,20 @@
                     }, 200);
                 }
             }
+        });
+
+        $(document).on("click", "#resetFilter", function() {
+            $("#pageLength option").removeAttr("selected");
+            $("#pageLength").val($("#pageLength option:first").val());
+            $("#pageLength").find("option[value='" + $("#pageLength option:first").val() + "']").attr("selected", true);
+
+            $("#filterLastUpdate").val("");
+            $("#project_progress option").removeAttr("selected");
+            $("#project_progress").val($("#project_progress option:first").val());
+            $("#project_progress").find("option[value='" + $("#project_progress option:first").val() + "']").attr("selected", true);
+
+            $('#tableActivitiesLists').DataTable().destroy();
+            fetchTable("", 1, 1, true);
         });
 
         $("#modal-activity").on("hidden.bs.modal", function(e) {

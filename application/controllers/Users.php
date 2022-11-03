@@ -129,7 +129,7 @@ class Users extends web_base
                     $data->id = ($key + 1);
                     $data->avatar_thumb = "<img src='" . $resImage . "' height='50' width='50' class='img-bordered-md img-circle' />";
                     $data->user_role = '<div class="user-role ' . $userColor . '">' . ucwords($data->user_role) . '</div>';
-                    $data->action = "<button type='button' class='btn btn-outline-warning mr-2' data-toggle='modal' data-target='#modal-lg' onclick='editUser(\"" . $data->username . "\");'><i class='far fa-edit'></i></button><button type='button' class='btn btn-outline-danger' onclick='removeUser(\"" . $data->username . "\");'><i class='far fa-trash-alt'></i></button>";
+                    $data->action = "<button type='button' class='btn btn-default btn-edit' data-toggle='modal' data-target='#modal-lg' onclick='editUser(\"" . $data->username . "\");'><i class='far fa-edit'></i></button><button type='button' class='btn btn-default btn-delete' onclick='removeUser(\"" . $data->username . "\");'><i class='far fa-trash-alt'></i></button>";
                     $res[] = $data;
 
                     $dataMobile["data"] = '' .
@@ -290,12 +290,24 @@ class Users extends web_base
     {
         header('Content-Type: application/json');
         $url = parent::build_api_url('users/update');
-        $data["name"] = !is_null($this->input->post("user_name")) ? $this->input->post("user_name") : "";
-        $data["divisi"] = !is_null($this->input->post("user_divisi")) ? intval($this->input->post("user_divisi")) : 0;
-        $data["role"] = !is_null($this->input->post("user_role")) ? intval($this->input->post("user_role")) : 0;
-        $data["old_username"] = !is_null($this->input->post("old_username")) ? $this->input->post("old_username") : "";
-        $data["username"] = !is_null($this->input->post("username")) ? $this->input->post("username") : "";
-        $data["handphone"] = !is_null($this->input->post("handphone")) ? $this->input->post("handphone") : "";
+
+        if (!is_null($this->input->post("user_name")))
+            $data["name"] = $this->input->post("user_name");
+
+        if (!is_null($this->input->post("old_username")))
+            $data["old_username"] = $this->input->post("old_username");
+        
+        if (!is_null($this->input->post("username")))
+            $data["username"] = $this->input->post("username");
+
+        if (!is_null($this->input->post("handphone")))
+            $data["handphone"] = $this->input->post("handphone");
+
+        if (!is_null($this->input->post("user_role")))
+            $data["role"] = intval($this->input->post("user_role"));
+
+        if (!is_null($this->input->post("user_divisi")))
+            $data["divisi"] = intval($this->input->post("user_divisi"));
 
         if (isset($_FILES['user_avatar']['name']) && $_FILES['user_avatar']['name'] != "") {
             $avatarTmpPath = $_FILES['user_avatar']['tmp_name'];
@@ -306,6 +318,22 @@ class Users extends web_base
         $response = $this->somplakapi->run_curl_api($url, $data);
         $response = json_decode($response);
 
+        if ($response->result == 200) {
+            $admin = $response->data->item;
+            $this->session->unset_userdata('smile.pm');
+            $this->session->set_userdata('smile.pm', [
+                "status" => "VALID",
+                "name" => $admin->name,
+                "username" => $admin->username,
+                "role" => $admin->role,
+                "divisi" => $admin->divisi,
+                "avatar" => $admin->avatar,
+                "handphone" => $admin->handphone,
+                "access_level" => $admin->access_level,
+                "last_login" => $admin->last_login
+            ]);
+        }
+
         echo json_encode($response);
     }
 
@@ -314,6 +342,20 @@ class Users extends web_base
         header('Content-Type: application/json');
         $url = parent::build_api_url('users/remove');
         $data["username"] = !is_null($this->input->post("username")) ? $this->input->post("username") : "";
+
+        $response = $this->somplakapi->run_curl_api($url, $data);
+        $response = json_decode($response);
+
+        echo json_encode($response);
+    }
+
+    public function changePassword()
+    {
+        header('Content-Type: application/json');
+        $url = parent::build_api_url('users/update/password');
+        $data["username"] = !is_null($this->input->post("profile_username")) ? $this->input->post("profile_username") : "";
+        $data["old_password"] = !is_null($this->input->post("profile_old_password")) ? $this->input->post("profile_old_password") : "";
+        $data["new_password"] = !is_null($this->input->post("profile_new_password")) ? $this->input->post("profile_new_password") : "";
 
         $response = $this->somplakapi->run_curl_api($url, $data);
         $response = json_decode($response);

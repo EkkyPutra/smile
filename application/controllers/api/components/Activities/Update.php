@@ -26,11 +26,14 @@ class Update
         if (empty($id) || is_null($activity))
             throw new Exception("Activity tidak ditemukan. Silahkan cek kembali data anda.", 422);
 
-        $previousProgressActivity = $this->CI->project->getPreviousActivity($id);
+        $previousProgressActivity = $this->CI->project->getPreviousActivity($activity->progress, $activity->project_id);
+        $lastProgress = $this->CI->project->getLastProgressActivity($activity->project_id);
         $progress = isset($jsonInputObj->progress) ? $jsonInputObj->progress : $activity->progress;
 
-        if ($progress < $previousProgressActivity)
+        if (intval($progress) < $previousProgressActivity)
             throw new Exception("Progress baru tidak boleh lebih kecil dari progress sebelumnya.", 422);
+
+        $projectProgress = ($progress > $lastProgress) ? $progress : intval($lastProgress);
 
         $dataUpdate = [
             "id" => $id,
@@ -42,6 +45,11 @@ class Update
 
         $updateActivity = $this->CI->project->updateProjectActivity($dataUpdate);
         if ($updateActivity) {
+            $this->CI->project->updateProject([
+                "id" => $activity->project_id,
+                "progress" => $projectProgress,
+                "updated" => date("Y-m-d H:i:s")
+            ]);
             $responsecode = 200;
             $responseObj  = [
                 "name"  => "Activity Updated",

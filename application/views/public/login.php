@@ -12,7 +12,7 @@
             <p>Processing...</p>
         </div>
     </div>
-    <div class="content">
+    <div class="content login">
         <div class="login-page">
             <div class="login-body row">
                 <div class="col-sm-6 col-12 login-body-frame">

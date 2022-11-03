@@ -268,6 +268,14 @@ class Myutils
         return $color;
     }
 
+    function slug_name($string)
+    {
+        $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+        $stringPreg = preg_replace('/[^A-Za-z0-9\-]/', '', $string);
+        $slug = str_replace(" ", "-", strtolower($stringPreg));
+
+        return $slug; // Removes special chars.
+    }
 
     function dateDiff($time1, $time2, $precision = 6)
     {

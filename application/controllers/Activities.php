@@ -31,6 +31,9 @@ class Activities extends web_base
 
     public function lists($slug = "")
     {
+        $user_access = $this->smile_session;
+        $access_level = $user_access["access_level"];
+
         $url = parent::build_api_url('projects/get/detail');
         $responseProject = $this->somplakapi->run_curl_api($url, ["slug" => $slug]);
         $resApiProject = json_decode($responseProject);
@@ -40,38 +43,59 @@ class Activities extends web_base
             $projectDetail = $resApiProject->data->item;
         }
 
-        if (!is_null($projectDetail) && isset($projectDetail->pic->leader) && !empty($projectDetail->pic->leader)) {
-            $picLeader = $projectDetail->pic->leader[0];
-            $picLeaderInitial = "";
-            foreach (explode(" ", $picLeader->pic_name) as $leaderInit) {
-                $picLeaderInitial .= substr($leaderInit, 0, 1);
+        if (!is_null($projectDetail)) {
+            if (isset($projectDetail->pic->leader) && !empty($projectDetail->pic->leader)) {
+                $picLeader = $projectDetail->pic->leader[0];
+                $picLeaderInitial = "";
+                foreach (explode(" ", $picLeader->pic_name) as $leaderInit) {
+                    $picLeaderInitial .= substr($leaderInit, 0, 1);
+                }
+
+                $picLeader->pic_init = $picLeaderInitial;
+                $data["projectPicLeader"] = $picLeader;
             }
 
-            $picLeader->pic_init = $picLeaderInitial;
-            $data["projectPicLeader"] = $picLeader;
-        }
+            $asAssign = false;
+            if (isset($access_level->activity->as_assign)) {
+                if (isset($projectDetail->pic->leader) && $projectDetail->pic->leader[0]->pic_name == $user_access["name"])
+                    $asAssign = true;
 
-        $urlActivities = parent::build_api_url('activities/get/lists');
-        $responseActivities = $this->somplakapi->run_curl_api($urlActivities, ["page" => 1, "limit" => 10]);
-        $resApiActivities = json_decode($responseActivities);
+                if (!$asAssign) {
+                    if (isset($projectDetail->pic->members) && !empty($projectDetail->pic->members) && !is_null($projectDetail->pic->members)) {
+                        foreach ($projectDetail->pic->members as $member) {
+                            if ($user_access["name"] == $member->pic_name) {
+                                $asAssign = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
 
-        $totalPage = 0;
-        if ($resApiActivities->result == 200) {
-            $totalPage = $resApiActivities->data->totalPage;
-        }
+            $urlActivities = parent::build_api_url('activities/get/lists');
+            $responseActivities = $this->somplakapi->run_curl_api($urlActivities, ["page" => 1, "limit" => 10]);
+            $resApiActivities = json_decode($responseActivities);
 
-        $urlComments = parent::build_api_url('comments/get');
-        $responseComments = $this->somplakapi->run_curl_api($urlComments, ["project_id" => $projectDetail->id]);
-        $resApiComments = json_decode($responseComments);
+            $totalPage = 0;
+            if ($resApiActivities->result == 200) {
+                $totalPage = $resApiActivities->data->totalPage;
+            }
 
-        $comments = null;
-        if ($resApiComments->result == 200) {
-            $comments = $resApiComments->data->item;
+            $urlComments = parent::build_api_url('comments/get');
+            $responseComments = $this->somplakapi->run_curl_api($urlComments, ["project_id" => $projectDetail->id]);
+            $resApiComments = json_decode($responseComments);
+
+            $comments = null;
+            if ($resApiComments->result == 200) {
+                $comments = $resApiComments->data->item;
+            }
+
+            $data["asAssign"] = $asAssign;
+            $data["totalPage"] = $totalPage;
+            $data["comments"] = $comments;
         }
 
         $data["projectDetail"] = $projectDetail;
-        $data["totalPage"] = $totalPage;
-        $data["comments"] = $comments;
         $data["isMobile"] = $this->agent->is_mobile();
         $data["user_access"] = $this->smile_session;
 
@@ -136,14 +160,16 @@ class Activities extends web_base
                     $data->progress = '<div class="progress">
                                         <div class="progress-bar ' . $bgProgressBar . ' progress-bar-striped" role="progressbar" style="width: ' . $data->progress . '%;" aria-valuenow="' . $data->progress . '" aria-valuemin="0" aria-valuemax="100">' . $data->progress . '%</div>
                                        </div>';
-                    $data->evidence = "<a class='btn btn-outline-primary mr-1' href='" . $data->evidence . "' target='_blank'><i class='fas fa-link'></i></a>";
+                    $dataEvidence = !empty($data->evidence) ?  "href='" . $data->evidence . "' target='_blank'" : "javascript:void(0);";
+                    $classEvidence =  empty($data->evidence) ? 'disabled' : '';
+                    $data->evidence = "<a class='btn btn-default btn-link btn-single " . $classEvidence . "' " . $dataEvidence . " data-toggle='tooltip' data-placement='bottom' title='Evidence'><i class='fas fa-link'></i></a>";
                     $data->action = "";
 
                     if ($access_level->activity->is_super == 1 || ($access_level->activity->as_divisi == 1 && $user_access["divisi"] == $data->project_divisi) || $access_level->activity->access->edit == 1)
-                        $data->action .= "<button type='button' class='btn btn-outline-warning mr-1' data-toggle='modal' data-target='#modal-activity' onclick='editActivity(\"" . $dataId . "\");'><i class='far fa-edit'></i></button>";
+                        $data->action .= "<button type='button' class='btn btn-default btn-edit' data-toggle='modal' data-target='#modal-activity' onclick='editActivity(\"" . $dataId . "\");' data-toggle='tooltip' data-placement='bottom' title='Edit Activity'><i class='far fa-edit'></i></button>";
 
                     if ($access_level->activity->is_super == 1 || ($access_level->activity->as_divisi == 1 && $user_access["divisi"] == $data->project_divisi) || $access_level->activity->access->delete == 1)
-                        $data->action .= "<button type='button' class='btn btn-outline-danger' onclick='removeActivity(\"" . $dataId . "\");'><i class='far fa-trash-alt'></i></button>";
+                        $data->action .= "<button type='button' class='btn btn-default btn-delete' onclick='removeActivity(\"" . $dataId . "\");' data-toggle='tooltip' data-placement='bottom' title='Delete Activity'><i class='far fa-trash-alt'></i></button>";
                     
                     $res[] = $data;
 

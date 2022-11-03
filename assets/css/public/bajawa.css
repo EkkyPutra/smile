@@ -94,6 +94,9 @@
 		background-color: #FFB000;
 		color: #FFF3D9;
 	}
+.dataTable {
+	font-size: 14px;
+}
 .dataTable th {
 	font-family: "Be-Vietnam-Bold";
 }
@@ -103,6 +106,10 @@
 		.dataTable thead tr th.dt-head-center{
 			text-align: center;
 		}
+	table.dataTable#tableProjectsLists {
+		border-spacing: 0px 10px !important;
+		width: 100% !important;
+	}
 	table.dataTable>thead .sorting:before,
 	table.dataTable>thead .sorting_asc:before,
 	table.dataTable>thead .sorting:after,
@@ -115,7 +122,29 @@
 	}
 	table.dataTable .btn {
 		padding: 3px 7px;
-		border-radius: 5px;
+		border-top-width: 1px;
+		border-right-width: 1px;
+		border-bottom-width: 1px;
+		border-left-width: 0px;
+		border-radius: 0px;
+		width: 32px;
+	}
+		table.dataTable .btn:first-child {
+			border-left-width: 1px;
+			border-radius: 5px 0 0 5px;
+		}
+		table.dataTable .btn:last-child {
+			border-right-width: 1px;
+			border-radius: 0 5px 5px 0;
+		}
+			table.dataTable .btn.btn-single {
+				border-radius: 5px;
+			}
+	.dataTable tr.strips-ontrack {
+		background-color: #E5FAE9;
+	}
+	.dataTable tr.strips-late {
+		background-color: #FDE7E8;
 	}
 
 .dataTables_paginate .paginate_button {
@@ -526,7 +555,7 @@ div.dataTables_wrapper div.dataTables_paginate {
 				}
 					.table.dataTable .datatable-project-mobile .datatable-project-mobile-action .btn {
 						background-color: #fff;
-						width: calc(20% - 8px);
+						width: calc(20% - 12px);
 					}
 			.datatable-activity-mobile {
 				background-color: #fff !important;

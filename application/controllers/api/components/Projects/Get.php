@@ -19,10 +19,10 @@ class Get
 
     private function _lists(&$responseObj, &$jsonInputObj, &$responsecode)
     {
+        $totalPage = 10;
         $currPage = 1;
         $limit = 200;
         $totalPage = 1;
-        $users = null;
         $start = 0;
 
         if (isset($jsonInputObj->page) && $jsonInputObj->page > 0 && isset($jsonInputObj->limit) && $jsonInputObj->limit > 0) {
@@ -46,18 +46,25 @@ class Get
 
         $query = (isset($jsonInputObj->query) && !empty($jsonInputObj->query)) ? $jsonInputObj->query : null;
 
-        if (isset($jsonInputObj->priority))
+        if (isset($jsonInputObj->priority) && $jsonInputObj->priority > -1)
             $params["priority"] = $jsonInputObj->priority;
+
+        if (isset($jsonInputObj->progress) && !empty($jsonInputObj->progress) && $jsonInputObj->progress > 0)
+            $params["progress"] = $jsonInputObj->progress;
+
+        if (isset($jsonInputObj->username) && !empty($jsonInputObj->username))
+            $params["username"] = $jsonInputObj->username;
 
         if (isset($jsonInputObj->progress) && !empty($jsonInputObj->progress))
             $params["progress"] = $jsonInputObj->progress;
 
-        if (isset($jsonInputObj->deadline) && !empty($jsonInputObj->deadline)) {
-            $params["deadline"] = [
-                date("Y-m-d", strtotime($jsonInputObj->deadline[0])),
-                date("Y-m-d", strtotime($jsonInputObj->deadline[1]))
-            ];            
-        }
+        // if (isset($jsonInputObj->deadline) && !empty($jsonInputObj->deadline)) {
+        //     $params["deadline"] = [
+        //         date("Y-m-d", strtotime($jsonInputObj->deadline[0])),
+        //         date("Y-m-d", strtotime($jsonInputObj->deadline[1]))
+        //     ];            
+        // }
+
             
         if (!is_null($query))
             $params["query"] = $query;
@@ -69,15 +76,19 @@ class Get
         if ($totalProjects > 0) {
             $totalPage = ceil($totalProjects / $limit);
             $getProjects = $this->CI->project->getProjects($params, $start, $limit);
+            $projectsTop = [];
+            $projectsBottom = [];
             if (!is_null($getProjects)) {
                 $rowsPerPage = count($getProjects);
-                $projectsTop = [];
-                $projectsBottom = [];
                 foreach ($getProjects as $project) {
                     $projectMembers = $this->CI->project->getProjectMembers($project->id);
+                    $lastActivity = $this->CI->project->getLastActivityByProjectId($project->id);
+
                     $project->priority = ($project->priority == 1) ? "Yes" : "No";
                     $project->project_type = strtoupper($project->project_type);
                     $project->pic = $projectMembers;
+
+                    $project->last_activity = (!is_null($lastActivity) ? $lastActivity->name : "-");
 
                     if ($project->progress < 100)
                         $projectsTop[] = $project;
@@ -118,6 +129,7 @@ class Get
         $members = null;
         if (!is_null($projectMembers)) {
             foreach ($projectMembers as $pMember) {
+                $pMember->pic_id = intval($pMember->pic_id);
                 $pMember->avatar_thumb = !empty($pMember->avatar) ? BASE_URL . "files/thumbs/avatar/" . $pMember->avatar : "";
                 $pMember->avatar = !empty($pMember->avatar) ? BASE_URL . "files/images/avatar/" . $pMember->avatar : "";
 

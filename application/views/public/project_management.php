@@ -58,7 +58,7 @@
                                         <label class="title">General Information</label>
                                         <div class="form-group mb-0 row">
                                             <label class="col-4 col-form-label">Nama PIC</label>
-                                            <label class="col-8 col-form-label"><?php echo $memberDetail->name; ?></label>
+                                            <label class="col-8 col-form-label">:&nbsp;<?php echo $memberDetail->name; ?></label>
                                         </div>
                                         <div class="form-group mb-0 row">
                                             <label class="col-4 col-form-label">Divisi</label>
@@ -81,11 +81,11 @@
                                         </div>
                                         <div class="form-group mb-0 row">
                                             <label class="col-4 col-form-label">Terlambat</label>
-                                            <label class="col-8 col-form-label"><?php echo $memberDetail->projectComplete; ?></label>
+                                            <label class="col-8 col-form-label"><?php echo $memberDetail->projectLate; ?></label>
                                         </div>
                                         <div class="form-group mb-0 row">
                                             <label class="col-4 col-form-label">Selesai</label>
-                                            <label class="col-8 col-form-label"><?php echo $memberDetail->projectLate; ?></label>
+                                            <label class="col-8 col-form-label"><?php echo $memberDetail->projectComplete; ?></label>
                                         </div>
                                     </div>
                                 </div>
@@ -94,7 +94,11 @@
                                 <h3 class="col-6 seg-title">Proyek PIC</h3>
                                 <div class="col-6 float-right text-right">
                                     <button class="btn btn-export"><i class="fas fa-upload"></i> <span>Export File</span></button>
-                                    <button class="btn btn-tambah" data-toggle="modal" data-target="#modal-proyek"><i class="fas fa-plus"></i><span>Tambah Proyek</span></button>
+                                    <?php
+                                    $access_level = $user_access["access_level"];
+                                    if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && $access_level->project->access->add == 1))
+                                        echo '<button class="btn btn-tambah" data-toggle="modal" data-target="#modal-proyek"><i class="fas fa-plus"></i><span>Tambah Proyek</span></button>';
+                                    ?>
                                 </div>
                             </div>
                         <?php } ?>
@@ -238,13 +242,12 @@
                                     }
                                     ?>
                                 </select>
-                                <select id="project_progress" class="form-control select-filter">
+                                <select id="filterProjectrogress" class="form-control select-filter">
                                     <option value=''>Progress</option>
                                     <option value="76-100">76% - 100%</option>
                                     <option value="51-75">51% - 75%</option>
                                     <option value="26-50">26% - 50%</option>
                                     <option value="0-25">0% - 25%</option>
-                                    ?>
                                 </select>
                             </div>
                             <div class="toolbar-select">
@@ -276,13 +279,10 @@
                                     }
                                     ?>
                                 </select>
-                                <select id="project_progress" class="form-control select-filter">
+                                <select id="filterProjectrogress" class="form-control select-filter">
                                     <option value=''>Progress</option>
-                                    <option value="76-100">76% - 100%</option>
-                                    <option value="51-75">51% - 75%</option>
-                                    <option value="26-50">26% - 50%</option>
-                                    <option value="0-25">0% - 25%</option>
-                                    ?>
+                                    <option value="ontrack">On Track</option>
+                                    <option value="late">Terlambat</option>
                                 </select>
                                 <span id="resetFilter"><i class="fas fa-undo"></i> Reset Filter</span>
                             </div>
@@ -295,11 +295,15 @@
                                 <input type="text" name="search" id="searchList" class="form-control" autocomplete="off" placeholder="Search Lists">
                             </div>
                         </div>
+                        <div class="toolbar-legend">
+                            <label><span class="legend-ontrack"></span>On Track</label>
+                            <label><span class="legend-late"></span>Terlambat</label>
+                        </div>
                     </div>
                     <?php if ($this->agent->is_mobile()) { ?>
                         <table id="tableProjectsLists" class="table table-borderless"></table>
                     <?php } else { ?>
-                        <table id="tableProjectsLists" class="table table-striped">
+                        <table id="tableProjectsLists" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -309,14 +313,19 @@
                                     <th>Tipe</th>
                                     <th>Batas Waktu</th>
                                     <th>Progress</th>
+                                    <th>Keterangan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                         </table>
                     <?php } ?>
                     <div class="pageInfo row">
-                        <div class="bInfo col-6 float-left">Showing <span id="infoX">00</span>-<span id="infoY">00</span> of <span id="infoZ">00</span></div>
-                        <div class="bPagination col-6 float-right text-right">
+                        <?php if ($this->agent->is_mobile()) { ?>
+                            <div class="bInfo col-sm-6 col-3 float-left">Showing<br /><span id="infoX">00</span>-<span id="infoY">00</span> of <span id="infoZ">00</span></div>
+                        <?php } else { ?>
+                            <div class="bInfo col-sm-6 col-3 float-left">Showing <span id="infoX">00</span>-<span id="infoY">00</span> of <span id="infoZ">00</span></div>
+                        <?php } ?>
+                        <div class="bPagination col-sm-6 col-9 float-right text-right">
                             <ul class="ulBPagination">
                             </ul>
                         </div>
@@ -332,12 +341,13 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Tambah Proyek</h4>
+                        <h4 class="modal-title" id="title-modal-form">Tambah Proyek</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body row">
+                        <input type="hidden" name="project_id" id="project_id" value="" />
                         <label class="modal-seg col-12">Informasi Proyek</label>
                         <div class="col-12 col-sm-6">
                             <div class="row">
@@ -495,6 +505,7 @@
             var infoX = ((parseInt(start) - 1) * limit) + 1;
             var infoY = parseInt(start) * limit;
             var currPage = $(".paginationX.pCurrent").attr("data-page");
+            var username = "<?php echo (isset($memberDetail) && !is_null($memberDetail) && isset($memberDetail->username)) ? $memberDetail->username : ""; ?>";
 
             $("#infoX").text(infoX);
             $.ajax({
@@ -502,6 +513,7 @@
                 type: "POST",
                 data: {
                     params: params,
+                    username: username,
                     start: start,
                     limit: limit
                 },
@@ -539,43 +551,48 @@
                                 data: "id",
                                 width: "3%",
                                 orderable: false,
-                                className: "pt-4 text-center"
+                                className: "pt-3 pb-3 align-middle text-center"
                             },
                             {
                                 data: "name",
                                 width: "19%",
-                                className: "pl-0 pr-0 pt-4"
+                                className: "pl-0 pr-0 pt-3 pb-3 align-middle"
                             },
                             {
                                 data: "project_divisi",
                                 width: "12%",
-                                className: "pt-3 text-center"
+                                className: "pl-2 pr-2 pt-3 pb-3 align-middle text-center"
                             },
                             {
                                 data: "priority",
-                                width: "8%",
-                                className: "pl-2 pr-2 pt-4 text-center"
+                                width: "7%",
+                                className: "pl-2 pr-2 pt-3 pb-3 align-middle text-center"
                             },
                             {
                                 data: "project_type",
                                 width: "8%",
-                                className: "pt-4"
+                                className: "pl-2 pr-2 pt-3 pb-3 text-center align-middle"
                             },
                             {
                                 data: "deadline",
                                 width: "11%",
-                                className: "pt-4"
+                                className: "pl-2 pr-2 pt-3 pb-3 text-center align-middle"
                             },
                             {
                                 data: "progress",
-                                width: "19%",
-                                className: "pt-4"
+                                width: "3%",
+                                className: "pl-2 pr-2 pt-3 pb-3 text-center align-middle"
+                            },
+                            {
+                                data: "activity",
+                                width: "16%",
+                                className: "pl-2 pr-2 pt-3 pb-3 align-middle"
                             },
                             {
                                 data: "action",
-                                width: "20%",
+                                width: "21%",
                                 orderable: false,
-                                className: "pr-0 pt-3 text-center"
+                                className: "pl-1 pr-0 pt-3 align-middle text-center"
                             }
                         ];
                     }
@@ -584,12 +601,15 @@
                         processing: true,
                         data: res.data,
                         "createdRow": function(row, data, dataIndex) {
-                            if (data[2] == `someVal`) {
-                                $(row).addClass('redClass');
+                            console.log(data);
+                            if (data.strips == 'strips-ontrack') {
+                                $(row).addClass('strips-ontrack');
+                            } else if (data.strips == "strips-late") {
+                                $(row).addClass('strips-late');
                             }
                         },
                         columns: tableColumns,
-                        bPaginate: false,
+                        paging: false,
                         bInfo: false,
                         searching: false
                     });
@@ -608,40 +628,37 @@
             var minPage = (totalPage >= 4) ? (totalPage - 3) : totalPage;
             var xPage = (currPage === undefined || totalPage <= 4) ? 1 : ((currPage > minPage) ? minPage : currPage);
 
-            for (var i = xPage; i <= parseInt(totalPage); i++) {
+            for (var i = 1; i <= parseInt(totalPage); i++) {
                 if (i == parseInt(currPage)) {
                     pCurrent = "pCurrent";
                 } else {
                     pCurrent = "";
                 }
 
-                if ((totalPage > 4 && (i == parseInt(xPage) || i == (parseInt(xPage) + 1))) || (i >= 6 && ((i == (totalPage - 1)) || (i == totalPage)))) {
+                if (i == currPage || (i >= (currPage - 2) && i <= currPage) || (i <= (currPage + 2) && i >= currPage) || i == (currPage + 1) || i == (currPage + 2)) {
                     $(".ulBPagination").append('<li class="paginationX ' + pCurrent + '" data-page="' + i + '" data-start="' + (i - 1) + '">' + i + '</li>');
-                } else if (totalPage <= 2) {
-                    $(".ulBPagination").append('<li class="paginationX ' + pCurrent + '" data-page="' + i + '" data-start="' + (i - 1) + '">' + i + '</li>');
-                } else if (totalPage == 3 || totalPage == 4) {
-                    $(".ulBPagination").append('<li class="paginationX ' + pCurrent + '" data-page="' + i + '" data-start="' + (i - 1) + '">' + i + '</li>');
-                } else {
-                    xT = xT + 1;
-                    if (xT <= 2) {
-                        $(".ulBPagination").append('<li data-page="' + i + '" data-start="' + (i - 1) + '">.</li>');
-                    }
                 }
             }
 
-            var bPrevDisabled = "";
+            var bFirstDisabled = "";
             var bNextDisabled = "";
+            var bPrevDisabled = "";
+            var bLastDisabled = "";
             if (currPage === undefined || currPage == 1) {
-                bPrevDisabled = 'class="bDisabled"';
+                bFirstDisabled = 'bDisabled';
+                bPrevDisabled = 'bDisabled';
             }
             if (currPage === undefined || currPage == totalPage) {
-                bNextDisabled = 'class="bDisabled"';
+                bLastDisabled = 'bDisabled';
+                bNextDisabled = 'bDisabled';
             }
 
             $(".ulBPagination").append(
                 '<li id="bPaginationNav">' +
-                '<span id="bPaginationPrev" ' + bPrevDisabled + '><i class=" fas fa-chevron-left"></i></span>' +
-                '<span id="bPaginationNext" ' + bNextDisabled + '><i class="fas fa-chevron-right"></i></span > ' +
+                '   <span class="btnPagination ' + bFirstDisabled + '" id="bPaginationFirst"><i class="fas fa-angle-double-left"></i></span>' +
+                '   <span class="btnPagination ' + bPrevDisabled + '" id="bPaginationPrev"><i class="fas fa-angle-left"></i></span>' +
+                '   <span class="btnPagination ' + bNextDisabled + '" id="bPaginationNext"><i class="fas fa-angle-right"></i></span>' +
+                '   <span class="btnPagination ' + bLastDisabled + '" id="bPaginationLast"><i class="fas fa-angle-double-right"></i></span>' +
                 '</li>');
         }
 
@@ -678,7 +695,6 @@
                 deadline: $("#filterDeadline").val()
             }
             var filterDeadline = $("#filterDeadline").attr("data-onchange-date");
-            // console.log($("#filterDeadline").attr("data-onchange-date"));
 
             var query = $(this).val();
             var limit = $('#pageLength').find(":selected").val();
@@ -692,7 +708,24 @@
             $("#pageLength option").removeAttr("selected");
             $("#pageLength").val($("#pageLength option:first").val());
             $("#pageLength").find("option[value='" + $("#pageLength option:first").val() + "']").attr("selected", true);
-            $(".select-filter option").removeAttr("selected");
+
+            $("#filterDeadline").val("");
+            $("#projectType option").removeAttr("selected");
+            $("#projectType").val($("#projectType option:first").val());
+            $("#projectType").find("option[value='" + $("#projectType option:first").val() + "']").attr("selected", true);
+
+            $("#projectPriority option").removeAttr("selected");
+            $("#projectPriority").val($("#projectPriority option:first").val());
+            $("#projectPriority").find("option[value='" + $("#projectPriority option:first").val() + "']").attr("selected", true);
+
+            $("#user_divisi option").removeAttr("selected");
+            $("#user_divisi").val($("#user_divisi option:first").val());
+            $("#user_divisi").find("option[value='" + $("#user_divisi option:first").val() + "']").attr("selected", true);
+
+            $("#filterProjectrogress option").removeAttr("selected");
+            $("#filterProjectrogress").val($("#filterProjectrogress option:first").val());
+            $("#filterProjectrogress").find("option[value='" + $("#filterProjectrogress option:first").val() + "']").attr("selected", true);
+
             $('#tableProjectsLists').DataTable().destroy();
             fetchTable("", 1, 1, true);
         })
@@ -714,6 +747,43 @@
                 }
             }
         })
+
+        $(document).on("click", "#bPaginationFirst", function() {
+            var currPage = $(".paginationX.pCurrent").attr("data-page");
+            var clickPage = parseInt(currPage) - 1;
+            var limit = $("#pageLength").find(":selected").val();
+            var user_divisi = $("#user_divisi").val();
+
+            if (!$(this).hasClass("bDisabled")) {
+                $(".overlay-loading").show();
+                if (currPage != clickPage && $("#bPaginationPrev").attr("class") !== "bDisabled") {
+                    $('#tableProjectsLists').DataTable().destroy();
+                    fetchTable(user_divisi, 1, limit, true);
+                    setTimeout(function() {
+                        $(".overlay-loading").hide();
+                    }, 200);
+                }
+            }
+        });
+
+        $(document).on("click", "#bPaginationLast", function() {
+            var currPage = $(".paginationX.pCurrent").attr("data-page");
+            var clickPage = parseInt(currPage) - 1;
+            var limit = $("#pageLength").find(":selected").val();
+            var user_divisi = $("#user_divisi").val();
+            var totalPage = $('#totalPage').val();
+
+            if (!$(this).hasClass("bDisabled")) {
+                $(".overlay-loading").show();
+                if (currPage != clickPage && $("#bPaginationPrev").attr("class") !== "bDisabled") {
+                    $('#tableProjectsLists').DataTable().destroy();
+                    fetchTable(user_divisi, totalPage, limit, true);
+                    setTimeout(function() {
+                        $(".overlay-loading").hide();
+                    }, 200);
+                }
+            }
+        });
 
         $(document).on("click", "#bPaginationPrev", function() {
             var currPage = $(".paginationX.pCurrent").attr("data-page");
@@ -782,7 +852,8 @@
             //Date picker
             $('#project_deadline').datetimepicker({
                 locale: 'id',
-                format: 'DD-MM-YYYY'
+                format: 'DD-MM-YYYY',
+                minDate: new Date()
             });
 
             var projects = "<?php echo base_url("users/listsAjax"); ?>";
@@ -823,7 +894,7 @@
                     $('.overlay-loading').show();
                     todo = $("#todo").val();
                     if (todo == "update") {
-                        urlAjax = "<?php echo base_url("users/doUpdate") ?>";
+                        urlAjax = "<?php echo base_url("projects/doUpdate") ?>";
                     } else {
                         urlAjax = "<?php echo base_url("projects/doCreate") ?>";
                     }
@@ -870,6 +941,15 @@
                     project_type: {
                         required: "Silahkan pilih tipe proyek"
                     },
+                    project_progress: {
+                        required: "Silahkan masukkan progress proyek"
+                    },
+                    pic_leader_name: {
+                        required: "Silahkan pilih PIC Leader Name"
+                    },
+                    pic_leader_handphone: {
+                        required: "Silahkan masukkan PIC Leader Handphone"
+                    },
                     project_link: {
                         url: "Silahkan masukkan URL yang valid. Cth : http://www.telkomsel.com"
                     }
@@ -892,6 +972,124 @@
                 }
             });
         });
+
+        function editProject(slug) {
+            $("#title-modal-form").html("Edit Proyek");
+            $("#projectForm").each(function() {
+                elements = $(this).find(':input');
+                elements.each(function(key, element) {
+                    if ($(element).attr("class") !== "undefined") {
+                        $("#" + $(element).attr("id") + "-error").hide();
+                        $(element).removeClass("is-invalid")
+                    }
+                });
+            });
+            $('.overlay-loading').show();
+
+            $.ajax({
+                url: "<?php echo base_url("projects/getDetail/") ?>",
+                dataType: "JSON",
+                data: {
+                    slug: slug
+                },
+                type: "POST",
+                success: function(response) {
+                    if (response.result == 200) {
+                        data = response.data.item;
+                        $("#project_id").val(data.id);
+                        $("#project_name").val(data.name);
+                        $("#project_link").val(data.link);
+                        $("#project_progress").val(parseInt(data.progress));
+                        $("#project_progress").attr("disabled", "disabled");
+                        $("#project_deadline").val(data.deadline);
+                        $('select[name^="project_type"] option:selected').removeAttr("selected");
+                        $('select[name^="project_type"] option[value=' + data.type + ']').attr("selected", "selected");
+                        $('select[name^="project_divisi"] option:selected').removeAttr("selected");
+                        $('select[name^="project_divisi"] option[value=' + data.divisi + ']').attr("selected", "selected");
+
+                        $("#project_description").html(data.description);
+
+                        if (data.pic.leader !== undefined) {
+                            $("#pic_leader_id").val(data.pic.leader[0].pic_id);
+                            $("#pic_leader_name").val(data.pic.leader[0].pic_name);
+                            $("#pic_leader_handphone").val(data.pic.leader[0].pic_handphone);
+                        }
+
+                        $("#project_priority").removeAttr("checked");
+                        if (data.priority == 1) {
+                            $("#project_priority").attr("checked", "checked");
+                        }
+
+                        $(".row-pic-member").html('<input type="hidden" name="count-pic" id="count-pic" value="0" />');
+                        if (data.pic.members !== undefined) {
+                            var picX = data.pic.members.length;
+                            $("#count-pic").val(picX);
+                            $(this.target).find('input').autocomplete();
+                            $.each(data.pic.members, function(index, value) {
+                                $(".row-pic-member").append('' +
+                                    '<div class="col-12 row row-pic" id="row-pic-' + picX + '">' +
+                                    '    <div class="col-12 row">' +
+                                    '        <label class="modal-seg-pic col-6">PIC Member</label>' +
+                                    '        <label class="delete-pic col-6 align-right" data-pic-number="' + picX + '" onclick="removePicRow(\'' + picX + '\');">Delete</label>' +
+                                    '    </div>' +
+                                    '    <div class="col-12 col-sm-6">' +
+                                    '        <div class="row">' +
+                                    '            <div class="form-group col-12">' +
+                                    '                <label for="pic_leader_name">Nama PIC</label>' +
+                                    '                <input type="text" name="pic_member_name[]" id="pic_member_name_' + picX + '" value="' + value.pic_name + '" class="pic_member_name form-control" placeholder="Contoh: Dwi Setiawan" autocomplete="off" required="required" />' +
+                                    '                <input type="hidden" name="pic_member_id[]" id="pic_member_id_' + picX + '" value="' + value.pic_id + '" />' +
+                                    '                <div id="autocomplete-pic-leader">' +
+                                    '                </div>' +
+                                    '            </div>' +
+                                    '        </div>' +
+                                    '    </div>' +
+                                    '    <div class="col-12 col-sm-6">' +
+                                    '        <div class="row">' +
+                                    '            <div class="form-group col-12">' +
+                                    '                <label for="pic_leader_handphone">Nomor Telepon PIC</label>' +
+                                    '                <input type="text" name="pic_member_handphone[]" id="pic_member_handphone_' + picX + '" value=" ' + value.pic_handphone + '" class="form-control" placeholder="Contoh: 089818181818" autocomplete="off" required="required" />' +
+                                    '            </div>' +
+                                    '        </div>' +
+                                    '    </div>' +
+                                    '</div>' +
+                                    '');
+
+                                var projects = "<?php echo base_url("users/listsAjax"); ?>";
+                                $('#pic_member_name_' + picX).autocomplete({
+                                    minLength: 0,
+                                    appendTo: "#autocomplete-pic-leader",
+                                    classes: {
+                                        "ui-autocomplete": "highlight"
+                                    },
+                                    source: projects,
+                                    focus: function(event, ui) {
+                                        $("#pic_member_name_" + picX).val(ui.item.name);
+                                        $("#pic_member_handphone" + picX).val(ui.item.handphone);
+                                        return false;
+                                    },
+                                    select: function(event, ui) {
+                                        $("#pic_member_name_" + picX).val(ui.item.name);
+                                        $("#pic_member_handphone_" + picX).val(ui.item.handphone);
+                                        $("#pic_member_id_" + picX).val(ui.item.id);
+                                        return false;
+                                    }
+                                }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                                    return $("<li>")
+                                        .append("<a>" + item.name + "</a>")
+                                        .appendTo(ul);
+                                };
+
+                            })
+                        }
+                        $("#todo").val("update");
+                        $('.overlay-loading').hide();
+                    } else {
+                        $('.overlay-loading').hide();
+                        show_notif('error', response.message);
+                    }
+                }
+            });
+        }
 
         function removeProject(id) {
             bootbox.confirm({
@@ -931,67 +1129,9 @@
             });
         }
 
-        function getGeneralInfo(id) {
-            $.ajax({
-                url: '<?php echo base_url("projects/getDetail"); ?>',
-                type: "post",
-                dataType: "json",
-                data: {
-                    id: id
-                },
-                success: function(response) {
-                    if (response.result == 200) {
-                        $("#general-info-overlay").hide();
-
-                        project = response.data.item;
-                        pic = project.pic;
-                        $("#label-project-name").html(project.name);
-                        $("#label-project-desc").html(project.description);
-                        $("#label-project-deadline").html(project.deadline);
-                        $("#label-project-link").html('<a href="' + project.link + '">' + project.link + '</a>');
-
-                        var projectTipe = '<div class="table-seg-box" style="background-color: #' + project.project_divisi_bg + '; color: #' + project.project_divisi_color + '">' + project.project_divisi + '</div>';
-
-                        if (project.priority == "1") {
-                            projectTipe += '<span class="top-priority"><i class="fas fa-angle-double-up"></i> TOP</span>';
-                        }
-                        $("#label-project-tipe").html(projectTipe);
-                        $(".gis-pic-leader").html("");
-                        $(".gis-pic-members").html("");
-
-                        if (pic !== null) {
-                            $(".gis-pic-leader").html('' +
-                                '<div class="gis-init col-1">' +
-                                '   <span id="label-pic-leader-initial">YS</span>' +
-                                '</div>' +
-                                '<div class="gis-info col-11">' +
-                                '   <label id="label-pic-leader-name">' + pic.leader[0].pic_name + '</label>' +
-                                '   <span id="label-pic-leader-handphone">' + pic.leader[0].pic_handphone + '</span>' +
-                                '</div>');
-
-                            if (pic.members !== null) {
-                                members = pic.members;
-                                $.each(members, function(key, member) {
-                                    $(".gis-pic-members").append('' +
-                                        '<div class="row">' +
-                                        '   <div class="gis-init col-1">' +
-                                        '       <span id="label-pic-leader-initial">YS</span>' +
-                                        '   </div>' +
-                                        '   <div class="gis-info col-11">' +
-                                        '       <label id="label-pic-leader-name">' + member.pic_name + '</label>' +
-                                        '       <span id="label-pic-leader-handphone">' + member.pic_handphone + '</span>' +
-                                        '   </div>' +
-                                        '</div>');
-                                });
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
         $(".add-pic").on("click", function() {
-            $('.pic_member_name').autocomplete("destroy");
+            // $('.pic_member_name').autocomplete("destroy");
+            $(this.target).find('input').autocomplete();
 
             var countPic = $("#count-pic").val();
             var picX = parseInt(countPic) + 1;
@@ -1076,7 +1216,6 @@
                     deadline: $("#filterDeadline").val()
                 }
 
-                console.log(params);
                 var limit = $('#pageLength').find(":selected").val();
                 var start = ($(".paginationX.pCurrent").attr("data-start"));
 

@@ -89,7 +89,7 @@ class Performances extends web_base
                 foreach ($resData as $key => $data) {
                     $data->id = ($key + 1);
                     $data->user_divisi = '<div class="table-seg-box" style="background-color: #' . $data->user_divisi_bg . '; color: #' . $data->user_divisi_color . '">' . ucwords($data->user_divisi) . '</div>';
-                    $data->action = "<a href='" . base_url("../performances/detail/" . $data->username) ."' class='btn btn-outline-primary mr-2'><i class='far fa-eye'></i></a>";
+                    $data->action = "<a href='" . base_url("../performances/detail/" . $data->username) ."' class='btn btn-default btn-eye btn-single mr-2'><i class='far fa-eye'></i></a>";
                     $res[] = $data;
 
                     $dataMobile["data"] = ''.
@@ -166,6 +166,7 @@ class Performances extends web_base
         $data["usersDivisi"] = $usersDivisi;
         $data["totalPage"] = $totalPage;
         $data["isMobile"] = $this->agent->is_mobile();
+        $data["user_access"] = $this->smile_session;
 
         $this->load->view("public/project_management", $data);
     }

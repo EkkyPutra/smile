@@ -42,7 +42,7 @@ class Projects extends web_base
         $urlDivisi = parent::build_api_url("masters/get/division");
         if ($this->access_level->project->is_super == 1) {
             $paramsDivisi["all_divisi"] = true;
-        } else if ($this->access_level->project->is_super == 0 && $this->access_level->project->as_divisi == 1) {
+        } else {
             $paramsDivisi["all_disivi"] = false;
             $paramsDivisi["user_divisi"] = $this->smile_session["divisi"];
         }
@@ -105,13 +105,14 @@ class Projects extends web_base
 
         $params = $this->input->post("params");
         $data["type"] = !is_null($params) && isset($params["type"]) ? $params["type"] : "";
-        $data["priority"] = !is_null($params) && isset($params["priority"]) ? ($params["priority"] == "top" ? 1 : 0) : -1;
+        $data["priority"] = (!is_null($params) && isset($params["priority"]) && !empty($params["priority"])) ? ($params["priority"] == "top" ? 1 : 0) : -1;
         $data["divisi"] = !is_null($params) && isset($params["divisi"]) ? $params["divisi"] : "";
         $data["query"] = !is_null($params) && isset($params["query"]) ? $params["query"] : "";
-        $progress = (!is_null($params) && !empty($params["progress"])) ? $params["progress"] : "";
+        $data["progress"] = (!is_null($params) && !empty($params["progress"])) ? $params["progress"] : "";
+        $data["username"] = (!is_null($this->input->post("username")) && !empty($this->input->post("username"))) ? $this->input->post("username") : "";
         $deadline = (!is_null($params) && !empty($params["deadline"])) ? $params["deadline"] : "";
-        if (!empty($progress))
-            $data["progress"] = explode("-", $progress);
+        // if (!empty($progress))
+        //     $data["progress"] = explode("-", $progress);
 
         if (!empty($deadline))
             $data["deadline"] = explode("-", trim($deadline));
@@ -124,6 +125,7 @@ class Projects extends web_base
         $totalRows = 0;
         $res = [];
         $resMobile = [];
+        $today = date("Y-m-d");
         if ($resApi->result == 200) {
             $resData = $resApi->data->items;
             $totalPage = $resApi->data->totalPage;
@@ -141,6 +143,22 @@ class Projects extends web_base
                         $bgProgressBar = "bg-green";
                     }
 
+                    $asAssign = false;
+                    if (isset($access_level->activity->as_assign)) {
+                        foreach ($data->pic as $pic) {
+                            if ($user_access["name"] == $pic->pic_name) {
+                                $asAssign = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    $strips = "";
+                    if (strtotime($data->deadline) < strtotime($today)) {
+                        $strips = "strips-late";
+                    } else {
+                        $strips = "strips-ontrack";
+                    }
                     $userHandphone = !is_null($data->pic) ? $data->pic[0]->pic_handphone : "";
                     $userHandphone = (!empty($userHandphone) && substr($userHandphone, 0,1 ) == 0) ? "62" . substr($userHandphone, 1) : "";
                     $projectDivisi = $data->project_divisi;
@@ -148,24 +166,30 @@ class Projects extends web_base
                     $data->id = ($key + 1);
                     $data->deadline = date("d/m/Y", strtotime($data->deadline));
                     $data->project_divisi = '<div class="table-seg-box" style="background-color: #' . $data->project_divisi_bg . '; color: #' . $data->project_divisi_color . '">' . ucwords($data->project_divisi) . '</div>';
-                    $data->progress = '<div class="progress">
+                    $dataProgress = '<div class="progress">
                                         <div class="progress-bar ' . $bgProgressBar . ' progress-bar-striped" role="progressbar" style="width: ' . $data->progress . '%;" aria-valuenow="' . $data->progress . '" aria-valuemin="0" aria-valuemax="100">' . $data->progress . '%</div>
                                        </div>';
+                    $data->progress = $data->progress . "%";
+                    $data->activity = $data->last_activity;
                     $data->priority = ($data->priority == "Yes") ? "<span class='top-priority'><i class='fas fa-angle-double-up'></i> TOP</span>" : "";
                     $data->action = "";
-                    if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && $user_access["divisi"] == $projectDivisi) || $access_level->activity->access->lists == 1)
-                        $data->action .= "<a class='btn btn-default btn-eye mr-1' href='" . base_url("../activities/lists/$data->slug"). "'><i class='far fa-eye'></i></button>";
+                    // if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && strtoupper($user_access["divisi"]) == strtoupper($projectDivisi)) || $asAssign)
+                    $data->action .= "<a class='btn btn-default btn-eye' href='" . base_url("../activities/lists/$data->slug"). "' data-toggle='tooltip' data-placement='bottom' title='View Project'><i class='far fa-eye'></i></button>";
 
-                    $data->action .= "<a class='btn btn-default btn-wa mr-1' href='https://wa.me/" . $userHandphone . "' target='_blank'><i class='fab fa-whatsapp'></i></a>";
-                    $data->action .= "<a class='btn btn-default btn-link mr-1' href='" . $data->link . "' target='_blank'><i class='fas fa-link'></i></a>";
-                    $data->action .= "<a class='btn btn-default btn-comment mr-1' href='" . base_url("../activities/lists/$data->slug#comment-text") . "'><i class='far fa-comment'></i></a>";
+                    $dataLink = !empty($data->link) ?  "href='" . $data->link . "' target='_blank'" : "javascript:void(0);";
+                    $data->action .= "<a class='btn btn-default btn-wa' href='https://wa.me/" . $userHandphone . "' target='_blank' data-toggle='tooltip' data-placement='bottom' title='Whatsapp PIC Leader'><i class='fab fa-whatsapp'></i></a>";
+                    $data->action .= "<a class='btn btn-default btn-link' " . $dataLink . " data-toggle='tooltip' data-placement='bottom' title='Evidence'><i class='fas fa-link'></i></a>";
 
-                    if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && $user_access["divisi"] == $projectDivisi) || $access_level->project->access->edit == 1)
-                        $data->action .= "<button type='button' class='btn btn-default btn-edit mr-1' onclick='editProject(\"" . $dataId . "\");'><i class='fas fa-edit'></i></button>";
+                    // if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && strtoupper($user_access["divisi"]) == strtoupper($projectDivisi)) || $asAssign)
+                    $data->action .= "<a class='btn btn-default btn-comment' href='" . base_url("../activities/lists/$data->slug#comment-text") . "' data-toggle='tooltip' data-placement='bottom' title='Comment'><i class='far fa-comment'></i></a>";
 
-                    if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && $user_access["divisi"] == $projectDivisi) || $access_level->project->access->delete == 1)
-                        $data->action .= "<button type='button' class='btn btn-default btn-delete' onclick='removeProject(\"" . $dataId . "\");'><i class='far fa-trash-alt'></i></button>";
+                    if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && strtoupper($user_access["divisi"]) == strtoupper($projectDivisi) && intval($access_level->project->access->edit) == 1))
+                        $data->action .= "<button type='button' class='btn btn-default btn-edit' data-toggle='modal' data-target='#modal-proyek' onclick='editProject(\"" . $data->slug . "\");' data-toggle='tooltip' data-placement='bottom' title='Edit Project'><i class='fas fa-edit'></i></button>";
 
+                    if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && strtoupper($user_access["divisi"]) == strtoupper($projectDivisi) && intval($access_level->project->access->delete) == 1))
+                        $data->action .= "<button type='button' class='btn btn-default btn-delete' onclick='removeProject(\"" . $dataId . "\");' data-toggle='tooltip' data-placement='bottom' title='Delete Project'><i class='far fa-trash-alt'></i></button>";
+
+                    $data->strips = $strips;
                     $res[] = $data;
 
                     $dataMobile["id"] = ($key + 1);
@@ -178,12 +202,13 @@ class Projects extends web_base
                             $data->project_divisi.
                             $data->priority.
                         '   </div>' .
-                            $data->progress.
+                            $dataProgress.
                         '   <div class="datatable-project-mobile-action">'.
                                 $data->action.
                         '   </div>'.
                         '</div>';
                     '';
+                    $dataMobile["strips"] = $strips;
 
                     $resMobile[] = $dataMobile;
                 }
@@ -208,8 +233,9 @@ class Projects extends web_base
     {
         header('Content-Type: application/json');
         $url = parent::build_api_url('projects/get/detail');
-        $response = $this->somplakapi->run_curl_api($url, ["id" => $this->input->post('id')]);
+        $response = $this->somplakapi->run_curl_api($url, ["slug" => $this->input->post('slug')]);
         $resApi = json_decode($response);
+        $resApi->data->item->deadline = date("d-m-Y", strtotime($resApi->data->item->deadline));
 
         echo json_encode($resApi);
     }
@@ -228,13 +254,52 @@ class Projects extends web_base
         $data["description"] = !is_null($this->input->post("project_description")) ? $this->input->post("project_description") : "";
         $data["pic_ids"][] = [
             "id" => !is_null($this->input->post("pic_leader_id")) ? $this->input->post("pic_leader_id") : 0,
+            "name" => !is_null($this->input->post("pic_leader_name")) ? $this->input->post("pic_leader_name") : "",
             "type" => 1
         ];
 
-        if (!is_null($this->input->post("pic_member_id"))) {
-            foreach ($this->input->post("pic_member_id") as $picMember) {
+        if (!is_null($this->input->post("pic_member_id")) && !is_null($this->input->post("pic_member_name"))) {
+            $picMembers = $this->input->post("pic_member_name");
+            foreach ($this->input->post("pic_member_id") as $key => $picMember) {
                 $data["pic_ids"][] = [
                     "id" => $picMember,
+                    "name" => $picMembers[$key],
+                    "type" => 0
+                ];
+            }
+        }
+
+        $response = $this->somplakapi->run_curl_api($url, $data);
+        $response = json_decode($response);
+
+        echo json_encode($response);
+    }
+
+    public function doUpdate()
+    {
+        header('Content-Type: application/json');
+        $url = parent::build_api_url('projects/update');
+        $data["id"] = !is_null($this->input->post("project_id")) ? $this->input->post("project_id") : "";
+        $data["name"] = !is_null($this->input->post("project_name")) ? $this->input->post("project_name") : "";
+        $data["divisi"] = !is_null($this->input->post("project_divisi")) ? $this->input->post("project_divisi") : "";
+        $data["priority"] = !is_null($this->input->post("project_priority")) ? $this->input->post("project_priority") : "";
+        $data["type"] = !is_null($this->input->post("project_type")) ? $this->input->post("project_type") : "";
+        $data["deadline"] = !is_null($this->input->post("project_deadline")) ? date("Y-m-d", strtotime($this->input->post("project_deadline"))) : "";
+        $data["progress"] = !is_null($this->input->post("project_progress")) ? intval($this->input->post("project_progress")) : 0;
+        $data["link"] = !is_null($this->input->post("project_link")) ? $this->input->post("project_link") : "";
+        $data["description"] = !is_null($this->input->post("project_description")) ? $this->input->post("project_description") : "";
+        $data["pic_ids"][] = [
+            "id" => !is_null($this->input->post("pic_leader_id")) ? $this->input->post("pic_leader_id") : 0,
+            "name" => !is_null($this->input->post("pic_leader_name")) ? $this->input->post("pic_leader_name") : "",
+            "type" => 1
+        ];
+
+        if (!is_null($this->input->post("pic_member_id")) && !is_null($this->input->post("pic_member_name"))) {
+            $picMembers = $this->input->post("pic_member_name");
+            foreach ($this->input->post("pic_member_id") as $key => $picMember) {
+                $data["pic_ids"][] = [
+                    "id" => $picMember,
+                    "name" => $picMembers[$key],
                     "type" => 0
                 ];
             }

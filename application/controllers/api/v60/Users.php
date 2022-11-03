@@ -78,7 +78,7 @@ class Users extends API_Controller
         $this->writeLogOutput();
     }
 
-    public function update($command = "")
+    public function update($command = "detail")
     {
         $this->writeLogInput();
 

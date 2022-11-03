@@ -53,7 +53,6 @@ class Get
                     $projectComplete = $this->CI->project->getCountProject($user->id, $today, "complete");
                     $projectLate = $this->CI->project->getCountProject($user->id, $today, "late");
 
-
                     $user->avatar_thumb = !empty($user->avatar) ? "./files/thumbs/avatar/" . $user->avatar : "";
                     $user->avatar = !empty($user->avatar) ? "./files/images/avatar/" . $user->avatar : "";
                     $user->project = (object) [
@@ -89,7 +88,7 @@ class Get
             throw new Exception("User tidak ditemukan. Silahkan cek kembali data anda!", 422);
 
         $today = date("Y-m-d");
-        $totalProject = $this->CI->project->getCountProject($user->id, $today, "all");
+        $totalProject = $this->CI->project->getCountProject($user->id, $today, "all", false, true);
         $totalProjectBau = $this->CI->project->getCountProject($user->id, $today, "all", true);
         $projectOnTrack = $this->CI->project->getCountProject($user->id, $today, "track");
         $projectComplete = $this->CI->project->getCountProject($user->id, $today, "complete");

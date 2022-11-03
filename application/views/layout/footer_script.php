@@ -32,4 +32,11 @@
                 scrollTop: 0
             }, "slow");
         })
+
+        $(".nav-menu-mobile").on("click", function() {
+            $(".menu-mobile").addClass("nav-mobile-show");
+        })
+        $(".close-menu-mobile").on("click", function() {
+            $(".menu-mobile").removeClass("nav-mobile-show");
+        })
     </script>
