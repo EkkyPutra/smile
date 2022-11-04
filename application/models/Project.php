@@ -31,6 +31,58 @@ class Project extends CI_Model
         return 0;
     }
 
+    public function totalProjects($params = null)
+    {
+        $this->db->select("count(a.id) as total");
+        $this->db->from("tbl_project as a");
+        if (!is_null($params)) {
+            if (isset($params["username"]) && !empty($params["username"])) {
+                $this->db->join("tbl_project_pic as b", "b.project_id=a.id");
+                $this->db->join("tbl_users as c", "c.id=b.user_id");
+            }
+
+            if (isset($params["type"]))
+            $this->db->where("a.type", $params["type"]);
+
+            if (isset($params["divisi"]))
+            $this->db->where("a.divisi", $params["divisi"]);
+
+            if (isset($params["priority"]) && intval($params["priority"]) > -1)
+                $this->db->where("a.priority", $params["priority"]);
+
+            if (isset($params["progress"]))
+            if ($params["progress"] == "late")
+                $this->db->where([
+                    "a.deadline < " => date("Y-m-d"),
+                    "a.progress !=" => 100,
+                ]);
+            else if ($params["progress"] == "ontrack")
+            $this->db->where([
+                "a.deadline >= " => date("Y-m-d"),
+                "a.progress <" => 100
+            ]);
+            else if ($params["progress"] == "complete")
+            $this->db->where([
+                "a.progress" => 100
+            ]);
+
+            if (isset($params["deadline"]))
+            $this->db->where("a.deadline BETWEEN " . $this->db->escape($params["deadline"][0]) . " AND " . $this->db->escape($params["deadline"][1]));
+
+            if (isset($params["username"]) && !empty($params["username"]))
+            $this->db->where("c.username", $params["username"]);
+        }
+
+        $query = $this->db->get();
+        // var_dump($this->db->last_query());
+
+        if (!is_null($query) && $query->num_rows() > 0) {
+            $row = $query->row();
+            return $row->total;
+        }
+
+        return 0;
+    }
 
     public function getProjectById($id)
     {
@@ -63,59 +115,6 @@ class Project extends CI_Model
         }
 
         return null;
-    }
-
-    public function totalProjects($params = null)
-    {
-        $this->db->select("count(a.id) as total");
-        $this->db->from("tbl_project as a");
-        if (!is_null($params)) {
-            if (isset($params["username"]) && !empty($params["username"])) {
-                $this->db->join("tbl_project_pic as b", "b.project_id=a.id");
-                $this->db->join("tbl_users as c", "c.id=b.user_id");
-            }
-
-            if (isset($params["type"]))
-                $this->db->where("a.type", $params["type"]);
-
-            if (isset($params["divisi"]))
-                $this->db->where("a.divisi", $params["divisi"]);
-
-            if (isset($params["priority"]) && intval($params["priority"]) > -1)
-                $this->db->where("a.priority", $params["priority"]);
-
-            if (isset($params["progress"]))
-                if ($params["progress"] == "late")
-                    $this->db->where([
-                        "a.deadline < " => date("Y-m-d"),
-                        "a.progress !=" => 100,
-                    ]);
-                else if ($params["progress"] == "ontrack")
-                    $this->db->where([
-                        "a.deadline >= " => date("Y-m-d"),
-                        "a.progress <" => 100
-                    ]);
-                else if ($params["progress"] == "complete")
-                    $this->db->where([
-                        "a.progress" => 100
-                    ]);
-
-            if (isset($params["deadline"]))
-                $this->db->where("a.deadline BETWEEN " . $this->db->escape($params["deadline"][0]) . " AND " . $this->db->escape($params["deadline"][1]));
-
-            if (isset($params["username"]) && !empty($params["username"]))
-                $this->db->where("c.username", $params["username"]);
-        }
-
-        $query = $this->db->get();
-        // var_dump($this->db->last_query());
-        
-        if (!is_null($query) && $query->num_rows() > 0) {
-            $row = $query->row();
-            return $row->total;
-        }
-
-        return 0;
     }
 
     public function getProjects($params = [], $offset = 0, $limit = 0)
