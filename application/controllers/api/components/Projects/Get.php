@@ -153,10 +153,10 @@ class Get
     private function _count(&$responseObj, &$jsonInputObj, &$responsecode)
     {
         $today = date("Y-m-d H:i:s");
-        $projectOnTrack = $this->CI->project->getTotalProjectByStatus($today, "track");
+        $projectOnTrack = $this->CI->project->getTotalProjectByStatus($today, "ontrack");
         $projectLate = $this->CI->project->getTotalProjectByStatus($today, "late");
         $projectComplete = $this->CI->project->getTotalProjectByStatus($today, "complete");
-        $totalProject = $projectComplete + $projectLate + $projectOnTrack;
+        $totalProject = $this->CI->project->totalProjects();
 
         $responsecode = 200;
         $responseObj = [
@@ -165,7 +165,7 @@ class Get
                 "complete" => intval($projectComplete),
                 "onTrack" => intval($projectOnTrack),
                 "late" => intval($projectLate),
-                "total" => $totalProject
+                "total" => intval($totalProject)
             ]
         ];
     }

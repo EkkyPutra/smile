@@ -103,7 +103,6 @@
                         data: $("#login-form").serializeArray(),
                         dataType: "JSON",
                         success: function(response) {
-                            console.log(response);
                             if (response.result == 200) {
                                 $('.overlay-loading').hide();
                                 window.location.href = "<?php echo base_url("main"); ?>";

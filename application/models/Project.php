@@ -50,31 +50,23 @@ class Project extends CI_Model
             if (isset($params["priority"]) && intval($params["priority"]) > -1)
                 $this->db->where("a.priority", $params["priority"]);
 
-            if (isset($params["progress"]))
-            if ($params["progress"] == "late")
-                $this->db->where([
-                    "a.deadline < " => date("Y-m-d"),
-                    "a.progress !=" => 100,
-                ]);
-            else if ($params["progress"] == "ontrack")
-            $this->db->where([
-                "a.deadline >= " => date("Y-m-d"),
-                "a.progress <" => 100
-            ]);
-            else if ($params["progress"] == "complete")
-            $this->db->where([
-                "a.progress" => 100
-            ]);
+            if (isset($params["progress"])) {
+                if ($params["progress"] == "late")
+                    $this->db->where("a.deadline < " . $this->db->escape(date("Y-m-d")) . " AND `a`.`updated` > `a`.`deadline`");
+                else if ($params["progress"] == "ontrack")
+                    $this->db->where("a.deadline >= " . $this->db->escape(date("Y-m-d")) . " AND `a`.`updated` <= `a`.`deadline` AND a.progress < 100");
+                else if ($params["progress"] == "complete")
+                    $this->db->where("a.progress = 100");
+            }
 
             if (isset($params["deadline"]))
-            $this->db->where("a.deadline BETWEEN " . $this->db->escape($params["deadline"][0]) . " AND " . $this->db->escape($params["deadline"][1]));
+                $this->db->where("a.deadline BETWEEN " . $this->db->escape($params["deadline"][0]) . " AND " . $this->db->escape($params["deadline"][1]));
 
             if (isset($params["username"]) && !empty($params["username"]))
             $this->db->where("c.username", $params["username"]);
         }
 
         $query = $this->db->get();
-        // var_dump($this->db->last_query());
 
         if (!is_null($query) && $query->num_rows() > 0) {
             $row = $query->row();
@@ -138,21 +130,14 @@ class Project extends CI_Model
         if (isset($params["priority"]) && intval($params["priority"]) > -1)
             $this->db->where("a.priority", $params["priority"]);
 
-        if (isset($params["progress"]))
+        if (isset($params["progress"])) {
             if ($params["progress"] == "late")
-                $this->db->where([
-                    "a.deadline < " => date("Y-m-d"),
-                    "a.progress <" => 100,
-                ]);
+                $this->db->where("a.deadline < " . $this->db->escape(date("Y-m-d")) . " AND `a`.`updated` > `a`.`deadline`");
             else if ($params["progress"] == "ontrack")
-                $this->db->where([
-                    "a.deadline >= " => date("Y-m-d"),
-                    "a.progress <" => 100
-                ]);
+                $this->db->where("a.deadline >= " . $this->db->escape(date("Y-m-d")) . " AND `a`.`updated` <= `a`.`deadline` AND a.progress < 100");
             else if ($params["progress"] == "complete")
-                $this->db->where([
-                    "a.progress" => 100
-                ]);
+                $this->db->where("a.progress = 100");
+        }
 
         if (isset($params["deadline"]))
             $this->db->where("a.deadline BETWEEN " . $this->db->escape($params["deadline"][0]) . " AND " . $this->db->escape($params["deadline"][1]));
@@ -171,7 +156,6 @@ class Project extends CI_Model
         $this->db->order_by("a.progress", "DESC");
 
         $query = $this->db->get();
-        var_dump($this->db->last_query());
 
         if (!is_null($query) && $query->num_rows() > 0) {
             return $query->result();
@@ -434,16 +418,14 @@ class Project extends CI_Model
         $this->db->from("tbl_project");
 
         switch ($type) {
-            case "track":
-                $this->db->where("deadline >", $today);
-                $this->db->where("progress < 100");
+            case "ontrack":
+                $this->db->where("deadline >= " . $this->db->escape($today) . " AND `updated` <= `deadline` AND progress < 100");
                 break;
             case "complete":
                 $this->db->where("progress = 100");
                 break;
             case "late":
-                $this->db->where("deadline <", $today);
-                $this->db->where("progress < 100");
+                $this->db->where("deadline < " . $this->db->escape($today) . " AND `updated` > `deadline`");
                 break;
             case "all":
                 break;

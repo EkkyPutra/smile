@@ -748,7 +748,6 @@
                         contentType: false,
                         processData: false,
                         success: function(response) {
-                            console.log(response.result);
                             if (response.result == 200) {
                                 $(".overlay-loading").hide();
                                 $("#modal-close").click();
@@ -829,7 +828,6 @@
                     return this.value
                 }).get();
 
-                console.log(selected);
                 var params = {
                     progress: selected[0],
                     query: $("#searchList").val(),
@@ -930,7 +928,6 @@
                             success: function(response) {
                                 $('.overlay-loading').hide();
                                 if (response.result == 200) {
-                                    console.log(response.data.item.progress);
                                     $("#general-info-progress").html('<div class="progress-bar bg-primary progress-bar-striped" role="progressbar" style="width: ' + response.data.item.last_progress + '%;" aria-valuenow="' + response.data.item.last_progress + '" aria-valuemin="0" aria-valuemax="100">' + response.data.item.last_progress + '%</div>');
                                     $("#tableActivitiesLists").DataTable().destroy();
                                     fetchTable($("#user_role").val(), 1, $("#pageLength").find(":selected").val(), true);

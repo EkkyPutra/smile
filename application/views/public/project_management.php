@@ -30,9 +30,15 @@
             <div class="card card-default" id="project-activity">
                 <!-- .card-header -->
                 <div class="card-header no-sub">
-                    <div class="seg-tools" onclick="window.location.href='<?php echo base_url(); ?>'">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
+                    <?php if (!$is_performa) { ?>
+                        <div class="seg-tools" onclick="window.location.href='<?php echo base_url(); ?>'">
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
+                    <?php } else { ?>
+                        <div class="seg-tools" onclick="window.location.href='<?php echo base_url('performances/management'); ?>'">
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
+                    <?php } ?>
                     <div class="row">
                         <h3 class="col-sm-6 col-8 seg-title"><?php echo ($is_performa) ? "Daftar Project PIC" : "Daftar Proyek"; ?></h3>
                         <?php if (!$is_performa) { ?>
@@ -105,7 +111,7 @@
 
                         <?php if (!$is_performa) { ?>
                             <div class="toolbar-card row" id="toolbar-card">
-                                <div class="toolbar-card-item col-6 col-md-3">
+                                <div class="toolbar-card-item col-6 col-md-3" onclick="javascript:filterProjectOnTrack();">
                                     <div class="tci tci-blue row">
                                         <span class="col-3"><i class="fas fa-hourglass-half"></i></span>
                                         <div class="tci-info col-12 col-md-9">
@@ -114,7 +120,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="toolbar-card-item col-6 col-md-3">
+                                <div class="toolbar-card-item col-6 col-md-3" onclick="javascript:filterProjectLate();">
                                     <div class="tci tci-red row">
                                         <span class="col-3"><i class="fas fa-calendar-times"></i></span>
                                         <div class="tci-info col-12 col-md-9">
@@ -123,7 +129,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="toolbar-card-item col-6 col-md-3">
+                                <div class="toolbar-card-item col-6 col-md-3" onclick="javascript:filterProjectComplete();">
                                     <div class="tci tci-green row">
                                         <span class="col-3"><i class="fas fa-calendar-check"></i></span>
                                         <div class="tci-info col-12 col-md-9">
@@ -132,7 +138,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="toolbar-card-item col-6 col-md-3">
+                                <div class="toolbar-card-item col-6 col-md-3" onclick="javascript:filterProjectAll();">
                                     <div class="tci tci-orange row">
                                         <span class="col-3"><i class="fas fa-signal"></i></span>
                                         <div class="tci-info col-12 col-md-9">
@@ -283,6 +289,7 @@
                                     <option value=''>Progress</option>
                                     <option value="ontrack">On Track</option>
                                     <option value="late">Terlambat</option>
+                                    <option value="complete">Selesai</option>
                                 </select>
                                 <span id="resetFilter"><i class="fas fa-undo"></i> Reset Filter</span>
                             </div>
@@ -601,7 +608,6 @@
                         processing: true,
                         data: res.data,
                         "createdRow": function(row, data, dataIndex) {
-                            console.log(data);
                             if (data.strips == 'strips-ontrack') {
                                 $(row).addClass('strips-ontrack');
                             } else if (data.strips == "strips-late") {
@@ -885,6 +891,7 @@
         $("#modal-proyek").on("hidden.bs.modal", function(e) {
             $("#projectForm").trigger("reset");
             $("#todo").val("");
+            $(".row-pic-member").html('<input type="hidden" name="count-pic" id="count-pic" value="0" />');
         });
 
         $(function() {
@@ -1026,18 +1033,19 @@
                             $("#count-pic").val(picX);
                             $(this.target).find('input').autocomplete();
                             $.each(data.pic.members, function(index, value) {
+                                row = index + 1;
                                 $(".row-pic-member").append('' +
-                                    '<div class="col-12 row row-pic" id="row-pic-' + picX + '">' +
+                                    '<div class="col-12 row row-pic" id="row-pic-' + row + '">' +
                                     '    <div class="col-12 row">' +
-                                    '        <label class="modal-seg-pic col-6">PIC Member</label>' +
-                                    '        <label class="delete-pic col-6 align-right" data-pic-number="' + picX + '" onclick="removePicRow(\'' + picX + '\');">Delete</label>' +
+                                    '        <label class="modal-seg-pic col-11">PIC Member</label>' +
+                                    '        <label class="delete-pic col-1 align-right" data-pic-number="' + row + '" onclick="removePicRow(\'' + row + '\');">Delete</label>' +
                                     '    </div>' +
                                     '    <div class="col-12 col-sm-6">' +
                                     '        <div class="row">' +
                                     '            <div class="form-group col-12">' +
                                     '                <label for="pic_leader_name">Nama PIC</label>' +
-                                    '                <input type="text" name="pic_member_name[]" id="pic_member_name_' + picX + '" value="' + value.pic_name + '" class="pic_member_name form-control" placeholder="Contoh: Dwi Setiawan" autocomplete="off" required="required" />' +
-                                    '                <input type="hidden" name="pic_member_id[]" id="pic_member_id_' + picX + '" value="' + value.pic_id + '" />' +
+                                    '                <input type="text" name="pic_member_name[]" id="pic_member_name_' + row + '" value="' + value.pic_name + '" data-id="' + row + '" class="pic_member_name form-control" placeholder="Contoh: Dwi Setiawan" autocomplete="off" required="required" />' +
+                                    '                <input type="hidden" name="pic_member_id[]" id="pic_member_id_' + row + '" value="' + value.pic_id + '" />' +
                                     '                <div id="autocomplete-pic-leader">' +
                                     '                </div>' +
                                     '            </div>' +
@@ -1047,7 +1055,7 @@
                                     '        <div class="row">' +
                                     '            <div class="form-group col-12">' +
                                     '                <label for="pic_leader_handphone">Nomor Telepon PIC</label>' +
-                                    '                <input type="text" name="pic_member_handphone[]" id="pic_member_handphone_' + picX + '" value=" ' + value.pic_handphone + '" class="form-control" placeholder="Contoh: 089818181818" autocomplete="off" required="required" />' +
+                                    '                <input type="text" name="pic_member_handphone[]" id="pic_member_handphone_' + row + '" value=" ' + value.pic_handphone + '" class="form-control" placeholder="Contoh: 089818181818" autocomplete="off" required="required" />' +
                                     '            </div>' +
                                     '        </div>' +
                                     '    </div>' +
@@ -1055,7 +1063,7 @@
                                     '');
 
                                 var projects = "<?php echo base_url("users/listsAjax"); ?>";
-                                $('#pic_member_name_' + picX).autocomplete({
+                                $('#pic_member_name_' + row).autocomplete({
                                     minLength: 0,
                                     appendTo: "#autocomplete-pic-leader",
                                     classes: {
@@ -1063,14 +1071,16 @@
                                     },
                                     source: projects,
                                     focus: function(event, ui) {
-                                        $("#pic_member_name_" + picX).val(ui.item.name);
-                                        $("#pic_member_handphone" + picX).val(ui.item.handphone);
+                                        rowId = $(event.target).attr("data-id");
+                                        $("#pic_member_name_" + rowId).val(ui.item.name);
+                                        $("#pic_member_handphone_" + rowId).val(ui.item.handphone);
                                         return false;
                                     },
                                     select: function(event, ui) {
-                                        $("#pic_member_name_" + picX).val(ui.item.name);
-                                        $("#pic_member_handphone_" + picX).val(ui.item.handphone);
-                                        $("#pic_member_id_" + picX).val(ui.item.id);
+                                        rowId = $(event.target).attr("data-id");
+                                        $("#pic_member_name_" + rowId).val(ui.item.name);
+                                        $("#pic_member_handphone_" + rowId).val(ui.item.handphone);
+                                        $("#pic_member_id_" + rowId).val(ui.item.id);
                                         return false;
                                     }
                                 }).data("ui-autocomplete")._renderItem = function(ul, item) {
@@ -1244,6 +1254,54 @@
                 }
             })
         })
+
+        function filterProjectOnTrack() {
+            var params = {
+                progress: "ontrack"
+            }
+
+            var limit = $('#pageLength').find(":selected").val();
+            var start = ($(".paginationX.pCurrent").attr("data-start"));
+
+            $('#tableProjectsLists').DataTable().destroy();
+            fetchTable("", 1, limit, true, params);
+        }
+
+        function filterProjectLate() {
+            var params = {
+                progress: "late"
+            }
+
+            var limit = $('#pageLength').find(":selected").val();
+            var start = ($(".paginationX.pCurrent").attr("data-start"));
+
+            $('#tableProjectsLists').DataTable().destroy();
+            fetchTable("", 1, limit, true, params);
+        }
+
+        function filterProjectComplete() {
+            var params = {
+                progress: "complete"
+            }
+
+            var limit = $('#pageLength').find(":selected").val();
+            var start = ($(".paginationX.pCurrent").attr("data-start"));
+
+            $('#tableProjectsLists').DataTable().destroy();
+            fetchTable("", 1, limit, true, params);
+        }
+
+        function filterProjectAll() {
+            var params = {
+                progress: ""
+            }
+
+            var limit = $('#pageLength').find(":selected").val();
+            var start = ($(".paginationX.pCurrent").attr("data-start"));
+
+            $('#tableProjectsLists').DataTable().destroy();
+            fetchTable("", 1, limit, true, params);
+        }
     </script>
 
 </body>
