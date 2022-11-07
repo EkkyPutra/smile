@@ -84,7 +84,7 @@ class Users extends web_base
 
         $response = $this->somplakapi->run_curl_api($url, $data);
         $resApi = json_decode($response);
-
+        $xRow = ($start - 1) * $limit;
         $totalPage = 0;
         $rowsPerPage = 0;
         $totalRows = 0;
@@ -126,7 +126,7 @@ class Users extends web_base
                             break;
                     }
 
-                    $data->id = ($key + 1);
+                    $data->id = ($xRow + 1);
                     $data->avatar_thumb = "<img src='" . $resImage . "' height='50' width='50' class='img-bordered-md img-circle' />";
                     $data->user_role = '<div class="user-role ' . $userColor . '">' . ucwords($data->user_role) . '</div>';
                     $data->action = "<button type='button' class='btn btn-default btn-edit' data-toggle='modal' data-target='#modal-lg' onclick='editUser(\"" . $data->username . "\");'><i class='far fa-edit'></i></button><button type='button' class='btn btn-default btn-delete' onclick='removeUser(\"" . $data->username . "\");'><i class='far fa-trash-alt'></i></button>";
@@ -147,6 +147,7 @@ class Users extends web_base
                         '';
 
                     $resMobile[] = $dataMobile;
+                    $xRow++;
                 }
             }
         }

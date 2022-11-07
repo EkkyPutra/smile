@@ -62,8 +62,11 @@ class Project extends CI_Model
             if (isset($params["deadline"]))
                 $this->db->where("a.deadline BETWEEN " . $this->db->escape($params["deadline"][0]) . " AND " . $this->db->escape($params["deadline"][1]));
 
+            if (isset($params["query"]) && !is_null($params["query"]))
+                $this->db->like("a.name", $params["query"]);
+
             if (isset($params["username"]) && !empty($params["username"]))
-            $this->db->where("c.username", $params["username"]);
+                $this->db->where("c.username", $params["username"]);
         }
 
         $query = $this->db->get();

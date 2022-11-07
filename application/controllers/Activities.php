@@ -130,7 +130,7 @@ class Activities extends web_base
 
         $response = $this->somplakapi->run_curl_api($url, $data);
         $resApi = json_decode($response);
-
+        $xRow = ($start - 1) * $limit;
         $totalPage = 0;
         $rowsPerPage = 0;
         $totalRows = 0;
@@ -173,7 +173,7 @@ class Activities extends web_base
                     
                     $res[] = $data;
 
-                    $dataMobile["id"] = ($key + 1);
+                    $dataMobile["id"] = ($xRow + 1);
                     $dataMobile["data"] = ''.
                         '<div class="datatable-activity-mobile">'.
                         '   <label class="title">' . $data->name . '</label>'.
@@ -187,6 +187,7 @@ class Activities extends web_base
                         '';
 
                     $resMobile[] = $dataMobile;
+                    $xRow++;
                 }
             }
         }

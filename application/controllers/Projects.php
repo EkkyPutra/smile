@@ -120,6 +120,7 @@ class Projects extends web_base
         $response = $this->somplakapi->run_curl_api($url, $data);
         $resApi = json_decode($response);
 
+        $xRow = ($start - 1) * $limit;
         $totalPage = 0;
         $rowsPerPage = 0;
         $totalRows = 0;
@@ -163,7 +164,7 @@ class Projects extends web_base
                     $userHandphone = (!empty($userHandphone) && substr($userHandphone, 0,1 ) == 0) ? "62" . substr($userHandphone, 1) : "";
                     $projectDivisi = $data->project_divisi;
                     $dataId = $data->id;
-                    $data->id = ($key + 1);
+                    $data->id = ($xRow + 1);
                     $data->deadline = date("d/m/Y", strtotime($data->deadline));
                     $data->project_divisi = '<div class="table-seg-box" style="background-color: #' . $data->project_divisi_bg . '; color: #' . $data->project_divisi_color . '">' . ucwords($data->project_divisi) . '</div>';
                     $dataProgress = '<div class="progress">
@@ -211,6 +212,7 @@ class Projects extends web_base
                     $dataMobile["strips"] = $strips;
 
                     $resMobile[] = $dataMobile;
+                    $xRow++;
                 }
             }
         }

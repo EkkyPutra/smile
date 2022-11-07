@@ -73,7 +73,7 @@ class Performances extends web_base
 
         $response = $this->somplakapi->run_curl_api($url, $data);
         $resApi = json_decode($response);
-
+        $xRow = ($start - 1) * $limit;
         $totalPage = 0;
         $rowsPerPage = 0;
         $totalRows = 0;
@@ -87,7 +87,7 @@ class Performances extends web_base
             if (!is_null($resData)) {
                 $rowsPerPage = count($resData);
                 foreach ($resData as $key => $data) {
-                    $data->id = ($key + 1);
+                    $data->id = ($xRow + 1);
                     $data->user_divisi = '<div class="table-seg-box" style="background-color: #' . $data->user_divisi_bg . '; color: #' . $data->user_divisi_color . '">' . ucwords($data->user_divisi) . '</div>';
                     $data->action = "<a href='" . base_url("../performances/detail/" . $data->username) ."' class='btn btn-default btn-eye btn-single mr-2'><i class='far fa-eye'></i></a>";
                     $res[] = $data;
@@ -108,6 +108,7 @@ class Performances extends web_base
                     '';
 
                     $resMobile[] = $dataMobile;
+                    $xRow++;
                 }
             }
         }

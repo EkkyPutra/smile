@@ -740,13 +740,26 @@
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = $(this).attr("data-page");
             var limit = $("#pageLength").find(":selected").val();
-            var user_divisi = $("#user_divisi").val();
+
+            var query = $('#searchList').val();
+            var selected = $(".select-filter option:selected").map(function() {
+                return this.value
+            }).get();
+
+            var params = {
+                query: query,
+                type: selected[0],
+                priority: selected[1],
+                divisi: selected[2],
+                progress: selected[3],
+                deadline: $("#filterDeadline").val()
+            }
 
             if (!$(this).hasClass("pCurrent")) {
                 $(".overlay-loading").show();
                 if (currPage != clickPage) {
                     $('#tableProjectsLists').DataTable().destroy();
-                    fetchTable(user_divisi, clickPage, limit, true);
+                    fetchTable('', clickPage, limit, true, params);
                     setTimeout(function() {
                         $(".overlay-loading").hide();
                     }, 200);
@@ -758,13 +771,25 @@
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = parseInt(currPage) - 1;
             var limit = $("#pageLength").find(":selected").val();
-            var user_divisi = $("#user_divisi").val();
+            var query = $('#searchList').val();
+            var selected = $(".select-filter option:selected").map(function() {
+                return this.value
+            }).get();
+
+            var params = {
+                query: query,
+                type: selected[0],
+                priority: selected[1],
+                divisi: selected[2],
+                progress: selected[3],
+                deadline: $("#filterDeadline").val()
+            }
 
             if (!$(this).hasClass("bDisabled")) {
                 $(".overlay-loading").show();
                 if (currPage != clickPage && $("#bPaginationPrev").attr("class") !== "bDisabled") {
                     $('#tableProjectsLists').DataTable().destroy();
-                    fetchTable(user_divisi, 1, limit, true);
+                    fetchTable('', 1, limit, true, params);
                     setTimeout(function() {
                         $(".overlay-loading").hide();
                     }, 200);
@@ -776,14 +801,27 @@
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = parseInt(currPage) - 1;
             var limit = $("#pageLength").find(":selected").val();
-            var user_divisi = $("#user_divisi").val();
             var totalPage = $('#totalPage').val();
+
+            var query = $('#searchList').val();
+            var selected = $(".select-filter option:selected").map(function() {
+                return this.value
+            }).get();
+
+            var params = {
+                query: query,
+                type: selected[0],
+                priority: selected[1],
+                divisi: selected[2],
+                progress: selected[3],
+                deadline: $("#filterDeadline").val()
+            }
 
             if (!$(this).hasClass("bDisabled")) {
                 $(".overlay-loading").show();
                 if (currPage != clickPage && $("#bPaginationPrev").attr("class") !== "bDisabled") {
                     $('#tableProjectsLists').DataTable().destroy();
-                    fetchTable(user_divisi, totalPage, limit, true);
+                    fetchTable('', totalPage, limit, true, params);
                     setTimeout(function() {
                         $(".overlay-loading").hide();
                     }, 200);
@@ -795,13 +833,26 @@
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = parseInt(currPage) - 1;
             var limit = $("#pageLength").find(":selected").val();
-            var user_divisi = $("#user_divisi").val();
+
+            var query = $('#searchList').val();
+            var selected = $(".select-filter option:selected").map(function() {
+                return this.value
+            }).get();
+
+            var params = {
+                query: query,
+                type: selected[0],
+                priority: selected[1],
+                divisi: selected[2],
+                progress: selected[3],
+                deadline: $("#filterDeadline").val()
+            }
 
             if (!$(this).hasClass("bDisabled")) {
                 $(".overlay-loading").show();
                 if (currPage != clickPage && $("#bPaginationPrev").attr("class") !== "bDisabled") {
                     $('#tableProjectsLists').DataTable().destroy();
-                    fetchTable(user_divisi, clickPage, limit, true);
+                    fetchTable('', clickPage, limit, true, params);
                     setTimeout(function() {
                         $(".overlay-loading").hide();
                     }, 200);
@@ -813,13 +864,26 @@
             var currPage = $(".paginationX.pCurrent").attr("data-page");
             var clickPage = parseInt(currPage) + 1;
             var limit = $("#pageLength").find(":selected").val();
-            var user_divisi = $("#user_divisi").val();
+
+            var query = $('#searchList').val();
+            var selected = $(".select-filter option:selected").map(function() {
+                return this.value
+            }).get();
+
+            var params = {
+                query: query,
+                type: selected[0],
+                priority: selected[1],
+                divisi: selected[2],
+                progress: selected[3],
+                deadline: $("#filterDeadline").val()
+            }
 
             if (!$(this).hasClass("bDisabled")) {
                 $(".overlay-loading").show();
                 if (currPage != clickPage && $("#bPaginationNext").attr("class") !== "bDisabled") {
                     $('#tableProjectsLists').DataTable().destroy();
-                    fetchTable(user_divisi, clickPage, limit, true);
+                    fetchTable('', clickPage, limit, true, params);
                     setTimeout(function() {
                         $(".overlay-loading").hide();
                     }, 200);
