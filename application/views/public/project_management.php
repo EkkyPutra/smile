@@ -343,6 +343,15 @@
         </div>
     </div>
 
+    <!-- <div class="modal fade" id="modal-evidence">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body row" id="myiFrame">
+                    <iframe src=" https://docs.google.com/spreadsheets/d/e/2PACX-1vTv3NP-2pJdo6rwUoxkS-g04ucSf8Y1jXg_TUo_mf60236Ks_X4LVZwEofcB0mzDb1XLFR2khAo4gqr/pubhtml?widget=true&amp;headers=false" width="100%" height="718" frameborder="0" marginheight="0" marginwidth="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div> -->
     <div class="modal fade modal-overflow" id="modal-proyek">
         <form name="projectForm" id="projectForm" enctype="multipart/form-data" novalidate="novalidate">
             <div class="modal-dialog modal-lg">

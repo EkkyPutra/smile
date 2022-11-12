@@ -137,7 +137,7 @@ class Activities extends web_base
         $res = [];
         $resMobile = [];
 
-        if ($resApi->result == 200) {
+        if ($resApi->result == 200 && isset($resApi->data->items)) {
             $resData = $resApi->data->items;
             $totalPage = $resApi->data->totalPage;
             $totalRows = $resApi->data->totalRows;

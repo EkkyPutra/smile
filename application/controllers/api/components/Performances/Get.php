@@ -44,7 +44,7 @@ class Get
         $today = date("Y-m-d");
         if ($totalUsers > 0) {
             $totalPage = ceil($totalUsers / $limit);
-            $getUsers = $this->CI->user->getUsers(-1, $start, $limit, "", $query, $divisi);
+            $getUsers = $this->CI->user->getUsers(-1, $start, $limit, "", $query, $divisi, true);
 
             if (!is_null($getUsers)) {
                 $rowsPerPage = count($getUsers);

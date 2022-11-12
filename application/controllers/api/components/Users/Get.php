@@ -31,6 +31,7 @@ class Get
             $start    = ($jsonInputObj->page - 1) * $limit;
         }
 
+        $is_performa = isset($jsonInputObj->is_performa) ? $jsonInputObj->is_performa : false;
         $role = (isset($jsonInputObj->role) && $jsonInputObj->role != "all") ? $jsonInputObj->role : "";
         $getRole = $this->CI->master->getMasterByTypeValue(1, $role);
         if (!empty($role) && is_null($getRole))
@@ -45,7 +46,7 @@ class Get
 
         if ($totalUsers > 0) {
             $totalPage = ceil($totalUsers / $limit);
-            $getUsers = $this->CI->user->getUsers($role, $start, $limit, $sort, $query);
+            $getUsers = $this->CI->user->getUsers($role, $start, $limit, $sort, $query, -1, $is_performa);
             if (!is_null($getUsers)) {
                 $rowsPerPage = count($getUsers);
                 foreach ($getUsers as $user) {

@@ -262,6 +262,9 @@ class Project extends CI_Model
         if (isset($params["query"]) && !is_null($params["query"]))
             $this->db->like("a.name", $params["query"]);
 
+        $this->db->order_by("a.progress", "DESC");
+        $this->db->order_by("a.updated", "DESC");
+
         if ($limit > 0)
             $this->db->limit($limit, $offset);
 

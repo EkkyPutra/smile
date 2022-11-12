@@ -40,12 +40,12 @@ class Projects extends web_base
         $resApiProejctType = json_decode($responseProejctType);
 
         $urlDivisi = parent::build_api_url("masters/get/division");
-        if ($this->access_level->project->is_super == 1) {
+        // if ($this->access_level->project->is_super == 1) {
             $paramsDivisi["all_divisi"] = true;
-        } else {
-            $paramsDivisi["all_disivi"] = false;
-            $paramsDivisi["user_divisi"] = $this->smile_session["divisi"];
-        }
+        // } else {
+            // $paramsDivisi["all_disivi"] = false;
+            // // $paramsDivisi["user_divisi"] = $this->smile_session["divisi"];
+        // }
         $responseDivisi = $this->somplakapi->run_curl_api($urlDivisi, $paramsDivisi);
         $resApiDivisi = json_decode($responseDivisi);
 
@@ -127,7 +127,7 @@ class Projects extends web_base
         $res = [];
         $resMobile = [];
         $today = date("Y-m-d");
-        if ($resApi->result == 200) {
+        if ($resApi->result == 200 && isset($resApi->data->items)) {
             $resData = $resApi->data->items;
             $totalPage = $resApi->data->totalPage;
             $totalRows = $resApi->data->totalRows;
@@ -160,6 +160,7 @@ class Projects extends web_base
                     } else {
                         $strips = "strips-ontrack";
                     }
+
                     $userHandphone = !is_null($data->pic) ? $data->pic[0]->pic_handphone : "";
                     $userHandphone = (!empty($userHandphone) && substr($userHandphone, 0,1 ) == 0) ? "62" . substr($userHandphone, 1) : "";
                     $projectDivisi = $data->project_divisi;
@@ -180,6 +181,7 @@ class Projects extends web_base
                     $dataLink = !empty($data->link) ?  "href='" . $data->link . "' target='_blank'" : "javascript:void(0);";
                     $data->action .= "<a class='btn btn-default btn-wa' href='https://wa.me/" . $userHandphone . "' target='_blank' data-toggle='tooltip' data-placement='bottom' title='Whatsapp PIC Leader'><i class='fab fa-whatsapp'></i></a>";
                     $data->action .= "<a class='btn btn-default btn-link' " . $dataLink . " data-toggle='tooltip' data-placement='bottom' title='Evidence'><i class='fas fa-link'></i></a>";
+                    // $data->action .= "<button class='btn btn-default btn-link' " . $dataLink . " data-placement='bottom' title='Evidence' data-toggle='modal' data-target='#modal-evidence'><i class='fas fa-link'></i></button>";
 
                     // if ($access_level->project->is_super == 1 || ($access_level->project->as_divisi == 1 && strtoupper($user_access["divisi"]) == strtoupper($projectDivisi)) || $asAssign)
                     $data->action .= "<a class='btn btn-default btn-comment' href='" . base_url("../activities/lists/$data->slug#comment-text") . "' data-toggle='tooltip' data-placement='bottom' title='Comment'><i class='far fa-comment'></i></a>";

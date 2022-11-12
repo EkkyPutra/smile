@@ -91,7 +91,7 @@ class Users extends web_base
         $res = [];
         $resMobile = [];
 
-        if ($resApi->result == 200) {
+        if ($resApi->result == 200 && isset($resApi->data->items)) {
             $resData = $resApi->data->items;
             $totalPage = $resApi->data->totalPage;
             $totalRows = $resApi->data->totalRows;
@@ -172,6 +172,7 @@ class Users extends web_base
 
         $data = [
             "query" => !is_null($this->input->get("term")) ? $this->input->get("term", true) : "",
+            "is_performa" => true,
             "page" => 1,
             "limit" => 100
         ];
